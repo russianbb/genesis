@@ -1,4 +1,7 @@
 FROM python:3.7.3
+
+EXPOSE 8080
+
 ENV PYTHONUNBUFFERED 1
 
 ADD /requirements/base.txt base.txt
