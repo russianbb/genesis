@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from simple_history.models import HistoricalRecords
+from model_utils.choices import Choices
 from utils import AbstractBaseModel, AddressBaseModel, ContactBaseModel
 
 # Create your models here
@@ -10,6 +11,19 @@ class Company(AbstractBaseModel):
     code_sap = models.CharField(max_length=8, unique=True)
     company_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
     fantasy_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
+    SYSTEM_CHOICES = Choices(
+        'Syagri', 'Agrotis', 'SAP', 'Totvs', 'Outros'
+    )
+    system = models.CharField(
+        max_length=40, choices=SYSTEM_CHOICES, verbose_name=_("ERP")
+    )
+    retroactive = models.BooleanField(
+        default=False, verbose_name=_('Relatorio Retroativo')
+    )
+    resp = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         ordering = ["company_name"]
@@ -17,7 +31,7 @@ class Company(AbstractBaseModel):
         verbose_name_plural = "Distribuidores"
 
 
-class Store(AbstractBaseModel):
+class Store(AbstractBaseModel, AddressBaseModel):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name="stores"
     )
@@ -43,7 +57,7 @@ class Store(AbstractBaseModel):
         ordering = ["company__company_name", "city", "nickname"]
         verbose_name = "Filial"
         verbose_name_plural = "Filiais"
-        unique_together = [["document", "code", "name", "company"]]
+        unique_together = [["document", "code", "nickname", "company"]]
 
 
 class Focal(AbstractBaseModel, ContactBaseModel):
