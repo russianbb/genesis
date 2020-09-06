@@ -9,10 +9,14 @@ from utils import AbstractBaseModel, AddressBaseModel, ContactBaseModel
 
 class Company(AbstractBaseModel):
     code_sap = models.CharField(max_length=8, unique=True)
-    company_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
-    fantasy_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
+    name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
+    fantasy = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
     SYSTEM_CHOICES = Choices(
-        'Syagri', 'Agrotis', 'SAP', 'Totvs', 'Outros'
+        'Syagri',
+        'Agrotis',
+        'SAP',
+        'Totvs',
+        'Outros'
     )
     system = models.CharField(
         max_length=40, choices=SYSTEM_CHOICES, verbose_name=_("ERP")
@@ -20,16 +24,19 @@ class Company(AbstractBaseModel):
     retroactive = models.BooleanField(
         default=False, verbose_name=_('Relatorio Retroativo')
     )
-    resp = models.ForeignKey(
+    owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     class Meta:
-        ordering = ["company_name"]
+        ordering = ["name"]
         verbose_name = "Distribuidor"
         verbose_name_plural = "Distribuidores"
 
+    def __str__(self):
+        return self.name
 
 class Store(AbstractBaseModel, AddressBaseModel):
     company = models.ForeignKey(
@@ -54,11 +61,17 @@ class Store(AbstractBaseModel, AddressBaseModel):
     )
 
     class Meta:
-        ordering = ["company__company_name", "city", "nickname"]
+        ordering = ["company__name", "city", "nickname"]
         verbose_name = "Filial"
         verbose_name_plural = "Filiais"
         unique_together = [["document", "code", "nickname", "company"]]
 
+    def __str__(self):
+        if self.code:
+            return f'{self.company} - {self.code}'
+        if self.name:
+            return f'{self.company} - {self.name}'
+        return f'{self.company} - {self.city}'
 
 class Focal(AbstractBaseModel, ContactBaseModel):
     role = models.CharField(max_length=30, null=True, blank=True)
@@ -68,13 +81,19 @@ class Focal(AbstractBaseModel, ContactBaseModel):
         verbose_name = "Responsável"
         verbose_name_plural = "Responsáveis"
 
+    def __str__(self):
+        return f'{self.name}'
 
 class CompanyFocal(AbstractBaseModel):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    focal = models.ForeignKey(Focal, on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name=_('Distribuidor')
+    )
+    focal = models.ForeignKey(
+        Focal, on_delete=models.CASCADE, verbose_name=_('Responsável')
+    )
 
     class Meta:
-        ordering = ["company__company_name", "focal__name"]
+        ordering = ["company__name", "focal__name"]
         unique_together = ("company", "focal")
         verbose_name = "Responsável pelo Distribuidor"
         verbose_name_plural = "Responsável pelo Distribuidor"
@@ -88,11 +107,14 @@ class Rtv(AbstractBaseModel, ContactBaseModel):
 
 
 class CompanyRtv(AbstractBaseModel):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    rtv = models.ForeignKey(Rtv, on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name=_('Distribuidor')
+    )
+    rtv = models.ForeignKey(
+        Rtv, on_delete=models.CASCADE, verbose_name=_('Rtv'))
 
     class Meta:
-        ordering = ["company__company_name", "rtv__name"]
+        ordering = ["company__name", "rtv__name"]
         unique_together = ("company", "rtv")
         verbose_name = "Rtv do Distribuidor"
         verbose_name_plural = "Rtvs do Distribuidores"

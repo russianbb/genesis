@@ -54,12 +54,12 @@ class ContactBaseModel(models.Model):
     @property
     def get_phone1(self):
         if self.phone1:
-            return f"({self.phone1[:2]}) {self.phone1[-11:-6]}-{self.phone1[-6:2]}"
+            return f"({self.phone1[:2]}) {self.phone1[-11:-6]}-{self.phone1[-6:-2]}"
 
     @property
     def get_phone2(self):
         if self.phone2:
-            return f"({self.phone2[:2]}) {self.phone2[-11:-6]}-{self.phone2[-6:2]}"
+            return f"({self.phone2[:2]}) {self.phone2[-11:-6]}-{self.phone2[-6:-2]}"
 
     class Meta:
         abstract = True
