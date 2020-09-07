@@ -1,5 +1,4 @@
-from django.apps import AppConfig
+from suit.apps import DjangoSuitConfig
 
-
-class UtilsConfig(AppConfig):
-    name = "utils"
+class SuitConfig(DjangoSuitConfig):
+    layout = "horizontal"

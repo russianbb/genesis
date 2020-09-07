@@ -35,6 +35,9 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     # My Apps
     'syncomercial',
+    'utils',
+    # Third Party Apps
+    'utils.apps.SuitConfig',
     # Django Apps
     "django.contrib.admin",
     "django.contrib.auth",
