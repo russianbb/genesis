@@ -74,7 +74,8 @@ class Store(AbstractBaseModel, AddressBaseModel):
         return f'{self.company} - {self.city}'
 
 class Focal(AbstractBaseModel, ContactBaseModel):
-    role = models.CharField(max_length=30, null=True, blank=True)
+    role = models.CharField(
+        max_length=30, null=True, blank=True, verbose_name='Cargo')
 
     class Meta:
         ordering = ["name"]

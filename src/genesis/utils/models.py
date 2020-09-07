@@ -51,15 +51,17 @@ class ContactBaseModel(models.Model):
     )
     notes = models.TextField(null=True, blank=True)
 
-    @property
     def get_phone1(self):
         if self.phone1:
             return f"({self.phone1[:2]}) {self.phone1[-11:-6]}-{self.phone1[-6:-2]}"
 
-    @property
+    get_phone1.short_description = "Telefone Principal"
+
     def get_phone2(self):
         if self.phone2:
             return f"({self.phone2[:2]}) {self.phone2[-11:-6]}-{self.phone2[-6:-2]}"
+
+    get_phone2.short_description = "Telefone Secundario"
 
     class Meta:
         abstract = True
