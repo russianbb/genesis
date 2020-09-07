@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'utils',
     # Third Party Apps
     'utils.apps.SuitConfig',
+    'import_export',
     # Django Apps
     "django.contrib.admin",
     "django.contrib.auth",

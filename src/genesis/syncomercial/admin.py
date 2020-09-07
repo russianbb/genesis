@@ -1,10 +1,21 @@
 from django.contrib import admin
 from .models import Company, Store, Focal, CompanyFocal, Rtv, CompanyRtv
-# Register your models here.
+from .resources import (
+    CompanyResource,
+    StoreResource,
+    FocalResource,
+    CompanyFocalResource,
+    RtvResource,
+    CompanyRtvResource,
+)
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 
 @admin.register(Company)
-class CompanyAdmin(admin.ModelAdmin):
+class CompanyAdmin(ImportExportModelAdmin):
+    resource_class = CompanyResource
+
     list_display = (
         'code_sap',
         'name',
@@ -43,7 +54,9 @@ class CompanyAdmin(admin.ModelAdmin):
 
 
 @admin.register(Store)
-class StoreAdmin(admin.ModelAdmin):
+class StoreAdmin(ImportExportModelAdmin):
+    resource_class = StoreResource
+
     list_display = (
         'company',
         'code',
@@ -57,7 +70,9 @@ class StoreAdmin(admin.ModelAdmin):
 
 
 @admin.register(Focal)
-class FocalAdmin(admin.ModelAdmin):
+class FocalAdmin(ImportExportModelAdmin):
+    resource_class = FocalResource
+
     list_display = (
         'name',
         'role',
@@ -68,7 +83,9 @@ class FocalAdmin(admin.ModelAdmin):
 
 
 @admin.register(CompanyFocal)
-class CompanyFocalAdmin(admin.ModelAdmin):
+class CompanyFocalAdmin(ImportExportModelAdmin):
+    resource_class = CompanyFocalResource
+
     list_display = (
         'company',
         'focal',
@@ -81,7 +98,9 @@ class CompanyFocalAdmin(admin.ModelAdmin):
 
 
 @admin.register(Rtv)
-class RtvAdmin(admin.ModelAdmin):
+class RtvAdmin(ImportExportModelAdmin):
+    resource_class = RtvResource
+
     list_display = (
         'name',
         'email',
@@ -91,7 +110,9 @@ class RtvAdmin(admin.ModelAdmin):
 
 
 @admin.register(CompanyRtv)
-class CompanyRtvAdmin(admin.ModelAdmin):
+class CompanyRtvAdmin(ImportExportModelAdmin):
+    resource_class = CompanyRtvResource
+
     list_display = (
         'company',
         'rtv',
