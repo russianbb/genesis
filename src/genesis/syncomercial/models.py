@@ -19,15 +19,23 @@ class Company(AbstractBaseModel):
         'Outros'
     )
     system = models.CharField(
-        max_length=40, choices=SYSTEM_CHOICES, verbose_name=_("ERP")
+        choices=SYSTEM_CHOICES,
+        max_length=40,
+        null=True,
+        blank=True,
+        verbose_name=_("ERP"),
     )
     retroactive = models.BooleanField(
-        default=False, verbose_name=_('Relatorio Retroativo')
+        default=False,
+        null=True,
+        blank=True,
+        verbose_name=_('Relatorio Retroativo'),
     )
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
 
     class Meta:
@@ -40,7 +48,7 @@ class Company(AbstractBaseModel):
 
 class Store(AbstractBaseModel, AddressBaseModel):
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="stores"
+        Company, on_delete=models.CASCADE, related_name="stores", verbose_name='Distribuidor',
     )
     code = models.CharField(
         max_length=15, null=True, blank=True, verbose_name=_("Código")
@@ -106,6 +114,8 @@ class Rtv(AbstractBaseModel, ContactBaseModel):
         verbose_name = "Rtv"
         verbose_name_plural = "Rtvs"
 
+    def __str__(self):
+        return f'{self.name}'
 
 class CompanyRtv(AbstractBaseModel):
     company = models.ForeignKey(
