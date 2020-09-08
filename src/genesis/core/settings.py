@@ -33,12 +33,13 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    # Third Party Apps
+    'adminlte3',
+    'utils.apps.SuitConfig',
+    'import_export',
     # My Apps
     'syncomercial',
     'utils',
-    # Third Party Apps
-    'utils.apps.SuitConfig',
-    'import_export',
     # Django Apps
     "django.contrib.admin",
     "django.contrib.auth",
