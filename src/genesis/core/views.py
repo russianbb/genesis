@@ -6,4 +6,4 @@ def ping(request):
     return HttpResponse("pong")
 
 def index(request):
-    return render(request, 'base.html')
+    return render(request, 'index.html')
