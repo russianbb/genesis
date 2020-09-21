@@ -5,7 +5,8 @@
 
 <head>
     {% block title_outer %}
-    <title>{% block title %}ONIX SE :: Genesis{% endblock %}</title>
+    <title>ONIX SE :: Genesis{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
     {% endblock %}
 
     {% block meta %}
