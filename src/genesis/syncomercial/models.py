@@ -58,8 +58,8 @@ class Company(AbstractBaseModel):
         null=True,
         blank=True,
     )
-    rtv = models.ManyToManyField(Rtv)
-    focal = models.ManyToManyField(Focal)
+    rtv = models.ManyToManyField(Rtv, blank=True)
+    focal = models.ManyToManyField(Focal, blank=True)
 
     class Meta:
         ordering = ["name"]

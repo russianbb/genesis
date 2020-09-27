@@ -30,6 +30,8 @@ class CompanyAdmin(ImportExportModelAdmin):
         'system',
         'retroactive',
         'owner',
+        'rtv',
+        'focal',
     )
 
     list_filter = (
@@ -44,6 +46,8 @@ class CompanyAdmin(ImportExportModelAdmin):
         'name',
         'fantasy',
     )
+
+    filter_vertical = ('rtv', 'focal')
 
     def owner_name(self, obj):
         return f'{obj.owner.get_full_name()}'
