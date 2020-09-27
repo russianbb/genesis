@@ -1,4 +1,4 @@
-from .models import Company, Store, Focal, CompanyFocal, Rtv, CompanyRtv
+from .models import Company, Store, Focal, Rtv
 from import_export import resources
 
 
@@ -18,16 +18,6 @@ class FocalResource(resources.ModelResource):
         model = Focal
 
 
-class CompanyFocalResource(resources.ModelResource):
-    class Meta:
-        model = CompanyFocal
-
-
 class RtvResource(resources.ModelResource):
     class Meta:
         model = Rtv
-
-
-class CompanyRtvResource(resources.ModelResource):
-    class Meta:
-        model = CompanyRtv

@@ -4,7 +4,28 @@ from django.utils.translation import ugettext_lazy as _
 from model_utils.choices import Choices
 from utils.models import AbstractBaseModel, AddressBaseModel, ContactBaseModel
 
-# Create your models here
+
+class Rtv(AbstractBaseModel, ContactBaseModel):
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Rtv"
+        verbose_name_plural = "Rtvs"
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class Focal(AbstractBaseModel, ContactBaseModel):
+    role = models.CharField(
+        max_length=30, null=True, blank=True, verbose_name='Cargo')
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Responsável"
+        verbose_name_plural = "Responsáveis"
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Company(AbstractBaseModel):
@@ -37,6 +58,8 @@ class Company(AbstractBaseModel):
         null=True,
         blank=True,
     )
+    rtv = models.ManyToManyField(Rtv)
+    focal = models.ManyToManyField(Focal)
 
     class Meta:
         ordering = ["name"]
@@ -80,52 +103,3 @@ class Store(AbstractBaseModel, AddressBaseModel):
         if self.name:
             return f'{self.company} - {self.name}'
         return f'{self.company} - {self.city}'
-
-class Focal(AbstractBaseModel, ContactBaseModel):
-    role = models.CharField(
-        max_length=30, null=True, blank=True, verbose_name='Cargo')
-
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "Responsável"
-        verbose_name_plural = "Responsáveis"
-
-    def __str__(self):
-        return f'{self.name}'
-
-class CompanyFocal(AbstractBaseModel):
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, verbose_name=_('Distribuidor')
-    )
-    focal = models.ForeignKey(
-        Focal, on_delete=models.CASCADE, verbose_name=_('Responsável')
-    )
-
-    class Meta:
-        ordering = ["company__name", "focal__name"]
-        unique_together = ("company", "focal")
-        verbose_name = "Responsável pelo Distribuidor"
-        verbose_name_plural = "Responsável pelo Distribuidor"
-
-
-class Rtv(AbstractBaseModel, ContactBaseModel):
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "Rtv"
-        verbose_name_plural = "Rtvs"
-
-    def __str__(self):
-        return f'{self.name}'
-
-class CompanyRtv(AbstractBaseModel):
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, verbose_name=_('Distribuidor')
-    )
-    rtv = models.ForeignKey(
-        Rtv, on_delete=models.CASCADE, verbose_name=_('Rtv'))
-
-    class Meta:
-        ordering = ["company__name", "rtv__name"]
-        unique_together = ("company", "rtv")
-        verbose_name = "Rtv do Distribuidor"
-        verbose_name_plural = "Rtvs do Distribuidores"

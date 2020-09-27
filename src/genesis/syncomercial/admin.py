@@ -1,12 +1,10 @@
 from django.contrib import admin
-from .models import Company, Store, Focal, CompanyFocal, Rtv, CompanyRtv
+from .models import Company, Store, Focal, Rtv
 from .resources import (
     CompanyResource,
     StoreResource,
     FocalResource,
-    CompanyFocalResource,
     RtvResource,
-    CompanyRtvResource,
 )
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -82,21 +80,6 @@ class FocalAdmin(ImportExportModelAdmin):
     )
 
 
-@admin.register(CompanyFocal)
-class CompanyFocalAdmin(ImportExportModelAdmin):
-    resource_class = CompanyFocalResource
-
-    list_display = (
-        'company',
-        'focal',
-    )
-
-    fields = (
-        'company',
-        'focal',
-        )
-
-
 @admin.register(Rtv)
 class RtvAdmin(ImportExportModelAdmin):
     resource_class = RtvResource
@@ -107,18 +90,3 @@ class RtvAdmin(ImportExportModelAdmin):
         'get_phone1',
         'get_phone2',
     )
-
-
-@admin.register(CompanyRtv)
-class CompanyRtvAdmin(ImportExportModelAdmin):
-    resource_class = CompanyRtvResource
-
-    list_display = (
-        'company',
-        'rtv',
-    )
-
-    fields = (
-        'company',
-        'rtv',
-        )
