@@ -7,7 +7,7 @@ from utils.models import AbstractBaseModel, AddressBaseModel, ContactBaseModel
 
 class Rtv(AbstractBaseModel, ContactBaseModel):
     class Meta:
-        ordering = ["name"]
+        ordering = ["status", "name"]
         verbose_name = "Rtv"
         verbose_name_plural = "Rtvs"
 
@@ -20,7 +20,7 @@ class Focal(AbstractBaseModel, ContactBaseModel):
         max_length=30, null=True, blank=True, verbose_name='Cargo')
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["status", "name"]
         verbose_name = "Responsável"
         verbose_name_plural = "Responsáveis"
 
@@ -52,14 +52,23 @@ class Company(AbstractBaseModel):
         blank=True,
         verbose_name=_('Relatorio Retroativo'),
     )
-    owner = models.ForeignKey(
+    designated = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        verbose_name=_("Designado")
     )
-    rtv = models.ManyToManyField(Rtv, blank=True)
-    focal = models.ManyToManyField(Focal, blank=True)
+    rtv = models.ManyToManyField(
+        Rtv,
+        blank=True,
+        related_name = "rtv",
+        )
+    focal = models.ManyToManyField(
+        Focal,
+        blank=True,
+        related_name = "focal"
+        )
 
     class Meta:
         ordering = ["name"]
@@ -92,7 +101,7 @@ class Store(AbstractBaseModel, AddressBaseModel):
     )
 
     class Meta:
-        ordering = ["company__name", "city", "nickname"]
+        ordering = ["status", "company__name", "city", "nickname"]
         verbose_name = "Filial"
         verbose_name_plural = "Filiais"
         unique_together = [["document", "code", "nickname", "company"]]

@@ -20,22 +20,11 @@ class CompanyAdmin(ImportExportModelAdmin):
         'fantasy',
         'system',
         'retroactive',
-        'owner_name',
-    )
-
-    fields = (
-        'code_sap',
-        'name',
-        'fantasy',
-        'system',
-        'retroactive',
-        'owner',
-        'rtv',
-        'focal',
+        'designated_name',
     )
 
     list_filter = (
-        'owner',
+        'designated',
         'system',
         'retroactive',
         'status',
@@ -47,12 +36,29 @@ class CompanyAdmin(ImportExportModelAdmin):
         'fantasy',
     )
 
-    filter_vertical = ('rtv', 'focal')
+    filter_horizontal = ('rtv', 'focal')
 
-    def owner_name(self, obj):
-        return f'{obj.owner.get_full_name()}'
+    fieldsets = (
+        ("Dados Cadastrais", {
+            "fields": (
+                'code_sap',
+                'name',
+                'fantasy',
+                ('system', 'retroactive'),
+            )
+        }),
+        ("Designado", {
+            'fields': ('designated',)
+        }),
+        ("Contatos", {
+            'fields': ('rtv', 'focal')
+        }),
+    )
 
-    owner_name.short_description = 'Responsável Onix'
+    def designated_name(self, obj):
+        return f'{obj.designated.get_full_name()}'
+
+    designated_name.short_description = 'Designado'
 
 
 @admin.register(Store)
@@ -68,6 +74,26 @@ class StoreAdmin(ImportExportModelAdmin):
         'state',    
         'inventory',
         'status',
+    )
+
+    fieldsets = (
+        ("Dados Cadastrais", {
+            "fields": (
+                'company',
+                'document',
+                ('code','nickname'),
+                ('contact', 'phone'),
+                'email'
+            )
+        }),
+        ("Localização", {
+            'fields': (
+                'address',
+                ('city', 'state'),
+                ('zipcode', 'ibge'),
+                ('latitude', 'longitude')
+            )
+        }),
     )
 
 

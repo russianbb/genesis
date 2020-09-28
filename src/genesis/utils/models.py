@@ -26,8 +26,8 @@ class AddressBaseModel(models.Model):
     zipcode = models.CharField(
         blank=True, null=False, verbose_name=_("CEP"), max_length=10, default="",
     )
-    code_ibge = models.CharField(
-        blank=True, null=False, verbose_name=_("Código IBGE"), max_length=9
+    ibge = models.CharField(
+        blank=True, null=False, verbose_name=_("IBGE"), max_length=9
     )
     latitude = models.CharField(
         blank=True, null=True, verbose_name=_("Latitude"), max_length=50,
