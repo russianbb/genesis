@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'utils.apps.SuitConfig',
     'import_export',
     # My Apps
-    'syncomercial',
+    'comercial',
+    'products',
     'utils',
     # Django Apps
     "django.contrib.admin",

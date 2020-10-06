@@ -6,4 +6,4 @@ from .models import Company
 
 # class CompanyView(ListView):
 #    model = Company
-#    template_name = 'syncomercial/base.html'
+#    template_name = 'comercial/base.html'

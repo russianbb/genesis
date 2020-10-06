@@ -16,7 +16,7 @@ class CompanyAdmin(ImportExportModelAdmin):
 
     list_display = (
         'code_sap',
-        'name',
+        'trade_name',
         'fantasy',
         'system',
         'retroactive',
@@ -32,7 +32,7 @@ class CompanyAdmin(ImportExportModelAdmin):
 
     search_fields = (
         'code_sap',
-        'name',
+        'trade_name',
         'fantasy',
     )
 
@@ -42,7 +42,7 @@ class CompanyAdmin(ImportExportModelAdmin):
         ("Dados Cadastrais", {
             "fields": (
                 'code_sap',
-                'name',
+                'trade_name',
                 'fantasy',
                 ('system', 'retroactive'),
             )
@@ -56,7 +56,8 @@ class CompanyAdmin(ImportExportModelAdmin):
     )
 
     def designated_name(self, obj):
-        return f'{obj.designated.get_full_name()}'
+        return ""
+        #return f'{obj.designated.get_full_name()}'
 
     designated_name.short_description = 'Designado'
 

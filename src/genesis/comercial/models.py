@@ -30,7 +30,7 @@ class Focal(AbstractBaseModel, ContactBaseModel):
 
 class Company(AbstractBaseModel):
     code_sap = models.CharField(max_length=8, unique=True)
-    name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
+    trade_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
     fantasy = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
     SYSTEM_CHOICES = Choices(
         'Syagri',
@@ -71,12 +71,12 @@ class Company(AbstractBaseModel):
         )
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["trade_name"]
         verbose_name = "Distribuidor"
         verbose_name_plural = "Distribuidores"
 
     def __str__(self):
-        return self.name
+        return self.trade_name
 
 class Store(AbstractBaseModel, AddressBaseModel):
     company = models.ForeignKey(

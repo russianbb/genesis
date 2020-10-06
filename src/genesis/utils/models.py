@@ -5,8 +5,8 @@ from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
 # Create your models here.
 class AbstractBaseModel(models.Model):
-    created_at = AutoCreatedField(verbose_name="criado em")
-    updated_at = AutoLastModifiedField(verbose_name="atualizado em")
+    created_at = AutoCreatedField(verbose_name="Criado em")
+    updated_at = AutoLastModifiedField(verbose_name="Atualizado em")
     status = models.BooleanField(verbose_name=_("Ativo"), default=True)
 
     class Meta:
