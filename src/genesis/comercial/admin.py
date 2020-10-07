@@ -17,10 +17,16 @@ class CompanyAdmin(ImportExportModelAdmin):
     list_display = (
         'code_sap',
         'trade_name',
-        'fantasy',
+        'fantasy_name',
         'system',
         'retroactive',
         'designated_name',
+    )
+
+    list_display_links = (
+        'code_sap',
+        'trade_name',
+        'fantasy_name',
     )
 
     list_filter = (
@@ -33,7 +39,7 @@ class CompanyAdmin(ImportExportModelAdmin):
     search_fields = (
         'code_sap',
         'trade_name',
-        'fantasy',
+        'fantasy_name',
     )
 
     filter_horizontal = ('rtv', 'focal')
@@ -43,7 +49,7 @@ class CompanyAdmin(ImportExportModelAdmin):
             "fields": (
                 'code_sap',
                 'trade_name',
-                'fantasy',
+                'fantasy_name',
                 ('system', 'retroactive'),
             )
         }),
@@ -56,10 +62,21 @@ class CompanyAdmin(ImportExportModelAdmin):
     )
 
     def designated_name(self, obj):
-        return ""
-        #return f'{obj.designated.get_full_name()}'
+        return obj.designated.get_full_name() or obj.designated.username
 
     designated_name.short_description = 'Designado'
+
+    def get_queryset(self, request):
+        queryset = super(CompanyAdmin, self).get_queryset(request)
+        return queryset.select_related('designated')
+
+    def get_export_queryset(self, request):
+        queryset = super().get_export_queryset(request)
+        return queryset.select_related('designated')
+
+    def get_export_filename(self, request, queryset, file_format):
+        filename = f'Distribuidores.{file_format.get_extension()}'
+        return filename
 
 
 @admin.register(Store)
@@ -75,6 +92,14 @@ class StoreAdmin(ImportExportModelAdmin):
         'state',    
         'inventory',
         'status',
+    )
+
+    search_fields = (
+        'company__trade_name',
+        'company__fantasy_name',
+        'document',
+        'city',
+        'state',
     )
 
     fieldsets = (
@@ -97,27 +122,82 @@ class StoreAdmin(ImportExportModelAdmin):
         }),
     )
 
+    def get_queryset(self, request):
+        queryset = super(StoreAdmin, self).get_queryset(request)
+        return queryset.select_related('company')
+
+    def get_export_queryset(self, request):
+        queryset = super().get_export_queryset(request)
+        return queryset.select_related('company')
+
+    def get_export_filename(self, request, queryset, file_format):
+        filename = f'Filiais.{file_format.get_extension()}'
+        return filename
+
 
 @admin.register(Focal)
 class FocalAdmin(ImportExportModelAdmin):
     resource_class = FocalResource
 
-    list_display = (
-        'name',
-        'role',
-        'email',
-        'get_phone1',
-        'get_phone2',
+    list_display = ('name','role','email','get_phone1','get_phone2',)
+
+    search_fields = ('name', 'email', 'phone1', 'phone2')
+
+    fieldsets = (
+        ("Dados do Responsável", {
+            "fields": (
+                'name',
+                'role',
+                ('phone1', 'phone2'),
+                'email',
+                'notes',
+            )
+        }),
     )
 
+    # @TODO prefetch_relatade()
+    def get_queryset(self, request):
+        queryset = super(FocalAdmin, self).get_queryset(request)
+        return queryset
+
+    # @TODO prefetch_relatade()
+    def get_export_queryset(self, request):
+        queryset = super().get_export_queryset(request)
+        return queryset
+
+    def get_export_filename(self, request, queryset, file_format):
+        filename = f'Responsaveis.{file_format.get_extension()}'
+        return filename
 
 @admin.register(Rtv)
 class RtvAdmin(ImportExportModelAdmin):
     resource_class = RtvResource
 
-    list_display = (
-        'name',
-        'email',
-        'get_phone1',
-        'get_phone2',
+    list_display = ('name', 'email', 'get_phone1', 'get_phone2')
+
+    search_fields = ('name', 'email', 'phone1', 'phone2')
+
+    fieldsets = (
+        ("Dados do RTV", {
+            "fields": (
+                'name',
+                ('phone1', 'phone2'),
+                'email',
+                'notes',
+            )
+        }),
     )
+
+    # @TODO prefetch_relatade()
+    def get_queryset(self, request):
+        queryset = super(RtvAdmin, self).get_queryset(request)
+        return queryset
+
+    # @TODO prefetch_relatade()
+    def get_export_queryset(self, request):
+        queryset = super().get_export_queryset(request)
+        return queryset
+
+    def get_export_filename(self, request, queryset, file_format):
+        filename = f'RTVs.{file_format.get_extension()}'
+        return filename

@@ -29,9 +29,9 @@ class Focal(AbstractBaseModel, ContactBaseModel):
 
 
 class Company(AbstractBaseModel):
-    code_sap = models.CharField(max_length=8, unique=True)
+    code_sap = models.CharField(max_length=8, unique=True, verbose_name='Código SAP')
     trade_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
-    fantasy = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
+    fantasy_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
     SYSTEM_CHOICES = Choices(
         'Syagri',
         'Agrotis',
@@ -50,7 +50,7 @@ class Company(AbstractBaseModel):
         default=False,
         null=True,
         blank=True,
-        verbose_name=_('Relatorio Retroativo'),
+        verbose_name=_('Retroativo'),
     )
     designated = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -62,12 +62,10 @@ class Company(AbstractBaseModel):
     rtv = models.ManyToManyField(
         Rtv,
         blank=True,
-        related_name = "rtv",
         )
     focal = models.ManyToManyField(
         Focal,
         blank=True,
-        related_name = "focal"
         )
 
     class Meta:
