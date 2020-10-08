@@ -1,1 +1,1 @@
-default_app_config = 'comercial.apps.ComercialConfig'
+default_app_config = "comercial.apps.ComercialConfig"

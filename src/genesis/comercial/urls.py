@@ -1,4 +1,1 @@
-from django.urls import path
-
-app_name = 'comercial'
-
+app_name = "comercial"
