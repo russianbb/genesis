@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "vw2mc^eh8&(#i+#y#359!%!5s=fc9o%@qemrh*plw$0s2+j*4k"
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -84,7 +84,21 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db.sqlite3",}}
+DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD", "")
+DATABASE_USER = os.environ.get("DATABASE_USER", "")
+DATABASE_HOST = os.environ.get("DATABASE_HOST", "")
+DATABASE_NAME = os.environ.get("DATABASE_NAME", "")
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": DATABASE_NAME,
+        "USER": DATABASE_USER,
+        "PASSWORD": DATABASE_PASSWORD,
+        "HOST": DATABASE_HOST,  # Or an IP Address that your DB is hosted on
+        "PORT": "3306",
+    }
+}
 
 
 # Password validation
