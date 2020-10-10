@@ -15,7 +15,7 @@ class AbstractBaseModel(models.Model):
 
 class AddressBaseModel(models.Model):
     address = models.CharField(
-        blank=True, null=False, verbose_name=_("Endereço"), max_length=100, default="",
+        blank=True, null=False, verbose_name=_("Endereço"), max_length=254, default="",
     )
     city = models.CharField(
         blank=False, null=False, verbose_name=_("Cidade"), max_length=100, default="",

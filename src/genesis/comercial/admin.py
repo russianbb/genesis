@@ -57,7 +57,10 @@ class CompanyAdmin(ImportExportModelAdmin):
     )
 
     def designated_name(self, obj):
-        return obj.designated.get_full_name() or obj.designated.username
+        try:
+            return obj.designated.get_full_name() or obj.designated.username
+        except:
+            return ""
 
     designated_name.short_description = "Designado"
 
