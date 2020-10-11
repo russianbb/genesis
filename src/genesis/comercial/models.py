@@ -48,9 +48,10 @@ class Company(AbstractBaseModel):
         null=True,
         blank=True,
         verbose_name=_("Designado"),
+        related_name='company'
     )
-    rtv = models.ManyToManyField(Rtv, blank=True,)
-    focal = models.ManyToManyField(Focal, blank=True,)
+    rtv = models.ManyToManyField(Rtv, blank=True, related_name='company')
+    focal = models.ManyToManyField(Focal, blank=True, related_name='company')
 
     class Meta:
         ordering = ["trade_name"]

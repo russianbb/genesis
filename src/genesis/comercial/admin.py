@@ -161,15 +161,13 @@ class FocalAdmin(ImportExportModelAdmin):
         ),
     )
 
-    # @TODO prefetch_relatade()
     def get_queryset(self, request):
         queryset = super(FocalAdmin, self).get_queryset(request)
-        return queryset
+        return queryset.prefetch_related('company')
 
-    # @TODO prefetch_relatade()
     def get_export_queryset(self, request):
         queryset = super().get_export_queryset(request)
-        return queryset
+        return queryset.prefetch_related('company')
 
     def get_export_filename(self, request, queryset, file_format):
         filename = f"Responsaveis.{file_format.get_extension()}"
@@ -189,15 +187,13 @@ class RtvAdmin(ImportExportModelAdmin):
          "fields": ("name", ("phone1", "phone2"), "email", "notes",)}),
     )
 
-    # @TODO prefetch_relatade()
     def get_queryset(self, request):
         queryset = super(RtvAdmin, self).get_queryset(request)
-        return queryset
+        return queryset.prefetch_related('company')
 
-    # @TODO prefetch_relatade()
     def get_export_queryset(self, request):
         queryset = super().get_export_queryset(request)
-        return queryset
+        return queryset.prefetch_related('company')
 
     def get_export_filename(self, request, queryset, file_format):
         filename = f"RTVs.{file_format.get_extension()}"
