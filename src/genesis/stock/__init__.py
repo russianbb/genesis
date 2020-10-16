@@ -1,1 +1,1 @@
-default_app_config = 'stock.apps.StockConfig'
+default_app_config = "stock.apps.StockConfig"
