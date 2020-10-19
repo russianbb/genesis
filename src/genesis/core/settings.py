@@ -34,13 +34,13 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     # Third Party Apps
-    'adminlte3',
-    'utils.apps.SuitConfig',
-    'import_export',
+    "adminlte3",
+    "utils.apps.SuitConfig",
+    "import_export",
     # My Apps
-    'comercial',
-    'products',
-    'utils',
+    "comercial",
+    "products",
+    "utils",
     # Django Apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -106,11 +106,11 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
@@ -133,9 +133,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
@@ -146,3 +144,41 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 LOGIN_REDIRECT_URL = "home"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+        "file_all": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(BASE_DIR, "../../logs/", "all.log"),
+            "maxBytes": 50 * 1024 * 1024,  # 50 MB
+            "backupCount": 1,
+            "formatter": "standard",
+        },
+        "file_warning": {
+            "level": "WARNING",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(BASE_DIR, "../../logs/", "warning.log"),
+            "maxBytes": 50 * 1024 * 1024,  # 50 MB
+            "backupCount": 1,
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file_all", "file_warning"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
