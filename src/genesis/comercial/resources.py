@@ -17,7 +17,7 @@ class CompanyResource(resources.ModelResource):
     designated_name = Field(
         attribute="designated",
         column_name="Designado Onix",
-        widget=ForeignKeyWidget(User, "username")
+        widget=ForeignKeyWidget(User, "username"),
     )
     status = Field(attribute="status", column_name="Ativo")
 
@@ -38,7 +38,11 @@ class CompanyResource(resources.ModelResource):
 
 class StoreResource(resources.ModelResource):
     id = Field(attribute="id", column_name="Id")
-    company = Field(attribute="company", column_name="Razão social", widget=ForeignKeyWidget(Company))
+    company = Field(
+        attribute="company",
+        column_name="Razão social",
+        widget=ForeignKeyWidget(Company),
+    )
     code = Field(attribute="code", column_name="Código da filial")
     nickname = Field(attribute="nickname", column_name="Apelido da filial")
     document = Field(attribute="document", column_name="CNPJ")

@@ -6,28 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('comercial', '0002_auto_20201007_0101'),
+        ("comercial", "0002_auto_20201007_0101"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='company',
-            name='code_sap',
-            field=models.CharField(max_length=8, unique=True, verbose_name='Código SAP'),
+            model_name="company",
+            name="code_sap",
+            field=models.CharField(
+                max_length=8, unique=True, verbose_name="Código SAP"
+            ),
         ),
         migrations.AlterField(
-            model_name='company',
-            name='focal',
-            field=models.ManyToManyField(blank=True, related_name='company', to='comercial.Focal'),
+            model_name="company",
+            name="focal",
+            field=models.ManyToManyField(
+                blank=True, related_name="company", to="comercial.Focal"
+            ),
         ),
         migrations.AlterField(
-            model_name='company',
-            name='retroactive',
-            field=models.BooleanField(blank=True, default=False, null=True, verbose_name='Retroativo'),
+            model_name="company",
+            name="retroactive",
+            field=models.BooleanField(
+                blank=True, default=False, null=True, verbose_name="Retroativo"
+            ),
         ),
         migrations.AlterField(
-            model_name='company',
-            name='rtv',
-            field=models.ManyToManyField(blank=True, related_name='company', to='comercial.Rtv'),
+            model_name="company",
+            name="rtv",
+            field=models.ManyToManyField(
+                blank=True, related_name="company", to="comercial.Rtv"
+            ),
         ),
     ]

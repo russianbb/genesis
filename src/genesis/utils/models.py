@@ -71,48 +71,48 @@ class AbstractStockModel(models.Model):
     owned = models.DecimalField(
         max_digits=9,
         decimal_places=3,
-        verbose_name='EF',
-        help_text='Saldo de estoque físico',
+        verbose_name="EF",
+        help_text="Saldo de estoque físico",
         null=True,
         blank=True,
     )
     sold = models.DecimalField(
         max_digits=9,
         decimal_places=3,
-        verbose_name='VEF',
-        help_text='Saldo de venda para entrega futura faturada com CFOP 5922, 6922',
+        verbose_name="VEF",
+        help_text="Saldo de venda para entrega futura faturada com CFOP 5922, 6922",
         null=True,
         blank=True,
     )
     sent = models.DecimalField(
         max_digits=9,
         decimal_places=3,
-        verbose_name='Em Terceiros',
-        help_text='Saldo de estoque físico do distribuidor armazenado em poder de terceiros (Remessa para enviada)',  # noqa: E501
+        verbose_name="Em Terceiros",
+        help_text="Saldo de estoque físico do distribuidor armazenado em poder de terceiros (Remessa para enviada)",  # noqa: E501
         null=True,
         blank=True,
     )
     received = models.DecimalField(
         max_digits=9,
         decimal_places=3,
-        verbose_name='De Terceiros',
-        help_text='Saldo de estoque físico de terceiros armazenado em poder do distribuidor (Remessa recebida)',  # noqa: E501
+        verbose_name="De Terceiros",
+        help_text="Saldo de estoque físico de terceiros armazenado em poder do distribuidor (Remessa recebida)",  # noqa: E501
         null=True,
         blank=True,
     )
     transit = models.DecimalField(
         max_digits=9,
         decimal_places=3,
-        verbose_name='Em Trânsito',
-        help_text='Saldo de estoque físico em trânsito',
+        verbose_name="Em Trânsito",
+        help_text="Saldo de estoque físico em trânsito",
         null=True,
         blank=True,
     )
     balance = models.DecimalField(
         max_digits=9,
         decimal_places=3,
-        verbose_name='Saldo Calculado',
-        help_text='Saldo de estoque calculado. Saldo = EF - VEF + Em Terceiros - De Terceiros +- Transito',  # noqa: E501
+        verbose_name="Saldo Calculado",
+        help_text="Saldo de estoque calculado. Saldo = EF - VEF + Em Terceiros - De Terceiros +- Transito",  # noqa: E501
         null=True,
         blank=True,
     )

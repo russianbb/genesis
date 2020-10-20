@@ -6,32 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('comercial', '0004_auto_20201007_0230'),
-        ('products', '0001_initial'),
+        ("comercial", "0004_auto_20201007_0230"),
+        ("products", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='companyproduct',
-            old_name='product_onix',
-            new_name='onix',
+            model_name="companyproduct", old_name="product_onix", new_name="onix",
         ),
         migrations.RenameField(
-            model_name='syngentaproduct',
-            old_name='product_onix',
-            new_name='onix',
+            model_name="syngentaproduct", old_name="product_onix", new_name="onix",
         ),
         migrations.AlterField(
-            model_name='onixproduct',
-            name='unit_volume',
-            field=models.DecimalField(decimal_places=3, help_text='Fator de multiplicação da unidade vendida. Difere da embalagem em casos de caixas, frascos, pacotes, etc', max_digits=7, verbose_name='Volume'),
+            model_name="onixproduct",
+            name="unit_volume",
+            field=models.DecimalField(
+                decimal_places=3,
+                help_text="Fator de multiplicação da unidade vendida. Difere da embalagem em casos de caixas, frascos, pacotes, etc",
+                max_digits=7,
+                verbose_name="Volume",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='companyproduct',
-            unique_together={('onix', 'company', 'code', 'description')},
+            name="companyproduct",
+            unique_together={("onix", "company", "code", "description")},
         ),
         migrations.AlterUniqueTogether(
-            name='syngentaproduct',
-            unique_together={('onix', 'agicode')},
+            name="syngentaproduct", unique_together={("onix", "agicode")},
         ),
     ]
