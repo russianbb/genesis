@@ -5,6 +5,7 @@ from .models import OnixProduct, SyngentaProduct, CompanyProduct
 from .resources import OnixProductResource, SyngentaProductResource, CompanyProductResource
 from import_export.admin import ExportMixin
 
+
 class SyngentaProductInline(admin.TabularInline):
     model = SyngentaProduct
     extra = 0
@@ -43,7 +44,7 @@ class SyngentaProductAdmin(ExportMixin, admin.ModelAdmin):
     def get_onix_id(self, obj):
         return obj.onix.pk
 
-    get_onix_id.short_description = 'Id Onix'    
+    get_onix_id.short_description = 'Id Onix'
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -62,7 +63,7 @@ class CompanyProductAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = CompanyProductResource
     list_display = ('company', 'code', 'description', 'get_onix_id', 'get_onix_description', 'updated_at')
     list_display_links = ('code', 'description')
-    search_fields = ('company', 'code', 'description', 'onix__pk', 'onix__description')
+    search_fields = ('company__trade_name', 'company__fantasy_name', 'code', 'description', 'onix__pk', 'onix__description')
     fields = ('onix', 'company', 'code', 'description', 'status')
 
     def get_onix_id(self, obj):

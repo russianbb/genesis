@@ -67,29 +67,8 @@ class ContactBaseModel(models.Model):
         abstract = True
 
 
-class AbstractHeaderModel(models.Model):
-    date = models.ForeignKey(
-        to=CutDate,
-        on_delete=models.CASCADE,
-        verbose_name='Data Base',
-    )
-    company = models.ForeignKey(
-        to=Company,
-        on_delete=models.CASCADE,
-        verbose_name='Distribuidor',
-    )
-    product = models.ForeignKey(
-        to=OnixProduct,
-        on_delete=models.CASCADE,
-        verbose_name='Produto Onix',
-    )
-
-    class Meta:
-        abstract = True
-
-
 class AbstractStockModel(models.Model):
-        owned = models.DecimalField(
+    owned = models.DecimalField(
         max_digits=9,
         decimal_places=3,
         verbose_name='EF',
@@ -109,7 +88,7 @@ class AbstractStockModel(models.Model):
         max_digits=9,
         decimal_places=3,
         verbose_name='Em Terceiros',
-        help_text='Saldo de estoque físico do distribuidor armazenado em poder de terceiros (Remessa para enviada)',
+        help_text='Saldo de estoque físico do distribuidor armazenado em poder de terceiros (Remessa para enviada)',  # noqa: E501
         null=True,
         blank=True,
     )
@@ -117,7 +96,7 @@ class AbstractStockModel(models.Model):
         max_digits=9,
         decimal_places=3,
         verbose_name='De Terceiros',
-        help_text='Saldo de estoque físico de terceiros armazenado em poder do distribuidor (Remessa recebida)',
+        help_text='Saldo de estoque físico de terceiros armazenado em poder do distribuidor (Remessa recebida)',  # noqa: E501
         null=True,
         blank=True,
     )
@@ -133,7 +112,10 @@ class AbstractStockModel(models.Model):
         max_digits=9,
         decimal_places=3,
         verbose_name='Saldo Calculado',
-        help_text='Saldo de estoque calculado. Saldo = EF - VEF + Em Terceiros - De Terceiros +- Transito',
+        help_text='Saldo de estoque calculado. Saldo = EF - VEF + Em Terceiros - De Terceiros +- Transito',  # noqa: E501
         null=True,
         blank=True,
     )
+
+    class Meta:
+        abstract = True

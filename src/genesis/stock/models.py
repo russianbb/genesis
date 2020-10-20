@@ -1,7 +1,8 @@
 from django.db import models
-from utils.models import AbstractBaseModel, AbstractHeaderModel, AbstractStockModel
+from utils.models import AbstractBaseModel, AbstractStockModel
 from comercial.models import Company, Store
 from products.models import OnixProduct
+
 
 class CutDate(AbstractBaseModel):
     date = models.DateField(
@@ -11,7 +12,7 @@ class CutDate(AbstractBaseModel):
     description = models.CharField(
         max_length=200,
         verbose_name='Descrição',
-        help_text='Nome do projeto ou descrição do momento em que se mensura os estoques'
+        help_text='Nome do projeto ou descrição do momento em que se mensura os estoques'  # noqa: E501
     )
 
     class Meta:
@@ -24,7 +25,22 @@ class CutDate(AbstractBaseModel):
         return self.date.strftime("%d/%m/%y")
 
 
-class SyngentaBalance(AbstractHeaderModel):
+class SyngentaBalance(models.Model):
+    date = models.ForeignKey(
+        to=CutDate,
+        on_delete=models.CASCADE,
+        verbose_name='Data Base',
+    )
+    company = models.ForeignKey(
+        to=Company,
+        on_delete=models.CASCADE,
+        verbose_name='Distribuidor',
+    )
+    product = models.ForeignKey(
+        to=OnixProduct,
+        on_delete=models.CASCADE,
+        verbose_name='Produto Onix',
+    )
     balance = models.DecimalField(
         max_digits=9,
         decimal_places=3,
@@ -41,7 +57,22 @@ class SyngentaBalance(AbstractHeaderModel):
         unique_together = ('date', 'company', 'product', 'balance')
 
 
-class Justification(AbstractHeaderModel, AbstractBaseModel):
+class Justification(AbstractBaseModel):
+    date = models.ForeignKey(
+        to=CutDate,
+        on_delete=models.CASCADE,
+        verbose_name='Data Base',
+    )
+    company = models.ForeignKey(
+        to=Company,
+        on_delete=models.CASCADE,
+        verbose_name='Distribuidor',
+    )
+    product = models.ForeignKey(
+        to=OnixProduct,
+        on_delete=models.CASCADE,
+        verbose_name='Produto Onix',
+    )
     description = models.TextField(
         verbose_name='Justificativa'
     )
@@ -52,7 +83,23 @@ class Justification(AbstractHeaderModel, AbstractBaseModel):
         verbose_name_plural = 'Justificativas'
         unique_together = ('date', 'company', 'product')
 
-class Item(AbstractHeaderModel, AbstractStockModel, AbstractBaseModel):
+
+class Item(AbstractStockModel, AbstractBaseModel):
+    date = models.ForeignKey(
+        to=CutDate,
+        on_delete=models.CASCADE,
+        verbose_name='Data Base',
+    )
+    company = models.ForeignKey(
+        to=Company,
+        on_delete=models.CASCADE,
+        verbose_name='Distribuidor',
+    )
+    product = models.ForeignKey(
+        to=OnixProduct,
+        on_delete=models.CASCADE,
+        verbose_name='Produto Onix',
+    )
     store = models.ForeignKey(
         to=Store,
         on_delete=models.CASCADE,
@@ -60,13 +107,28 @@ class Item(AbstractHeaderModel, AbstractStockModel, AbstractBaseModel):
         related_name='item',
     )
 
-
     class Meta:
         ordering = ('date', 'company', 'product', 'store')
         verbose_name = 'Item'
         verbose_name_plural = 'Itens'
 
-class Index(AbstractHeaderModel, AbstractStockModel, AbstractBaseModel):
+
+class Index(AbstractStockModel, AbstractBaseModel):
+    date = models.ForeignKey(
+        to=CutDate,
+        on_delete=models.CASCADE,
+        verbose_name='Data Base',
+    )
+    company = models.ForeignKey(
+        to=Company,
+        on_delete=models.CASCADE,
+        verbose_name='Distribuidor',
+    )
+    product = models.ForeignKey(
+        to=OnixProduct,
+        on_delete=models.CASCADE,
+        verbose_name='Produto Onix',
+    )
     adjust = models.DecimalField(
         max_digits=9,
         decimal_places=3,
