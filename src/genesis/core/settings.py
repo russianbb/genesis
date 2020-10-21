@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "comercial",
     "products",
     "utils",
+    "stock",
     # Django Apps
     "django.contrib.admin",
     "django.contrib.auth",

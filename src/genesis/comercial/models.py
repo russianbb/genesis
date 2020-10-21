@@ -48,10 +48,10 @@ class Company(AbstractBaseModel):
         null=True,
         blank=True,
         verbose_name=_("Designado"),
-        related_name='company'
+        related_name="company",
     )
-    rtv = models.ManyToManyField(Rtv, blank=True, related_name='company')
-    focal = models.ManyToManyField(Focal, blank=True, related_name='company')
+    rtv = models.ManyToManyField(Rtv, blank=True, related_name="company")
+    focal = models.ManyToManyField(Focal, blank=True, related_name="company")
 
     class Meta:
         ordering = ["trade_name"]
@@ -96,6 +96,6 @@ class Store(AbstractBaseModel, AddressBaseModel):
     def __str__(self):
         if self.code:
             return f"{self.company} - {self.code}"
-        if self.name:
-            return f"{self.company} - {self.name}"
+        if self.nickname:
+            return f"{self.company} - {self.nickname}"
         return f"{self.company} - {self.city}"

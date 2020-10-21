@@ -6,7 +6,6 @@ from import_export.widgets import ForeignKeyWidget
 from .models import Company, Focal, Rtv, Store
 
 
-# Models for Import-Export app
 class CompanyResource(resources.ModelResource):
     id = Field(attribute="pk", column_name="Id")
     code_sap = Field(attribute="code_sap", column_name="Código SAP")
@@ -17,7 +16,7 @@ class CompanyResource(resources.ModelResource):
     designated_name = Field(
         attribute="designated",
         column_name="Designado Onix",
-        widget=ForeignKeyWidget(User, "username")
+        widget=ForeignKeyWidget(User, "username"),
     )
     status = Field(attribute="status", column_name="Ativo")
 
@@ -30,7 +29,7 @@ class CompanyResource(resources.ModelResource):
             "fantasy_name",
             "system",
             "retroactive",
-            # "designated_name",
+            "designated_name",
             "status",
         )
         export_order = fields
@@ -38,7 +37,11 @@ class CompanyResource(resources.ModelResource):
 
 class StoreResource(resources.ModelResource):
     id = Field(attribute="id", column_name="Id")
-    company = Field(attribute="company", column_name="Razão social", widget=ForeignKeyWidget(Company))
+    company = Field(
+        attribute="company",
+        column_name="Razão social",
+        widget=ForeignKeyWidget(Company),
+    )
     code = Field(attribute="code", column_name="Código da filial")
     nickname = Field(attribute="nickname", column_name="Apelido da filial")
     document = Field(attribute="document", column_name="CNPJ")

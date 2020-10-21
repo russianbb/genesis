@@ -2,8 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from .models import Company, Focal, Rtv, Store
-from .resources import (CompanyResource, FocalResource, RtvResource,
-                        StoreResource)
+from .resources import CompanyResource, FocalResource, RtvResource, StoreResource
 
 
 @admin.register(Company)
@@ -59,7 +58,7 @@ class CompanyAdmin(ImportExportModelAdmin):
     def designated_name(self, obj):
         try:
             return obj.designated.get_full_name() or obj.designated.username
-        except:
+        except AttributeError:
             return ""
 
     designated_name.short_description = "Designado"
@@ -156,18 +155,17 @@ class FocalAdmin(ImportExportModelAdmin):
     fieldsets = (
         (
             "Dados do Responsável",
-            {"fields": ("name", "role", ("phone1", "phone2"),
-                        "email", "notes",)},
+            {"fields": ("name", "role", ("phone1", "phone2"), "email", "notes",)},
         ),
     )
 
     def get_queryset(self, request):
         queryset = super(FocalAdmin, self).get_queryset(request)
-        return queryset.prefetch_related('company')
+        return queryset.prefetch_related("company")
 
     def get_export_queryset(self, request):
         queryset = super().get_export_queryset(request)
-        return queryset.prefetch_related('company')
+        return queryset.prefetch_related("company")
 
     def get_export_filename(self, request, queryset, file_format):
         filename = f"Responsaveis.{file_format.get_extension()}"
@@ -183,17 +181,16 @@ class RtvAdmin(ImportExportModelAdmin):
     search_fields = ("name", "email", "phone1", "phone2")
 
     fieldsets = (
-        ("Dados do RTV", {
-         "fields": ("name", ("phone1", "phone2"), "email", "notes",)}),
+        ("Dados do RTV", {"fields": ("name", ("phone1", "phone2"), "email", "notes",)}),
     )
 
     def get_queryset(self, request):
         queryset = super(RtvAdmin, self).get_queryset(request)
-        return queryset.prefetch_related('company')
+        return queryset.prefetch_related("company")
 
     def get_export_queryset(self, request):
         queryset = super().get_export_queryset(request)
-        return queryset.prefetch_related('company')
+        return queryset.prefetch_related("company")
 
     def get_export_filename(self, request, queryset, file_format):
         filename = f"RTVs.{file_format.get_extension()}"

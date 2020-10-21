@@ -5,5 +5,6 @@ from django.shortcuts import render
 def ping(request):
     return HttpResponse("pong")
 
+
 def index(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")
