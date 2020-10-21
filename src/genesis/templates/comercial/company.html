@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <ul>
+        {% for company in companies %}
+            <li>{{ company.trade_name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
