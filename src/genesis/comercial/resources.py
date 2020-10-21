@@ -6,7 +6,6 @@ from import_export.widgets import ForeignKeyWidget
 from .models import Company, Focal, Rtv, Store
 
 
-# Models for Import-Export app
 class CompanyResource(resources.ModelResource):
     id = Field(attribute="pk", column_name="Id")
     code_sap = Field(attribute="code_sap", column_name="Código SAP")
@@ -30,7 +29,7 @@ class CompanyResource(resources.ModelResource):
             "fantasy_name",
             "system",
             "retroactive",
-            # "designated_name",
+            "designated_name",
             "status",
         )
         export_order = fields

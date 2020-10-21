@@ -96,6 +96,6 @@ class Store(AbstractBaseModel, AddressBaseModel):
     def __str__(self):
         if self.code:
             return f"{self.company} - {self.code}"
-        if self.name:
-            return f"{self.company} - {self.name}"
+        if self.nickname:
+            return f"{self.company} - {self.nickname}"
         return f"{self.company} - {self.city}"

@@ -49,6 +49,9 @@ class SyngentaBalance(models.Model):
         verbose_name_plural = "Saldos Syngenta"
         unique_together = ("date", "company", "product", "balance")
 
+    def __str__(self):
+        return self.balance
+
 
 class Justification(AbstractBaseModel):
     date = models.ForeignKey(
@@ -67,6 +70,9 @@ class Justification(AbstractBaseModel):
         verbose_name = "Justificativa"
         verbose_name_plural = "Justificativas"
         unique_together = ("date", "company", "product")
+
+    def __str__(self):
+        return self.description
 
 
 class Item(AbstractStockModel, AbstractBaseModel):
@@ -158,3 +164,6 @@ class Document(AbstractBaseModel):
         verbose_name = "Documento"
         verbose_name_plural = "Documentos"
         unique_together = ("date", "company", "category")
+
+    def __str__(self):
+        return f"{self.date.name} - {self.company.trade_name}"
