@@ -1,6 +1,6 @@
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView
 
-from .models import Company, Focal, Rtv, Store
+from .models import Company, Focal, Rtv
 
 
 class CompanyViewSet(ListView):
@@ -9,9 +9,13 @@ class CompanyViewSet(ListView):
     model = Company
 
 
-class FocalViewSet(TemplateView):
+class FocalViewSet(ListView):
     template_name = "comercial/focal.html"
+    context_object_name = "focals"
+    model = Focal
 
 
-class RtvViewSet(TemplateView):
+class RtvViewSet(ListView):
     template_name = "comercial/rtv.html"
+    context_object_name = "rtvs"
+    model = Rtv
