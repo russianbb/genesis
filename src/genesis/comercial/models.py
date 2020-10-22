@@ -99,3 +99,6 @@ class Store(AbstractBaseModel, AddressBaseModel):
         if self.nickname:
             return f"{self.company} - {self.nickname}"
         return f"{self.company} - {self.city}"
+
+    def get_document(self):
+        return f"{self.document[:2]}.{self.document[2:5]}.{self.document[5:8]}/{self.document[8:12]}-{self.document[12:14]}"  # noqa E501

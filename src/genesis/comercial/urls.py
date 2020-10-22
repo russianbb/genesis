@@ -1,11 +1,12 @@
 from django.urls import path
 
-from .views import CompanyViewSet, FocalViewSet, RtvViewSet
+from .views import CompanyDetailView, CompanyListView, FocalListView, RtvListView
 
 app_name = "comercial"
 
 urlpatterns = [
-    path("distribuidores/", CompanyViewSet.as_view(), name="company"),
-    path("responsaveis/", FocalViewSet.as_view(), name="focal"),
-    path("rtvs/", RtvViewSet.as_view(), name="rtv"),
+    path("distribuidores/", CompanyListView.as_view(), name="companies"),
+    path("distribuidores/<int:pk>/", CompanyDetailView.as_view(), name="company"),
+    path("responsaveis/", FocalListView.as_view(), name="focals"),
+    path("rtvs/", RtvListView.as_view(), name="rtvs"),
 ]

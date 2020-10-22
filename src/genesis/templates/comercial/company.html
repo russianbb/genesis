@@ -1,81 +1,170 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Distribuidores{% endblock %}
+{% block title %} {{ company.trade_name }}{% endblock %}
 
 {% block stylesheets %}
-<!-- Font Awesome -->
-<link rel="stylesheet" href="{% static 'admin-lte/plugins/fontawesome-free/css/all.min.css' %}">
-<!-- Ionicons -->
-<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-<!-- DataTables -->
-<link rel="stylesheet" href="{% static 'admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
-<link rel="stylesheet" href="{% static 'admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
-<!-- Theme style -->
-<link rel="stylesheet" href="{% static 'admin-lte/dist/css/adminlte.min.css' %}">
-<!-- Google Font: Source Sans Pro -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+{{ block.super}}
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Distribuidores</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        </div>
+        <h3 class="card-title">Dados Cadastrais</h3>
     </div>
-    <!-- /.card-header -->
+
     <div class="card-body">
-        <table id="companies" class="table table-bordered table-hover">
-            <thead>
-                <tr class='bg-primary'>
-                    <th>SAP</th>
-                    <th>Razão Social</th>
-                    <th>Nome Fantasia</th>
-                    <th>Designado</th>
-                    <th>Atualizado em</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for company in companies %}
-                <tr>
-                    <td>{{ company.code_sap }}</td>
-                    <td>{{ company.trade_name }}</td>
-                    <td>{{ company.fantasy }}</td>
-                    <td>{{ company.designated }}</td>
-                    <td>{{ company.updated_at }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Código SAP</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.code_sap }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Razão Social</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.trade_name }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Nome Fantasia</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.fantasy_name }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Designado</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.designated }}</p>
+            </div>
+        </div>
     </div>
-    <!-- /.card-body -->
 </div>
-<!-- /.card -->
+
+
+<div class="card card-primary card-tabs">
+    <div class="card-header p-0 pt-1">
+        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="custom-tabs-one-stores-tab" data-toggle="pill" href="#custom-tabs-one-stores"
+                    role="tab" aria-controls="custom-tabs-one-stores" aria-selected="true">Filiais</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-one-focals-tab" data-toggle="pill" href="#custom-tabs-one-focals"
+                    role="tab" aria-controls="custom-tabs-one-focals" aria-selected="false">Responsáveis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-one-rtvs-tab" data-toggle="pill" href="#custom-tabs-one-rtvs"
+                    role="tab" aria-controls="custom-tabs-one-rtvs" aria-selected="false">Rtvs</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body p-0">
+        <div class="tab-content" id="custom-tabs-one-tabContent">
+            <div class="tab-pane fade show active" id="custom-tabs-one-stores" role="tabpanel"
+                aria-labelledby="custom-tabs-one-stores-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="stores" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Código</th>
+                                <th>Apelido</th>
+                                <th>CNPJ</th>
+                                <th>Endereço</th>
+                                <th>Cidade</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for store in stores %}
+                            <tr>
+                                <td><i class="fas fa-edit text-orange"></i></td>
+                                <td><a href="{% url 'comercial:store' store.id %}">{% if store.code %} {{ store.code }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.id %}">{% if store.nickname %} {{ store.nickname }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.id %}">{{ store.get_document }}</a></td>
+                                <td><a href="{% url 'comercial:store' store.id %}">{% if store.address %} {{ store.address }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.id %}">{% if store.city %} {{ store.city }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.id %}">{% if store.state %} {{ store.state }} {% endif %}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="custom-tabs-one-focals" role="tabpanel"
+                aria-labelledby="custom-tabs-one-focals-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="focals" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone Principal</th>
+                                <th>Telefone Secundário</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for focal in focals %}
+                            <tr>
+                                <td><i class="fas fa-edit text-orange"></i></td>
+                                <td>{{ focal.name }}</td>
+                                <td>{% if focal.email %} {{ focal.email }} {% endif %}</td>
+                                <td>{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</td>
+                                <td>{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</td>
+                                <td><i class="fas fa-user-times text-red"></i></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="custom-tabs-one-rtvs" role="tabpanel"
+                aria-labelledby="custom-tabs-one-rtvs-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="rtvs" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone Principal</th>
+                                <th>Telefone Secundário</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rtv in rtvs %}
+                            <tr>
+                                <td><i class="fas fa-edit text-orange"></i></td>
+                                <td>{{ rtv.name }}</td>
+                                <td>{% if rtv.email %} {{ rtv.email }} {% endif %}</td>
+                                <td>{% if rtv.get_phone1 %} {{ rtv.get_phone1 }} {% endif %}</td>
+                                <td>{% if rtv.get_phone2 %} {{ rtv.get_phone2 }} {% endif %}</td>
+                                <td><i class="fas fa-user-times text-red"></i></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <!-- /.card -->
+</div>
 {% endblock %}
 
 {% block extra_js %}
-<!-- jQuery -->
-<script src="{% static 'admin-lte/plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- DataTables -->
-<script src="{% static 'admin-lte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'admin-lte/dist/js/adminlte.min.js' %}"></script>
-
-<script>
-    $(function () {
-        $('#companies').DataTable({
-            "order": [[ 1, "asc" ]],
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
-</script>
 {% endblock %}
