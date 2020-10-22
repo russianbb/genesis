@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView
 
-from .models import Company, Focal, Rtv
+from .models import Company, Focal, Rtv, Store
 
 
 class CompanyListView(ListView):
@@ -38,3 +38,13 @@ class RtvListView(ListView):
     template_name = "comercial/rtvs.html"
     context_object_name = "rtvs"
     model = Rtv
+
+
+class StoreDetailView(DetailView):
+    template_name = "comercial/store.html"
+    context_object_name = "store"
+    model = Store
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.select_related("company")
