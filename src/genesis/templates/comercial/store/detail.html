@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} {{ store.company.trade_name }}{% endblock %}
+{% block title %} Detalhes da Filial {% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -10,7 +10,16 @@
 {% block content %}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Dados Cadastrais</h3>
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h3 class="card-title">Dados Cadastrais</h3>
+                </div>
+                <div class="ml-auto">
+                    <a href="{% url 'comercial:store' store.id %}" type="button" class="btn btn-block btn-warning btn-xs ml-auto"><i class="fas fa-edit"></i> Editar</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -72,7 +81,7 @@
             <label for="id" class="col-sm-2 col-form-label">Telefone</label>
             <div class="col-sm-4">
                 <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="phone">
-                    {{ store.get_phone }}
+                    {% if store.get_phone %} {{ store.get_phone }} {% else %} {{ "-" }} {% endif %}
                 </p>
             </div>
         </div>
