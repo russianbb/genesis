@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
 from .forms import StoreForm
 from .models import Company, Focal, Rtv, Store
@@ -51,7 +51,17 @@ class StoreDetailView(DetailView):
         return queryset.select_related("company")
 
 
-class StoreCreateView(FormView):
+class StoreCreateView(CreateView):
     template_name = "comercial/store/create_edit.html"
     form_class = StoreForm
-    success_url = "/"
+    model = Store
+    success_url = "/distribuidores/{company_id}/"
+
+    def get_initial(self):
+        arg = self.kwargs["company"]
+        company = Company.objects.get(pk=arg)
+
+        initial = super().get_initial()
+        initial["company"] = company
+
+        return initial

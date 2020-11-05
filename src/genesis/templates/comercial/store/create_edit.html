@@ -8,6 +8,9 @@
 {% endblock %}
 
 {% block content %}
+
+{% include "_includes/errors_form.html" %}
+
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Dados Cadastrais</h3>
@@ -16,13 +19,12 @@
     <form method="post" class="card card-primary">
     {% csrf_token %}
         <div class="card-body">
-            <div class="row">Company = {{ store.id }}</div>
             <div class="row">
                 <div class="col-sm-2 col-form-label">
                     {{ form.company.label_tag }}
                 </div>
-                <div class="col-sm-4">
-                    {{ company }}
+                <div class="col-sm-4 col-form-label">
+                    {{ form.company }}
                 </div>
             </div>
             <div class="row">
@@ -49,6 +51,20 @@
                     {{ form.document }}
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.inventory.label_tag }}
+                </div>
+                <div class="col-sm-1">
+                    {{ form.inventory }}
+                </div>
+                <div class="col-sm-2 col-form-label">
+                    {{ form.status.label_tag }}
+                </div>
+                <div class="col-sm-1">
+                    {{ form.status }}
+                </div>
+            </div>
         </div>
         <br>
         <div class="card-header">
@@ -61,6 +77,14 @@
                 </div>
                 <div class="col-sm-4">
                     {{ form.contact }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.email.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.email }}
                 </div>
             </div>
             <div class="row">
