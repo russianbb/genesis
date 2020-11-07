@@ -20,7 +20,14 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Responsáveis	dos distribuidores</h3>
+        <div class="container-fluid">
+            <div class="row">
+                <div><h3 class="card-title">Responsáveis dos distribuidores</h3></div>
+                <div class="ml-auto">
+                    <a href="{% url 'comercial:focal_create' %}" type="button" class="btn btn-block btn-success btn-xs ml-auto"><i class="fas fa-plus-square"></i> Adicionar</a>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body">

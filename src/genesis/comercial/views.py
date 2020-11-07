@@ -1,7 +1,8 @@
 from django.forms.models import model_to_dict
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .forms import StoreForm
+from .forms import FocalForm, StoreForm
 from .models import Company, Focal, Rtv, Store
 
 
@@ -31,7 +32,7 @@ class CompanyDetailView(DetailView):
 
 
 class FocalListView(ListView):
-    template_name = "comercial/focals.html"
+    template_name = "comercial/focal/list.html"
     context_object_name = "focals"
     model = Focal
 
@@ -93,4 +94,16 @@ class StoreEditView(UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["title"] = "Editar Filial"
+        return context
+
+
+class FocalCreateView(CreateView):
+    template_name = "comercial/focal/create_edit.html"
+    form_class = FocalForm
+    model = Focal
+    success_url = reverse_lazy("comercial:focals")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["title"] = "Adicionar Responsável"
         return context

@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     CompanyDetailView,
     CompanyListView,
+    FocalCreateView,
     FocalListView,
     RtvListView,
     StoreCreateView,
@@ -22,7 +23,7 @@ urlpatterns = [
         name="store",
     ),
     path(
-        "distribuidores/<int:company>/filial/",
+        "distribuidores/<int:company>/filial/adicionar",
         StoreCreateView.as_view(),
         name="store_create",
     ),
@@ -33,5 +34,7 @@ urlpatterns = [
     ),
     #
     path("responsaveis/", FocalListView.as_view(), name="focals"),
+    path("responsaveis/adicionar", FocalCreateView.as_view(), name="focal_create"),
+    #
     path("rtvs/", RtvListView.as_view(), name="rtvs"),
 ]

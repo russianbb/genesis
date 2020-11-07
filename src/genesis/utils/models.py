@@ -42,14 +42,14 @@ class AddressBaseModel(models.Model):
 
 class ContactBaseModel(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nome")
-    email = models.EmailField(null=True, blank=True, verbose_name=_("Email"))
+    email = models.EmailField(null=True, blank=True, verbose_name="Email")
     phone1 = models.CharField(
-        max_length=11, null=True, blank=True, verbose_name=_("Telefone")
+        max_length=11, null=True, blank=True, verbose_name="Telefone"
     )
     phone2 = models.CharField(
-        max_length=11, null=True, blank=True, verbose_name=_("Telefone")
+        max_length=11, null=True, blank=True, verbose_name="Telefone"
     )
-    notes = models.TextField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True, verbose_name="Anotações")
 
     def get_phone1(self):
         if self.phone1:
