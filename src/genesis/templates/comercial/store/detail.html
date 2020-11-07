@@ -16,7 +16,7 @@
                     <h3 class="card-title">Dados Cadastrais</h3>
                 </div>
                 <div class="ml-auto">
-                    <a href="" type="button" class="btn btn-block btn-warning btn-xs ml-auto"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="{% url 'comercial:store_edit' store.company.id store.id %}" type="button" class="btn btn-block btn-warning btn-xs ml-auto"><i class="fas fa-edit"></i> Editar</a>
                 </div>
             </div>
         </div>
@@ -60,6 +60,28 @@
             <div class="col-sm-4">
                 <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="document">
                     {{ store.get_document }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Ativo</label>
+            <div class="col-sm-1">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="document">
+                    {% if store.status %}
+                        Sim
+                    {% else %}
+                        Nao
+                    {% endif %}
+                </p>
+            </div>
+            <label for="id" class="col-sm-2 col-form-label">Controla Estoque</label>
+            <div class="col-sm-1">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="document">
+                    {% if store.inventory %}
+                        Sim
+                    {% else %}
+                        Nao
+                    {% endif %}
                 </p>
             </div>
         </div>

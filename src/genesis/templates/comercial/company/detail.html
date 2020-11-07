@@ -92,7 +92,10 @@
                         <tbody>
                             {% for store in stores %}
                             <tr>
-                                <td><i class="fas fa-edit text-orange"></i></td>
+                                <td>
+                                    <a href="{% url 'comercial:store_edit' store.company.id store.id %}">
+                                        <i class="fas fa-edit text-orange"></i></td>
+                                    </a>
                                 <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.code %} {{ store.code }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.nickname %} {{ store.nickname }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:store' store.company.id store.id %}">{{ store.get_document }}</a></td>

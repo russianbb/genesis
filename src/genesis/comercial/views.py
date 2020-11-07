@@ -1,4 +1,5 @@
-from django.views.generic import CreateView, DetailView, ListView
+from django.forms.models import model_to_dict
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from .forms import StoreForm
 from .models import Company, Focal, Rtv, Store
@@ -58,10 +59,38 @@ class StoreCreateView(CreateView):
     success_url = "/distribuidores/{company_id}/"
 
     def get_initial(self):
+        initial = super().get_initial()
+
         arg = self.kwargs["company"]
         company = Company.objects.get(pk=arg)
-
-        initial = super().get_initial()
         initial["company"] = company
 
         return initial
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["title"] = "Adicionar Filial"
+        return context
+
+
+class StoreEditView(UpdateView):
+    template_name = "comercial/store/create_edit.html"
+    form_class = StoreForm
+    model = Store
+    success_url = "/distribuidores/{company_id}/"
+
+    def get_initial(self):
+        initial = super().get_initial()
+
+        arg = self.kwargs["pk"]
+        store = Store.objects.get(pk=arg)
+        store = model_to_dict(store)
+        for key, value in store.items():
+            initial[key] = value
+
+        return initial
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["title"] = "Editar Filial"
+        return context

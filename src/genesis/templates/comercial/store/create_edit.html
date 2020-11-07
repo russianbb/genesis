@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Adicionar Filial {% endblock %}
+{% block title %} {{ title }} {% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -53,16 +53,16 @@
             </div>
             <div class="row">
                 <div class="col-sm-2 col-form-label">
-                    {{ form.inventory.label_tag }}
-                </div>
-                <div class="col-sm-1">
-                    {{ form.inventory }}
-                </div>
-                <div class="col-sm-2 col-form-label">
                     {{ form.status.label_tag }}
                 </div>
                 <div class="col-sm-1">
                     {{ form.status }}
+                </div>
+                <div class="col-sm-2 col-form-label">
+                    {{ form.inventory.label_tag }}
+                </div>
+                <div class="col-sm-1">
+                    {{ form.inventory }}
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@ from .views import (
     RtvListView,
     StoreCreateView,
     StoreDetailView,
+    StoreEditView,
 )
 
 app_name = "comercial"
@@ -24,6 +25,11 @@ urlpatterns = [
         "distribuidores/<int:company>/filial/",
         StoreCreateView.as_view(),
         name="store_create",
+    ),
+    path(
+        "distribuidores/<int:company>/filial/<int:pk>/editar",
+        StoreEditView.as_view(),
+        name="store_edit",
     ),
     #
     path("responsaveis/", FocalListView.as_view(), name="focals"),
