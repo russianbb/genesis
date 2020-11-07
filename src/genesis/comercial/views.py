@@ -97,6 +97,12 @@ class StoreEditView(UpdateView):
         return context
 
 
+class FocalDetailView(DetailView):
+    template_name = "comercial/focal/detail.html"
+    context_object_name = "focal"
+    model = Focal
+
+
 class FocalCreateView(CreateView):
     template_name = "comercial/focal/create_edit.html"
     form_class = FocalForm

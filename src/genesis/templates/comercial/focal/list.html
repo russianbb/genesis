@@ -45,10 +45,10 @@
                 {% for focal in focals %}
                 <tr>
                     <td><i class="fas fa-edit text-orange"></i></td>
-                    <td>{{ focal.name }}</td>
-                    <td>{% if focal.email %} {{ focal.email }} {% endif %}</td>
-                    <td>{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</td>
-                    <td>{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</td>
+                    <td><a href="{% url 'comercial:focal' focal.id %}">{{ focal.name }}</a></td>
+                    <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.email %} {{ focal.email }} {% endif %}</a></td>
+                    <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</a></td>
+                    <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

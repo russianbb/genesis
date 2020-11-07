@@ -4,6 +4,7 @@ from .views import (
     CompanyDetailView,
     CompanyListView,
     FocalCreateView,
+    FocalDetailView,
     FocalListView,
     RtvListView,
     StoreCreateView,
@@ -34,6 +35,7 @@ urlpatterns = [
     ),
     #
     path("responsaveis/", FocalListView.as_view(), name="focals"),
+    path("responsaveis/<int:pk>/", FocalDetailView.as_view(), name="focal"),
     path("responsaveis/adicionar", FocalCreateView.as_view(), name="focal_create"),
     #
     path("rtvs/", RtvListView.as_view(), name="rtvs"),
