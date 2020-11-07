@@ -50,8 +50,12 @@ class Company(AbstractBaseModel):
         verbose_name=_("Designado"),
         related_name="company",
     )
-    rtv = models.ManyToManyField(Rtv, blank=True, related_name="company")
-    focal = models.ManyToManyField(Focal, blank=True, related_name="company")
+    rtv = models.ManyToManyField(
+        Rtv, blank=True, related_name="company", through="CompanyRtv"
+    )
+    focal = models.ManyToManyField(
+        Focal, blank=True, related_name="company", through="CompanyFocal"
+    )
 
     class Meta:
         ordering = ["trade_name"]
@@ -106,3 +110,19 @@ class Store(AbstractBaseModel, AddressBaseModel):
 
     def get_document(self):
         return f"{self.document[:2]}.{self.document[2:5]}.{self.document[5:8]}/{self.document[8:12]}-{self.document[12:14]}"  # noqa E501
+
+
+class CompanyFocal(models.Model):
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name="Distribuidor"
+    )
+    focal = models.ForeignKey(
+        Focal, on_delete=models.CASCADE, verbose_name="Responsável"
+    )
+
+
+class CompanyRtv(models.Model):
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name="Distribuidor"
+    )
+    rtv = models.ForeignKey(Rtv, on_delete=models.CASCADE, verbose_name="RTV")

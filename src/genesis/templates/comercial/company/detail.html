@@ -94,8 +94,9 @@
                             <tr>
                                 <td>
                                     <a href="{% url 'comercial:store_edit' store.company.id store.id %}">
-                                        <i class="fas fa-edit text-orange"></i></td>
+                                        <i class="fas fa-edit text-orange"></i>
                                     </a>
+                                </td>
                                 <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.code %} {{ store.code }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.nickname %} {{ store.nickname }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:store' store.company.id store.id %}">{{ store.get_document }}</a></td>
@@ -114,7 +115,11 @@
                     <table id="focals" class="table table-sm margin-0">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>
+                                    <a href="{% url 'comercial:focal_assign' company.id %}">
+                                        <i class="fas fa-plus-square text-success btn-md"></i>
+                                    </a>
+                                </th>
                                 <th>Nome</th>
                                 <th>E-mail</th>
                                 <th>Telefone Principal</th>
@@ -130,7 +135,10 @@
                                 <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.email %} {{ focal.email }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</a></td>
-                                <td><i class="fas fa-user-times text-red"></i></td>
+                                <td>
+                                    <a href="{% url 'comercial:focal_unassign' company.id focal.id %}">
+                                        <i class="fas fa-user-times text-red"></i></td>
+                                    </a>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -143,7 +151,11 @@
                     <table id="rtvs" class="table table-sm margin-0">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>
+                                    <a href="{% url 'comercial:rtv_assign' company.id %}">
+                                        <i class="fas fa-plus-square text-success btn-md"></i>
+                                    </a>
+                                </th>
                                 <th>Nome</th>
                                 <th>E-mail</th>
                                 <th>Telefone Principal</th>
@@ -159,7 +171,10 @@
                                 <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.email %} {{ rtv.email }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone1 %} {{ rtv.get_phone1 }} {% endif %}</a></td>
                                 <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone2 %} {{ rtv.get_phone2 }} {% endif %}</a></td>
-                                <td><i class="fas fa-user-times text-red"></i></td>
+                                <td>
+                                    <a href="{% url 'comercial:rtv_unassign' company.id rtv.id %}">
+                                        <i class="fas fa-user-times text-red"></i></td>
+                                    </a>
                             </tr>
                             {% endfor %}
                         </tbody>

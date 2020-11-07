@@ -52,7 +52,6 @@ class CompanyAdmin(ImportExportModelAdmin):
             },
         ),
         ("Designado", {"fields": ("designated",)}),
-        ("Contatos", {"fields": ("rtv", "focal")}),
     )
 
     def designated_name(self, obj):
