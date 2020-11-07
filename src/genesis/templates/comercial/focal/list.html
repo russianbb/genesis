@@ -44,7 +44,7 @@
             <tbody>
                 {% for focal in focals %}
                 <tr>
-                    <td><i class="fas fa-edit text-orange"></i></td>
+                    <td><a href="{% url 'comercial:focal_edit' focal.id %}"><i class="fas fa-edit text-orange"></i></a></td>
                     <td><a href="{% url 'comercial:focal' focal.id %}">{{ focal.name }}</a></td>
                     <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.email %} {{ focal.email }} {% endif %}</a></td>
                     <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</a></td>

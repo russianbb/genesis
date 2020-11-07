@@ -113,3 +113,25 @@ class FocalCreateView(CreateView):
         context = super().get_context_data(*args, **kwargs)
         context["title"] = "Adicionar Responsável"
         return context
+
+
+class FocalEditView(UpdateView):
+    template_name = "comercial/focal/create_edit.html"
+    form_class = FocalForm
+    model = Focal
+    success_url = reverse_lazy("comercial:focals")
+
+    def get_initial(self):
+        initial = super().get_initial()
+
+        arg = self.kwargs["pk"]
+        focal = Focal.objects.get(pk=arg)
+        focal = model_to_dict(focal)
+        for key, value in focal.items():
+            initial[key] = value
+        return initial
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["title"] = "Editar Responsável"
+        return context
