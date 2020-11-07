@@ -1,7 +1,7 @@
 from django import forms
 from localflavor.br.br_states import STATE_CHOICES
 
-from .models import Focal, Store
+from .models import Focal, Rtv, Store
 
 
 class StoreForm(forms.ModelForm):
@@ -23,6 +23,18 @@ class StoreForm(forms.ModelForm):
 class FocalForm(forms.ModelForm):
     class Meta:
         model = Focal
+        fields = "__all__"
+        exclude = ("created_at", "updated_at")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs = {"class": "form-control"}
+
+
+class RtvForm(forms.ModelForm):
+    class Meta:
+        model = Rtv
         fields = "__all__"
         exclude = ("created_at", "updated_at")
 

@@ -125,11 +125,11 @@
                         <tbody>
                             {% for focal in focals %}
                             <tr>
-                                <td><i class="fas fa-edit text-orange"></i></td>
-                                <td>{{ focal.name }}</td>
-                                <td>{% if focal.email %} {{ focal.email }} {% endif %}</td>
-                                <td>{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</td>
-                                <td>{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</td>
+                                <td><a href="{% url 'comercial:focal_edit' focal.id %}"><i class="fas fa-edit text-orange"></i></a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{{ focal.name }}</a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.email %} {{ focal.email }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</a></td>
                                 <td><i class="fas fa-user-times text-red"></i></td>
                             </tr>
                             {% endfor %}
@@ -154,11 +154,11 @@
                         <tbody>
                             {% for rtv in rtvs %}
                             <tr>
-                                <td><i class="fas fa-edit text-orange"></i></td>
-                                <td>{{ rtv.name }}</td>
-                                <td>{% if rtv.email %} {{ rtv.email }} {% endif %}</td>
-                                <td>{% if rtv.get_phone1 %} {{ rtv.get_phone1 }} {% endif %}</td>
-                                <td>{% if rtv.get_phone2 %} {{ rtv.get_phone2 }} {% endif %}</td>
+                                <td><a href="{% url 'comercial:rtv_edit' rtv.id %}"><i class="fas fa-edit text-orange"></i></a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{{ rtv.name }}</a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.email %} {{ rtv.email }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone1 %} {{ rtv.get_phone1 }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone2 %} {{ rtv.get_phone2 }} {% endif %}</a></td>
                                 <td><i class="fas fa-user-times text-red"></i></td>
                             </tr>
                             {% endfor %}

@@ -7,6 +7,9 @@ from .views import (
     FocalDetailView,
     FocalEditView,
     FocalListView,
+    RtvCreateView,
+    RtvDetailView,
+    RtvEditView,
     RtvListView,
     StoreCreateView,
     StoreDetailView,
@@ -41,4 +44,7 @@ urlpatterns = [
     path("responsaveis/<int:pk>/editar", FocalEditView.as_view(), name="focal_edit"),
     #
     path("rtvs/", RtvListView.as_view(), name="rtvs"),
+    path("rtvs/<int:pk>/", RtvDetailView.as_view(), name="rtv"),
+    path("rtvs/adicionar", RtvCreateView.as_view(), name="rtv_create"),
+    path("rtvs/<int:pk>/editar", RtvEditView.as_view(), name="rtv_edit"),
 ]
