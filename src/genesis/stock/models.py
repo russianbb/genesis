@@ -166,4 +166,4 @@ class Document(AbstractBaseModel):
         unique_together = ("date", "company", "category")
 
     def __str__(self):
-        return f"{self.date.name} - {self.company.trade_name}"
+        return f"{self.date.name} - {self.company.company_name}"

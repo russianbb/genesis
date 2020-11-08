@@ -11,8 +11,8 @@ class CompanyAdmin(ImportExportModelAdmin):
 
     list_display = (
         "code_sap",
+        "company_name",
         "trade_name",
-        "fantasy_name",
         "system",
         "retroactive",
         "designated_name",
@@ -20,8 +20,8 @@ class CompanyAdmin(ImportExportModelAdmin):
 
     list_display_links = (
         "code_sap",
+        "company_name",
         "trade_name",
-        "fantasy_name",
     )
 
     list_filter = (
@@ -33,8 +33,8 @@ class CompanyAdmin(ImportExportModelAdmin):
 
     search_fields = (
         "code_sap",
+        "company_name",
         "trade_name",
-        "fantasy_name",
     )
 
     filter_horizontal = ("rtv", "focal")
@@ -45,8 +45,8 @@ class CompanyAdmin(ImportExportModelAdmin):
             {
                 "fields": (
                     "code_sap",
+                    "company_name",
                     "trade_name",
-                    "fantasy_name",
                     ("system", "retroactive"),
                 )
             },
@@ -91,8 +91,8 @@ class StoreAdmin(ImportExportModelAdmin):
     )
 
     search_fields = (
+        "company__company_name",
         "company__trade_name",
-        "company__fantasy_name",
         "document",
         "city",
         "state",

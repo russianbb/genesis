@@ -29,8 +29,8 @@ class Focal(AbstractBaseModel, ContactBaseModel):
 
 class Company(AbstractBaseModel):
     code_sap = models.CharField(max_length=8, unique=True, verbose_name="Código SAP")
-    trade_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
-    fantasy_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
+    company_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
+    trade_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
     SYSTEM_CHOICES = Choices("Syagri", "Agrotis", "SAP", "Totvs", "Outros")
     system = models.CharField(
         choices=SYSTEM_CHOICES,
@@ -58,12 +58,12 @@ class Company(AbstractBaseModel):
     )
 
     class Meta:
-        ordering = ["trade_name"]
+        ordering = ["company_name"]
         verbose_name = "Distribuidor"
         verbose_name_plural = "Distribuidores"
 
     def __str__(self):
-        return self.trade_name
+        return self.company_name
 
 
 class Store(AbstractBaseModel, AddressBaseModel):

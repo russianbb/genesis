@@ -38,8 +38,8 @@
                 {% for company in companies %}
                 <tr>
                     <td><a href="{% url 'comercial:company' company.id %}">{{ company.code_sap }}</a></td>
+                    <td><a href="{% url 'comercial:company' company.id %}">{{ company.company_name }}</a></td>
                     <td><a href="{% url 'comercial:company' company.id %}">{{ company.trade_name }}</a></td>
-                    <td><a href="{% url 'comercial:company' company.id %}">{{ company.fantasy_name }}</a></td>
                     <td>{{ company.designated }}</td>
                     <td>{{ company.updated_at }}</td>
                 </tr>

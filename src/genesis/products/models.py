@@ -99,7 +99,7 @@ class CompanyProduct(AbstractBaseModel):
         unique_together = [["onix", "company", "code", "description"]]
 
     def __str__(self):
-        return f"{self.company.trade_name} - {self.onix}"
+        return f"{self.company.company_name} - {self.onix}"
 
     def get_onix_product(self):
         return f"{self.onix}"

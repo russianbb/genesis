@@ -104,8 +104,8 @@ class CompanyProductAdmin(ExportMixin, admin.ModelAdmin):
     )
     list_display_links = ("code", "description")
     search_fields = (
+        "company__company_name",
         "company__trade_name",
-        "company__fantasy_name",
         "code",
         "description",
         "onix__pk",

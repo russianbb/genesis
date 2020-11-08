@@ -9,8 +9,8 @@ from .models import Company, Focal, Rtv, Store
 class CompanyResource(resources.ModelResource):
     id = Field(attribute="pk", column_name="Id")
     code_sap = Field(attribute="code_sap", column_name="Código SAP")
-    trade_name = Field(attribute="trade_name", column_name="Razão social")
-    fantasy_name = Field(attribute="fantasy_name", column_name="Nome fantasia")
+    company_name = Field(attribute="company_name", column_name="Razão social")
+    trade_name = Field(attribute="trade_name", column_name="Nome fantasia")
     system = Field(attribute="system", column_name="ERP")
     retroactive = Field(attribute="retroactive", column_name="Retroativo")
     designated_name = Field(
@@ -25,8 +25,8 @@ class CompanyResource(resources.ModelResource):
         fields = (
             "id",
             "code_sap",
+            "company_name",
             "trade_name",
-            "fantasy_name",
             "system",
             "retroactive",
             "designated_name",
