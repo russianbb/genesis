@@ -10,10 +10,16 @@
 {% block content %}
 <div class="card card-primary">
     <div class="card-header">
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h3 class="card-title">Produto Distribuidor</h3>
+                </div>
+                <div class="ml-auto">
+                    <a href="{% url 'products:company_edit' code_sap product.id %}" type="button" class="btn btn-block btn-warning btn-xs ml-auto"><i class="fas fa-edit"></i> Editar</a>
+                </div>
+            </div>
         </div>
-        <h3 class="card-title">Produto Distribuidor</h3>
     </div>
 
     <div class="card-body">
@@ -52,7 +58,7 @@
                     {% if product.status %}
                         Sim
                     {% else %}
-                        Não
+                        Nao
                     {% endif %}
                 </p>
             </div>

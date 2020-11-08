@@ -11,61 +11,53 @@
 
 {% include "_includes/errors_form.html" %}
 
-<form method="post">
-{% csrf_token %}
-    <div class="card card-primary">
-        <div class="card-header">
-            <h3 class="card-title">RTV</h3>
-        </div>
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Produto Distribuidor</h3>
+    </div>
 
+    <form method="post">
+    {% csrf_token %}
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-2 col-form-label">
-                    {{ form.name.label_tag }}
+                    {{ form.company.label_tag }}
                 </div>
-                <div class="col-sm-4 col-form-label">
-                    {{ form.name }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.phone1.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.phone1 }}
+                <div class="col-sm-6 col-form-label">
+                    {{ form.company }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-2 col-form-label">
-                    {{ form.phone2.label_tag }}
+                    {{ form.code.label_tag }}
                 </div>
                 <div class="col-sm-4">
-                    {{ form.phone2 }}
+                    {{ form.code }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-2 col-form-label">
-                    {{ form.email.label_tag }}
+                    {{ form.description.label_tag }}
                 </div>
-                <div class="col-sm-4">
-                    {{ form.email }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.notes.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.notes }}
+                <div class="col-sm-6">
+                    {{ form.description }}
                 </div>
             </div>
-            <br>
             <div class="row">
                 <div class="col-sm-2 col-form-label">
                     {{ form.status.label_tag }}
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-4">
                     {{ form.status }}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.onix.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.onix }}
                 </div>
             </div>
             <br>
@@ -74,8 +66,11 @@
                 value="Salvar">
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+        </div>
+    </form>
+</div>
 
 {% endblock %}
 

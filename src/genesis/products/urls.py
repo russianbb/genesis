@@ -1,7 +1,10 @@
 from django.urls import path
 
 from .views import (
+    CompanyProductCreateView,
     CompanyProductDetailView,
+    CompanyProductEditView,
+    CompanyProductFilterView,
     CompanyProductListView,
     OnixProductDetailView,
     OnixProductListView,
@@ -25,11 +28,28 @@ urlpatterns = [
     ),
     # Company
     path(
-        "produtos/distribuidor/", CompanyProductListView.as_view(), name="company_list"
+        "produtos/distribuidores/",
+        CompanyProductFilterView.as_view(),
+        name="company_filter",
     ),
     path(
-        "produtos/distribuidor/<int:pk>/",
+        "produtos/distribuidores/<int:code_sap>",
+        CompanyProductListView.as_view(),
+        name="company_list",
+    ),
+    path(
+        "produtos/distribuidores/<int:code_sap>/p/<int:pk>",
         CompanyProductDetailView.as_view(),
         name="company",
+    ),
+    path(
+        "produtos/distribuidores/<int:code_sap>/p/<int:pk>/editar",
+        CompanyProductEditView.as_view(),
+        name="company_edit",
+    ),
+    path(
+        "produtos/distribuidores/<int:code_sap>/",
+        CompanyProductCreateView.as_view(),
+        name="company_create",
     ),
 ]
