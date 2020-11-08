@@ -18,6 +18,11 @@ class OnixProductDetailView(DetailView):
         queryset = super().get_queryset()
         return queryset.prefetch_related("syngenta")
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["syngenta"] = context["object"].syngenta.all()
+        return context
+
 
 class SyngentaProductListView(ListView):
     template_name = "products/syngenta/list.html"

@@ -9,13 +9,13 @@
 
 {% block content %}
 <div class="card card-primary">
+    <!-- Produto Onix -->
     <div class="card-header">
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
         </div>
         <h3 class="card-title">Produto Onix</h3>
     </div>
-
     <div class="card-body">
         <div class="row">
             <label for="id" class="col-sm-2 col-form-label">ID</label>
@@ -65,6 +65,48 @@
                 </p>
             </div>
         </div>
+    </div>
+    <br>
+    <!-- Produtos Syngenta -->
+    <div class="card-header">
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        </div>
+        <h3 class="card-title">Produtos Syngenta</h3>
+    </div>
+    <div class="card-body p-0">
+        <div class="tab-content" id="custom-tabs-one-tabContent">
+            <div class="tab-pane fade show active" id="custom-tabs-one-stores" role="tabpanel"
+                aria-labelledby="custom-tabs-one-stores-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="stores" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th>Agicode</th>
+                                <th>Descrição</th>
+                                <th>Família</th>
+                                <th>Id Onix</th>
+                                <th>Produto Onix</th>
+                                <th>Atualizado em</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for syngenta_ in syngenta %}
+                            <tr>
+                                <td><a href="{% url 'products:syngenta' syngenta_.agicode %}">{{ syngenta_.agicode }}</a></td>
+                                <td><a href="{% url 'products:syngenta' syngenta_.agicode %}">{{ syngenta_.description }}</a></td>
+                                <td><a href="{% url 'products:syngenta' syngenta_.agicode %}">{{ syngenta_.family }}</a></td>
+                                <td>{{ syngenta_.onix.id }}</td>
+                                <td>{{ syngenta_.onix }}</td>
+                                <td>{{ syngenta_.updated_at }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
     </div>
 </div>
 
