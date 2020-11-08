@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} RTVs Syngenta{% endblock %}
+
+{% block stylesheets %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/fontawesome-free/css/all.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'admin-lte/dist/css/adminlte.min.css' %}">
+<!-- Google Font: Source Sans Pro -->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div><h3 class="card-title">RTVs Syngenta</h3></div>
+                <div class="ml-auto">
+                    <a href="{% url 'comercial:rtv_create' %}" type="button" class="btn btn-block btn-success btn-xs ml-auto"><i class="fas fa-plus-square"></i> Adicionar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="rtvs" class="table table-bordered table-hover">
+            <thead>
+                <tr class='bg-primary'>
+                    <th></th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone Principal</th>
+                    <th>Telefone Secundário</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rtv in rtvs %}
+                <tr>
+                    <td><a href="{% url 'comercial:rtv_edit' rtv.id %}"><i class="fas fa-edit text-orange"></i></a></td>
+                    <td><a href="{% url 'comercial:rtv' rtv.id %}">{{ rtv.name }}</a></td>
+                    <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.email %} {{ rtv.email }} {% endif %}</a></td>
+                    <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone1 %} {{ rtv.get_phone1 }} {% endif %}</a></td>
+                    <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone2 %} {{ rtv.get_phone2 }} {% endif %}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+{% endblock %}
+
+{% block extra_js %}
+<!-- jQuery -->
+<script src="{% static 'admin-lte/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- DataTables -->
+<script src="{% static 'admin-lte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'admin-lte/dist/js/adminlte.min.js' %}"></script>
+
+<script>
+    $(function () {
+        $('#rtvs').DataTable({
+            "order": [[ 1, "asc" ]],
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
+{% endblock %}

@@ -28,23 +28,23 @@
                 <li class="nav-item has-tree-view ">
                     <a href="#" class="nav-link bg-secondary">
                         <i class="nav-icon fas fa-layer-group"></i>
-                        <p>Syn - Comercial</p>
+                        <p>Comercial</p>
                         <p><i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview menu-open">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{% url 'comercial:companies' %}" class="nav-link">
                                 <i class="nav-icon fas fa-warehouse"></i>Distribuidores
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{% url 'comercial:focals' %}" class="nav-link">
                                 <i class="nav-icon fas fa-address-card"></i>Respons&aacute;veis
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{% url 'comercial:rtvs' %}" class="nav-link">
                                 <i class="nav-icon fas fa-phone"></i>RTVs
                             </a>
                         </li>

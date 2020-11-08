@@ -14,6 +14,8 @@ services:
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8080
+    stdin_open: true # @TODO remover antes de deploy
+    tty: true # @TODO remover antes de deploy
     volumes:
       - .:/code
     ports:

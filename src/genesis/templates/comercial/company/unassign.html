@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block stylesheets %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/fontawesome-free/css/all.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'admin-lte/dist/css/adminlte.min.css' %}">
+<!-- Google Font: Source Sans Pro -->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+{% include "_includes/errors_form.html" %}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Desatribuir {{ label }}</h3>
+    </div>
+
+    <form method="post">
+    {% csrf_token %}
+        <div class="card-body">
+            <div class="row">
+                <p class="col-form-label">Tem certeza que deseja desatribuir esse {{ label.lower }} desse distribuidor? </p>
+            </div>
+            <div class="row">
+                <label for="id" class="col-sm-2 col-form-label">Distribuidor</label>
+                <div class="col-sm-6">
+                    <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="company">
+                        {{ company }}
+                    </p>
+                </div>
+            </div>
+            {% if focal %}
+            <div class="row">
+                <label for="id" class="col-sm-2 col-form-label">Reponsável</label>
+                <div class="col-sm-6">
+                    <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="company">
+                        {{ focal }}
+                    </p>
+                </div>
+            </div>
+            {% else %}
+            <div class="row">
+                <label for="id" class="col-sm-2 col-form-label">RTV</label>
+                <div class="col-sm-6">
+                    <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="company">
+                        {{ rtv }}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <br>
+            <div class="row">
+                <input class="mb-2 mr-2 btn btn-danger btn-lg btn-block" id="myButton" type="submit" name="myButton"
+                value="Confirmar">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

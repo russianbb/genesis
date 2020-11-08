@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ company.trade_name }}{% endblock %}
+
+{% block stylesheets %}
+{{ block.super}}
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+    <div class="card-header">
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        </div>
+        <h3 class="card-title">Dados Cadastrais</h3>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Código SAP</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.code_sap }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Razão Social</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.trade_name }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Nome Fantasia</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.fantasy_name }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Designado</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.designated }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card card-primary card-tabs">
+    <div class="card-header p-0 pt-1">
+        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="custom-tabs-one-stores-tab" data-toggle="pill" href="#custom-tabs-one-stores"
+                    role="tab" aria-controls="custom-tabs-one-stores" aria-selected="true">Filiais</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-one-focals-tab" data-toggle="pill" href="#custom-tabs-one-focals"
+                    role="tab" aria-controls="custom-tabs-one-focals" aria-selected="false">Responsáveis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-one-rtvs-tab" data-toggle="pill" href="#custom-tabs-one-rtvs"
+                    role="tab" aria-controls="custom-tabs-one-rtvs" aria-selected="false">Rtvs</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body p-0">
+        <div class="tab-content" id="custom-tabs-one-tabContent">
+            <div class="tab-pane fade show active" id="custom-tabs-one-stores" role="tabpanel"
+                aria-labelledby="custom-tabs-one-stores-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="stores" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="{% url 'comercial:store_create' company.id %}">
+                                        <i class="fas fa-plus-square text-success btn-md"></i>
+                                    </a>
+                                </th>
+                                <th>Código</th>
+                                <th>Apelido</th>
+                                <th>CNPJ</th>
+                                <th>Endereço</th>
+                                <th>Cidade</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for store in stores %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'comercial:store_edit' store.company.id store.id %}">
+                                        <i class="fas fa-edit text-orange"></i>
+                                    </a>
+                                </td>
+                                <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.code %} {{ store.code }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.nickname %} {{ store.nickname }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.company.id store.id %}">{{ store.get_document }}</a></td>
+                                <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.address %} {{ store.address }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.city %} {{ store.city }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:store' store.company.id store.id %}">{% if store.state %} {{ store.state }} {% endif %}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="custom-tabs-one-focals" role="tabpanel"
+                aria-labelledby="custom-tabs-one-focals-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="focals" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="{% url 'comercial:focal_assign' company.id %}">
+                                        <i class="fas fa-plus-square text-success btn-md"></i>
+                                    </a>
+                                </th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone Principal</th>
+                                <th>Telefone Secundário</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for focal in focals %}
+                            <tr>
+                                <td><a href="{% url 'comercial:focal_edit' focal.id %}"><i class="fas fa-edit text-orange"></i></a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{{ focal.name }}</a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.email %} {{ focal.email }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone1 %} {{ focal.get_phone1 }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:focal' focal.id %}">{% if focal.get_phone2 %} {{ focal.get_phone2 }} {% endif %}</a></td>
+                                <td>
+                                    <a href="{% url 'comercial:focal_unassign' company.id focal.id %}">
+                                        <i class="fas fa-user-times text-red"></i></td>
+                                    </a>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="custom-tabs-one-rtvs" role="tabpanel"
+                aria-labelledby="custom-tabs-one-rtvs-tab">
+                <div class="card-body p-0 m-0">
+                    <table id="rtvs" class="table table-sm margin-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="{% url 'comercial:rtv_assign' company.id %}">
+                                        <i class="fas fa-plus-square text-success btn-md"></i>
+                                    </a>
+                                </th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone Principal</th>
+                                <th>Telefone Secundário</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rtv in rtvs %}
+                            <tr>
+                                <td><a href="{% url 'comercial:rtv_edit' rtv.id %}"><i class="fas fa-edit text-orange"></i></a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{{ rtv.name }}</a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.email %} {{ rtv.email }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone1 %} {{ rtv.get_phone1 }} {% endif %}</a></td>
+                                <td><a href="{% url 'comercial:rtv' rtv.id %}">{% if rtv.get_phone2 %} {{ rtv.get_phone2 }} {% endif %}</a></td>
+                                <td>
+                                    <a href="{% url 'comercial:rtv_unassign' company.id rtv.id %}">
+                                        <i class="fas fa-user-times text-red"></i></td>
+                                    </a>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <!-- /.card -->
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
