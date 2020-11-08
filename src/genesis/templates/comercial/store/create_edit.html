@@ -11,153 +11,153 @@
 
 {% include "_includes/errors_form.html" %}
 
+<form method="post">
+{% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Dados Cadastrais</h3>
     </div>
-
-    <form method="post" class="card card-primary">
-    {% csrf_token %}
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.company.label_tag }}
-                </div>
-                <div class="col-sm-4 col-form-label">
-                    {{ form.company }}
-                </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.company.label_tag }}
             </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.code.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.code }}
-                </div>
+            <div class="col-sm-4 col-form-label">
+                {{ form.company }}
             </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.nickname.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.nickname }}
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.code.label_tag }}
             </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.document.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.document }}
-                </div>
+            <div class="col-sm-4">
+                {{ form.code }}
             </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.status.label_tag }}
-                </div>
-                <div class="col-sm-1">
-                    {{ form.status }}
-                </div>
-                <div class="col-sm-2 col-form-label">
-                    {{ form.inventory.label_tag }}
-                </div>
-                <div class="col-sm-1">
-                    {{ form.inventory }}
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.nickname.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.nickname }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.document.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.document }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.status.label_tag }}
+            </div>
+            <div class="col-sm-1">
+                {{ form.status }}
+            </div>
+            <div class="col-sm-2 col-form-label">
+                {{ form.inventory.label_tag }}
+            </div>
+            <div class="col-sm-1">
+                {{ form.inventory }}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card-header">
+        <h3 class="card-title">Contato e Localização</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.contact.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.contact }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.email.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.email }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.phone.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.phone }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.address.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.address }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.city.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.city }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.state.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.state }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.zipcode.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.zipcode }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.ibge.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.ibge }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.latitude.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.latitude }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.longitude.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.longitude }}
             </div>
         </div>
         <br>
-        <div class="card-header">
-            <h3 class="card-title">Contato e Localização</h3>
+        <div class="row">
+            <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
+            value="Salvar">
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.contact.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.contact }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.email.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.email }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.phone.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.phone }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.address.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.address }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.city.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.city }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.state.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.state }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.zipcode.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.zipcode }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.ibge.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.ibge }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.latitude.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.latitude }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-form-label">
-                    {{ form.longitude.label_tag }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form.longitude }}
-                </div>
-            </div>
-            <div class="row">
-                <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
-                value="Salvar">
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
+</form>
 
 {% endblock %}
 

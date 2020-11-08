@@ -11,13 +11,13 @@
 
 {% include "_includes/errors_form.html" %}
 
-<div class="card card-primary">
-    <div class="card-header">
-        <h3 class="card-title">Responsável</h3>
-    </div>
+<form method="post">
+{% csrf_token %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Responsável</h3>
+        </div>
 
-    <form method="post" class="card card-primary">
-    {% csrf_token %}
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-2 col-form-label">
@@ -76,13 +76,14 @@
                     {{ form.status }}
                 </div>
             </div>
+            <br>
             <div class="row">
                 <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
                 value="Salvar">
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
         </div>
     </form>
 </div>

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Produto Distribuidor{% endblock %}
+
+{% block stylesheets %}
+{{ block.super}}
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+    <div class="card-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h3 class="card-title">Produto Distribuidor</h3>
+                </div>
+                <div class="ml-auto">
+                    <a href="{% url 'products:company_edit' code_sap product.id %}" type="button" class="btn btn-block btn-warning btn-xs ml-auto"><i class="fas fa-edit"></i> Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Distribuidor</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.company }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Código</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">
+                    {% if product.code %} {{ product.code }} {% else %} {{ "-" }} {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Descrição</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">
+                    {% if product.description %} {{ product.description }} {% else %} {{ "-" }} {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Ativo</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">
+                    {% if product.status %}
+                        Sim
+                    {% else %}
+                        Nao
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Id Onix</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.onix.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Produto Onix</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.onix }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
