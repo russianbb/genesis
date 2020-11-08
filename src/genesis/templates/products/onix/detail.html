@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Produto Onix{% endblock %}
+
+{% block stylesheets %}
+{{ block.super}}
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+    <div class="card-header">
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        </div>
+        <h3 class="card-title">Produto Onix</h3>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Descrição Completa</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.description }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Nome do Produto</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.prefix }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Embalagem</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.unit_size }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Unidade de Medida</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.unit_mesure }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Volume</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ product.unit_volume }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Ativo</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">
+                    {% if store.status %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

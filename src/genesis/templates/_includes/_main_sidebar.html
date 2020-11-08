@@ -54,9 +54,25 @@
                     <a href="#" class="nav-link  bg-secondary">
                         <i class="nav-icon fas fa-flask"></i>
                         <p>Syn - Produtos</p>
-                        <p><i class="right fas fa-angle-left"></i>
-                        </p>
+                        <p><i class="right fas fa-angle-left"></i></p>
                     </a>
+                    <ul class="nav nav-treeview menu-open">
+                        <li class="nav-item">
+                            <a href="{% url 'products:onix_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-map-marker-alt"></i>Onix
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'products:syngenta_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-leaf"></i>Syngenta
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'products:company_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-warehouse"></i>Distribuidores
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 </li>
             </ul>

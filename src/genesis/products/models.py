@@ -51,7 +51,10 @@ class OnixProduct(AbstractBaseModel):
 
 class SyngentaProduct(AbstractBaseModel):
     onix = models.ForeignKey(
-        OnixProduct, on_delete=models.CASCADE, verbose_name="Produto Onix"
+        OnixProduct,
+        on_delete=models.CASCADE,
+        verbose_name="Produto Onix",
+        related_name="syngenta",
     )
     agicode = models.CharField(verbose_name="Agicode", max_length=20, primary_key=True)
     family = models.CharField(verbose_name="Família", max_length=150)
