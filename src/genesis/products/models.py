@@ -41,8 +41,8 @@ class OnixProduct(AbstractBaseModel):
 
     class Meta:
         ordering = ["prefix", "unit_volume"]
-        verbose_name = "Produto Onix"
-        verbose_name_plural = "Produtos Onix"
+        verbose_name = "Onix"
+        verbose_name_plural = "Onix"
         unique_together = [["prefix", "unit_size", "unit_mesure", "unit_volume"]]
 
     def __str__(self):
@@ -62,8 +62,8 @@ class SyngentaProduct(AbstractBaseModel):
 
     class Meta:
         ordering = ["description"]
-        verbose_name = "Produto Syngenta"
-        verbose_name_plural = "Produtos Syngenta"
+        verbose_name = "Syngenta"
+        verbose_name_plural = "Syngenta"
         unique_together = [["onix", "agicode"]]
 
     def __str__(self):
@@ -97,8 +97,8 @@ class CompanyProduct(AbstractBaseModel):
 
     class Meta:
         ordering = ["created_at"]
-        verbose_name = "Produto Distribuidor"
-        verbose_name_plural = "Produtos Distribuidor"
+        verbose_name = "Distribuidor"
+        verbose_name_plural = "Distribuidor"
         unique_together = [["onix", "company", "code", "description"]]
 
     def __str__(self):

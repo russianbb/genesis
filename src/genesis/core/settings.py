@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     "import_export",
     # My Apps
     "comercial",
+    "documents",
     "products",
+    "projects",
     "utils",
     "stock",
     # Django Apps
