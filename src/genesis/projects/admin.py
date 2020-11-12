@@ -5,14 +5,12 @@ from .models import Project, ProjectCompany
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("date", "description", "category")
+    list_display = ("date", "category")
     list_display_links = list_display
     list_filter = ("date", "category")
     search_fields = list_display
 
-    fieldsets = (
-        ("Data Base", {"fields": ("date", "description", "category", "status",)},),
-    )
+    fieldsets = (("Data Base", {"fields": ("date", "category", "status",)},),)
 
     class Meta:
         fields = "__all__"
