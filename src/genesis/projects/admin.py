@@ -5,12 +5,14 @@ from .models import Project, ProjectCompany
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("date", "description")
+    list_display = ("date", "description", "category")
     list_display_links = list_display
-    list_filter = list_display
+    list_filter = ("date", "category")
     search_fields = list_display
 
-    fieldsets = (("Data Base", {"fields": ("date", "description", "status",)},),)
+    fieldsets = (
+        ("Data Base", {"fields": ("date", "description", "category", "status",)},),
+    )
 
     class Meta:
         fields = "__all__"
@@ -20,7 +22,7 @@ class ProjectAdmin(admin.ModelAdmin):
 class ProjectCompanyAdmin(admin.ModelAdmin):
     list_display = ("project", "company")
     list_display_links = list_display
-    list_filter = ("project", )
+    list_filter = ("project",)
     search_fields = list_display
 
     fieldsets = (("Participante", {"fields": ("project", "company",)},),)

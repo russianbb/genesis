@@ -4,6 +4,12 @@ from utils.models import AbstractBaseModel
 
 
 class Project(AbstractBaseModel):
+    PROJECT_CHOICES = (
+        ("circularizacao", "Circularização de Estoque"),
+        ("inventario", "Inventário Físico"),
+        ("outros", "Outros"),
+    )
+
     date = models.DateField(
         verbose_name="Data Base", help_text="Data de mensuração do estoque"
     )
@@ -14,6 +20,9 @@ class Project(AbstractBaseModel):
     )
     company = models.ManyToManyField(
         Company, related_name="project", through="ProjectCompany"
+    )
+    category = models.CharField(
+        verbose_name="Tipo de projeto", max_length=200, choices=PROJECT_CHOICES,
     )
 
     class Meta:
