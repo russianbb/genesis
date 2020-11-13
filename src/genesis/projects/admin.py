@@ -23,7 +23,7 @@ class ProjectCompanyAdmin(admin.ModelAdmin):
     list_filter = ("project",)
     search_fields = list_display
 
-    fieldsets = (("Participante", {"fields": ("project", "company",)},),)
+    # fieldsets = (("Participante", {"fields": ("project", "company",)},),)
 
     class Meta:
         fields = "__all__"
