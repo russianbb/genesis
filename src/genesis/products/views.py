@@ -1,4 +1,5 @@
 from comercial.models import Company
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
@@ -7,13 +8,13 @@ from .forms import CompanyProductForm
 from .models import CompanyProduct, OnixProduct, SyngentaProduct
 
 
-class OnixProductListView(ListView):
+class OnixProductListView(LoginRequiredMixin, ListView):
     template_name = "products/onix/list.html"
     context_object_name = "products"
     model = OnixProduct
 
 
-class OnixProductDetailView(DetailView):
+class OnixProductDetailView(LoginRequiredMixin, DetailView):
     template_name = "products/onix/detail.html"
     context_object_name = "product"
     model = OnixProduct
@@ -28,26 +29,26 @@ class OnixProductDetailView(DetailView):
         return context
 
 
-class SyngentaProductListView(ListView):
+class SyngentaProductListView(LoginRequiredMixin, ListView):
     template_name = "products/syngenta/list.html"
     context_object_name = "products"
     model = SyngentaProduct
 
 
-class SyngentaProductDetailView(DetailView):
+class SyngentaProductDetailView(LoginRequiredMixin, DetailView):
     template_name = "products/syngenta/detail.html"
     context_object_name = "product"
     model = SyngentaProduct
     pk_url_kwarg = "agicode"
 
 
-class CompanyProductFilterView(ListView):
+class CompanyProductFilterView(LoginRequiredMixin, ListView):
     template_name = "products/company/filter.html"
     context_object_name = "companies"
     model = Company
 
 
-class CompanyProductListView(ListView):
+class CompanyProductListView(LoginRequiredMixin, ListView):
     template_name = "products/company/list.html"
     context_object_name = "products"
     model = CompanyProduct
@@ -63,7 +64,7 @@ class CompanyProductListView(ListView):
         return context
 
 
-class CompanyProductDetailView(DetailView):
+class CompanyProductDetailView(LoginRequiredMixin, DetailView):
     template_name = "products/company/detail.html"
     context_object_name = "product"
     model = CompanyProduct
@@ -74,7 +75,7 @@ class CompanyProductDetailView(DetailView):
         return context
 
 
-class CompanyProductEditView(UpdateView):
+class CompanyProductEditView(LoginRequiredMixin, UpdateView):
     template_name = "products/company/create_edit.html"
     form_class = CompanyProductForm
     model = CompanyProduct
@@ -101,7 +102,7 @@ class CompanyProductEditView(UpdateView):
         return reverse_lazy("products:company_list", kwargs={"code_sap": code_sap})
 
 
-class CompanyProductCreateView(CreateView):
+class CompanyProductCreateView(LoginRequiredMixin, CreateView):
     template_name = "products/company/create_edit.html"
     form_class = CompanyProductForm
     model = CompanyProduct

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -13,13 +14,13 @@ from .forms import CompanyFocalForm, CompanyRtvForm, FocalForm, RtvForm, StoreFo
 from .models import Company, CompanyFocal, CompanyRtv, Focal, Rtv, Store
 
 
-class CompanyListView(ListView):
+class CompanyListView(LoginRequiredMixin, ListView):
     template_name = "comercial/company/list.html"
     context_object_name = "companies"
     model = Company
 
 
-class CompanyDetailView(DetailView):
+class CompanyDetailView(LoginRequiredMixin, DetailView):
     template_name = "comercial/company/detail.html"
     context_object_name = "company"
     model = Company
@@ -38,19 +39,19 @@ class CompanyDetailView(DetailView):
         return context
 
 
-class FocalListView(ListView):
+class FocalListView(LoginRequiredMixin, ListView):
     template_name = "comercial/focal/list.html"
     context_object_name = "focals"
     model = Focal
 
 
-class RtvListView(ListView):
+class RtvListView(LoginRequiredMixin, ListView):
     template_name = "comercial/rtv/list.html"
     context_object_name = "rtvs"
     model = Rtv
 
 
-class StoreDetailView(DetailView):
+class StoreDetailView(LoginRequiredMixin, DetailView):
     template_name = "comercial/store/detail.html"
     context_object_name = "store"
     model = Store
@@ -60,7 +61,7 @@ class StoreDetailView(DetailView):
         return queryset.select_related("company")
 
 
-class StoreCreateView(CreateView):
+class StoreCreateView(LoginRequiredMixin, CreateView):
     template_name = "comercial/store/create_edit.html"
     form_class = StoreForm
     model = Store
@@ -81,7 +82,7 @@ class StoreCreateView(CreateView):
         return context
 
 
-class StoreEditView(UpdateView):
+class StoreEditView(LoginRequiredMixin, UpdateView):
     template_name = "comercial/store/create_edit.html"
     form_class = StoreForm
     model = Store
@@ -104,13 +105,13 @@ class StoreEditView(UpdateView):
         return context
 
 
-class FocalDetailView(DetailView):
+class FocalDetailView(LoginRequiredMixin, DetailView):
     template_name = "comercial/focal/detail.html"
     context_object_name = "focal"
     model = Focal
 
 
-class FocalCreateView(CreateView):
+class FocalCreateView(LoginRequiredMixin, CreateView):
     template_name = "comercial/focal/create_edit.html"
     form_class = FocalForm
     model = Focal
@@ -122,7 +123,7 @@ class FocalCreateView(CreateView):
         return context
 
 
-class FocalEditView(UpdateView):
+class FocalEditView(LoginRequiredMixin, UpdateView):
     template_name = "comercial/focal/create_edit.html"
     form_class = FocalForm
     model = Focal
@@ -144,13 +145,13 @@ class FocalEditView(UpdateView):
         return context
 
 
-class RtvDetailView(DetailView):
+class RtvDetailView(LoginRequiredMixin, DetailView):
     template_name = "comercial/rtv/detail.html"
     context_object_name = "rtv"
     model = Rtv
 
 
-class RtvCreateView(CreateView):
+class RtvCreateView(LoginRequiredMixin, CreateView):
     template_name = "comercial/rtv/create_edit.html"
     form_class = RtvForm
     model = Rtv
@@ -162,7 +163,7 @@ class RtvCreateView(CreateView):
         return context
 
 
-class RtvEditView(UpdateView):
+class RtvEditView(LoginRequiredMixin, UpdateView):
     template_name = "comercial/rtv/create_edit.html"
     form_class = RtvForm
     model = Rtv
@@ -184,7 +185,7 @@ class RtvEditView(UpdateView):
         return context
 
 
-class CompanyFocalCreateView(CreateView):
+class CompanyFocalCreateView(LoginRequiredMixin, CreateView):
     template_name = "comercial/company/assign.html"
     model = CompanyFocal
     form_class = CompanyFocalForm
@@ -205,7 +206,7 @@ class CompanyFocalCreateView(CreateView):
         return context
 
 
-class CompanyFocalDeleteView(DeleteView):
+class CompanyFocalDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "comercial/company/unassign.html"
     model = CompanyFocal
     success_url = "/distribuidores/{company_id}/"
@@ -253,7 +254,7 @@ class CompanyFocalDeleteView(DeleteView):
         return context
 
 
-class CompanyRtvCreateView(CreateView):
+class CompanyRtvCreateView(LoginRequiredMixin, CreateView):
     template_name = "comercial/company/assign.html"
     model = CompanyRtv
     form_class = CompanyRtvForm
@@ -274,7 +275,7 @@ class CompanyRtvCreateView(CreateView):
         return context
 
 
-class CompanyRtvDeleteView(DeleteView):
+class CompanyRtvDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "comercial/company/unassign.html"
     model = CompanyRtv
     success_url = "/distribuidores/{company_id}/"
