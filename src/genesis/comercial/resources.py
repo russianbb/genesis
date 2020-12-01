@@ -40,7 +40,7 @@ class StoreResource(resources.ModelResource):
     company = Field(
         attribute="company",
         column_name="Razão social",
-        widget=ForeignKeyWidget(Company),
+        widget=ForeignKeyWidget(Company, "trade_name"),
     )
     code = Field(attribute="code", column_name="Código da filial")
     nickname = Field(attribute="nickname", column_name="Apelido da filial")
@@ -122,3 +122,50 @@ class RtvResource(resources.ModelResource):
             "notes",
         )
         export_order = fields
+
+
+class StorePublicResource(resources.ModelResource):
+    company = Field(
+        attribute="company",
+        column_name="Razão social",
+        widget=ForeignKeyWidget(Company, "trade_name"),
+    )
+    code = Field(attribute="code", column_name="Código da filial")
+    nickname = Field(attribute="nickname", column_name="Apelido da filial")
+    document = Field(attribute="document", column_name="CNPJ")
+    contact = Field(attribute="contact", column_name="Contato")
+    phone = Field(attribute="phone", column_name="Telefone")
+    email = Field(attribute="email", column_name="E-mail")
+    city = Field(attribute="city", column_name="Cidade")
+    state = Field(attribute="state", column_name="Estado")
+    address = Field(attribute="address", column_name="Endereço")
+    status = Field(attribute="status", column_name="Ativo")
+
+    def __init__(self, company):
+        self.company = company
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(company=self.company).select_related("company")
+
+    class Meta:
+        model = Store
+        fields = (
+            "company",
+            "code",
+            "nickname",
+            "document",
+            "contact",
+            "phone",
+            "email",
+            "city",
+            "state",
+            "address",
+            "status",
+        )
+        export_order = fields
+
+    def dehydrate_status(self, obj):
+        if obj.status:
+            return "Sim"
+        return "Não"

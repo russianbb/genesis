@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -8,10 +8,12 @@ from django.views.generic import (
     DetailView,
     ListView,
     UpdateView,
+    View,
 )
 
 from .forms import CompanyFocalForm, CompanyRtvForm, FocalForm, RtvForm, StoreForm
 from .models import Company, CompanyFocal, CompanyRtv, Focal, Rtv, Store
+from .resources import StorePublicResource
 
 
 class CompanyListView(LoginRequiredMixin, ListView):
@@ -321,3 +323,14 @@ class CompanyRtvDeleteView(LoginRequiredMixin, DeleteView):
         context["rtv"] = rtv
         context["company"] = company
         return context
+
+
+class StorePublicExportView(View):
+    def get(self, *args, **kwargs):
+        company = self.kwargs["company"]
+        instance = Company.objects.get(pk=company)
+        filename = f"Filiais - {instance.company_name}.xlsx"
+        dataset = StorePublicResource(company=company).export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response["Content-Disposition"] = f"attachment; filename={filename}"
+        return response

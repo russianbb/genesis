@@ -18,6 +18,7 @@ from .views import (
     StoreCreateView,
     StoreDetailView,
     StoreEditView,
+    StorePublicExportView,
 )
 
 app_name = "comercial"
@@ -61,6 +62,11 @@ urlpatterns = [
         "distribuidores/<int:company>/filial/<int:pk>/editar",
         StoreEditView.as_view(),
         name="store_edit",
+    ),
+    path(
+        "distribuidores/<int:company>/filial/export",
+        StorePublicExportView.as_view(),
+        name="store_export",
     ),
     # Focal
     path("responsaveis/", FocalListView.as_view(), name="focals"),
