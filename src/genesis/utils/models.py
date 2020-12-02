@@ -55,7 +55,7 @@ class ContactBaseModel(models.Model):
         if self.phone1 and len(self.phone1) == 10:
             return f"({self.phone1[:2]}) {self.phone1[-8:-4]}-{self.phone1[-4:]}"
         if self.phone1 and len(self.phone1) == 11:
-            return f"({self.phone1[:2]}) {self.phone1[-9:-5]}-{self.phone1[-4:]}"
+            return f"({self.phone1[:2]}) {self.phone1[-9:-4]}-{self.phone1[-4:]}"
         return None
 
     get_phone1.short_description = "Telefone Principal"
@@ -64,7 +64,7 @@ class ContactBaseModel(models.Model):
         if self.phone2 and len(self.phone2) == 10:
             return f"({self.phone2[:2]}) {self.phone2[-8:-4]}-{self.phone2[-4:]}"
         if self.phone2 and len(self.phone2) == 11:
-            return f"({self.phone2[:2]}) {self.phone2[-9:-5]}-{self.phone2[-4:]}"
+            return f"({self.phone2[:2]}) {self.phone2[-9:-4]}-{self.phone2[-4:]}"
         return None
 
     get_phone2.short_description = "Telefone Secundario"
