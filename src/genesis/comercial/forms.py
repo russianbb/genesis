@@ -1,5 +1,6 @@
 from django import forms
 from localflavor.br.br_states import STATE_CHOICES
+from utils.functions import remove_accents
 
 from .models import CompanyFocal, CompanyRtv, Focal, Rtv, Store
 
@@ -31,6 +32,10 @@ class FocalForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
 
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        return remove_accents(name)
+
 
 class RtvForm(forms.ModelForm):
     class Meta:
@@ -42,6 +47,10 @@ class RtvForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        return remove_accents(name)
 
 
 class CompanyFocalForm(forms.ModelForm):
