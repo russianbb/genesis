@@ -1,6 +1,6 @@
 from django import forms
 from localflavor.br.br_states import STATE_CHOICES
-from utils.functions import remove_accents
+from utils.functions import remove_accents, get_city_data
 
 from .models import CompanyFocal, CompanyRtv, Focal, Rtv, Store
 
@@ -17,8 +17,21 @@ class StoreForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
+        self.fields["ibge"].widget.attrs = {"class": "form-control", "readonly": True}
         self.fields["company"].widget.attrs = {"class": "form-control"}
         self.fields["inventory"].widget.attrs = {"class": "form-control"}
+
+    def clean_ibge(self):
+        city = self.cleaned_data["city"]
+        state = self.cleaned_data["state"]
+
+        data = get_city_data(city, state)
+        if not data:
+            raise forms.ValidationError(
+                "Cidade e estado não encontrados. Favor verificar",
+                code="invalid"
+            )
+        return f'{data["Codigo"]}05'  # Final 05 = código do distrito
 
 
 class FocalForm(forms.ModelForm):
