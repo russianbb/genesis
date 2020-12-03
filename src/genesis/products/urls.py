@@ -17,10 +17,12 @@ app_name = "products"
 
 urlpatterns = [
     # Onix
-    path("produtos/onix/", OnixProductListView.as_view(), name="onix_list"),
-    path("produtos/onix/<int:pk>/", OnixProductDetailView.as_view(), name="onix"),
+    path("produtos/onix/", OnixProductListView.as_view(), name="onix_list",),
+    path("produtos/onix/<int:pk>/", OnixProductDetailView.as_view(), name="onix",),
     # Syngenta
-    path("produtos/syngenta/", SyngentaProductListView.as_view(), name="syngenta_list"),
+    path(
+        "produtos/syngenta/", SyngentaProductListView.as_view(), name="syngenta_list",
+    ),
     path(
         "produtos/syngenta/<str:agicode>/",
         SyngentaProductDetailView.as_view(),
@@ -38,12 +40,12 @@ urlpatterns = [
         name="company_list",
     ),
     path(
-        "produtos/distribuidores/<int:code_sap>/p/<int:pk>",
+        "produtos/distribuidores/<int:code_sap>/produto/<int:pk>",
         CompanyProductDetailView.as_view(),
         name="company",
     ),
     path(
-        "produtos/distribuidores/<int:code_sap>/p/<int:pk>/editar",
+        "produtos/distribuidores/<int:code_sap>/produto/<int:pk>/editar",
         CompanyProductEditView.as_view(),
         name="company_edit",
     ),

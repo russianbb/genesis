@@ -30,6 +30,7 @@
                     <th>Agicode</th>
                     <th>Descrição</th>
                     <th>Familia</th>
+                    <th>Ativo</th>
                     <th>Id Onix</th>
                     <th>Produto Onix</th>
                     <th>Atualizado em</th>
@@ -41,6 +42,7 @@
                     <td><a href="{% url 'products:syngenta' product.agicode %}">{{ product.agicode }}</a></td>
                     <td><a href="{% url 'products:syngenta' product.agicode %}">{{ product.description }}</a></td>
                     <td><a href="{% url 'products:syngenta' product.agicode %}">{{ product.family }}</a></td>
+                    <td>{% if product.status %}Sim{% else %}Não{% endif %}</td>
                     <td>{{ product.onix.id }}</td>
                     <td>{{ product.onix }}</td>
                     <td>{{ product.updated_at }}</td>

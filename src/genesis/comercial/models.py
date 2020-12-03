@@ -31,13 +31,16 @@ class Company(AbstractBaseModel):
     code_sap = models.CharField(max_length=8, unique=True, verbose_name="Código SAP")
     company_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
     trade_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
-    SYSTEM_CHOICES = Choices("Syagri", "Agrotis", "SAP", "Totvs", "Outros")
+    SYSTEM_CHOICES = Choices(
+        "Syagri", "Agrotis", "SAP", "Totvs", "Outros", "Não conhecido"
+    )
     system = models.CharField(
         choices=SYSTEM_CHOICES,
         max_length=40,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         verbose_name=_("ERP"),
+        default="Não conhecido",
     )
     retroactive = models.BooleanField(
         default=False, null=True, blank=True, verbose_name=_("Retroativo"),
