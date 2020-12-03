@@ -42,6 +42,12 @@
             </div>
         </div>
         <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Sistema ERP</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{% if company.system %} {{ company.system }} {% else %} - {% endif %}</p>
+            </div>
+        </div>
+        <div class="row">
             <label for="id" class="col-sm-2 col-form-label">Designado</label>
             <div class="col-sm-4">
                 <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code_sap">{{ company.designated }}</p>
