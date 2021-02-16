@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "import_export",
     # My Apps
     "comercial",
+    "finance",
     "products",
     "utils",
     "stock",
