@@ -5,23 +5,23 @@ from .models import Category, CostCenter, ServiceOrder, Transaction
 
 @admin.register(CostCenter)
 class CostCenterAdmin(admin.ModelAdmin):
-    list_display = ("pk", "description", "updated_at")
-    list_display_links = ("pk", "description")
-    search_fields = ("pk", "description")
+    list_display = ("id", "description", "updated_at")
+    list_display_links = ("id", "description")
+    search_fields = ("id", "description")
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("pk", "description", "updated_at")
-    list_display_links = ("pk", "description")
-    search_fields = ("pk", "description")
+    list_display = ("id", "description", "updated_at")
+    list_display_links = ("id", "description")
+    search_fields = ("id", "description")
 
 
 @admin.register(ServiceOrder)
 class ServiceOrderAdmin(admin.ModelAdmin):
-    list_display = ("pk", "description", "buy_order", "updated_at")
-    list_display_links = ("pk", "description")
-    search_fields = ("pk", "description", "buy_order")
+    list_display = ("id", "description", "buy_order", "updated_at")
+    list_display_links = ("id", "description")
+    search_fields = ("id", "description", "buy_order")
 
 
 @admin.register(Transaction)

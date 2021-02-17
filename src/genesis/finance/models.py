@@ -58,10 +58,16 @@ class Transaction(AbstractBaseModel):
         default="expense",
     )
     category = models.ForeignKey(
-        Category, related_name="transaction", on_delete=models.CASCADE
+        Category,
+        related_name="transaction",
+        on_delete=models.CASCADE,
+        verbose_name="Cetegoria",
     )
     cost_center = models.ForeignKey(
-        CostCenter, related_name="transaction", on_delete=models.CASCADE
+        CostCenter,
+        related_name="transaction",
+        on_delete=models.CASCADE,
+        verbose_name="Centro de Custo",
     )
     notes = models.CharField(max_length=254, verbose_name="Anotações")
     receipt = models.FileField(
