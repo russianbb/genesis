@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from .models import Category, CostCenter, ServiceOrder, Transaction
+from .models import Category, CostCenter, Invoice, ServiceOrder, Transaction
+
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ("category", "number", "amount", "issued_at")
+    list_display_links = list_display
+    search_fields = list_display
+    list_filter = ("category", "issued_at")
 
 
 @admin.register(CostCenter)
@@ -28,7 +36,6 @@ class ServiceOrderAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "cash_flow",
         "category",
         "cost_center",
         "amount",
@@ -36,4 +43,4 @@ class TransactionAdmin(admin.ModelAdmin):
     )
     list_display_links = list_display
     search_fields = list_display
-    list_filter = ("cash_flow", "category", "cost_center", "transacted_at")
+    list_filter = ("category", "cost_center", "transacted_at")
