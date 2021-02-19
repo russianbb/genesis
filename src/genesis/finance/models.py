@@ -21,6 +21,20 @@ class ServiceOrder(AbstractBaseModel):
         verbose_name_plural = "Ordens de Serviço"
 
 
+class CostCenter(AbstractBaseModel):
+    description = models.CharField(
+        max_length=200, unique=True, verbose_name="Descrição"
+    )
+
+    def __str__(self):
+        return f"{self.description}"
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Centro de Custo"
+        verbose_name_plural = "Centros de Custos"
+
+
 class Invoice(AbstractBaseModel):
     INVOICE_CATEGORY = Choices(
         ("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"), ("loan", "Empréstimo")
@@ -44,6 +58,12 @@ class Invoice(AbstractBaseModel):
         verbose_name="Ordem de Serviço",
         related_name="invoices",
     )
+    cost_center = models.ForeignKey(
+        CostCenter,
+        on_delete=models.CASCADE,
+        verbose_name="Centro de Custo",
+        related_name="invoices",
+    )
     document = models.FileField(
         upload_to="finance/invoices/", verbose_name="DANFE", blank=True
     )
@@ -55,20 +75,6 @@ class Invoice(AbstractBaseModel):
         ordering = ["issued_at", "number"]
         verbose_name = "Recebível"
         verbose_name_plural = "Recebíveis"
-
-
-class CostCenter(AbstractBaseModel):
-    description = models.CharField(
-        max_length=200, unique=True, verbose_name="Descrição"
-    )
-
-    def __str__(self):
-        return f"{self.description}"
-
-    class Meta:
-        ordering = ["created_at"]
-        verbose_name = "Centro de Custo"
-        verbose_name_plural = "Centros de Custos"
 
 
 class Category(AbstractBaseModel):
@@ -115,7 +121,9 @@ class Transaction(AbstractBaseModel):
     )
 
     def __str__(self):
-        return f"{self.cost_center} | {self.category} | {self.amount}"
+        if not self.notes:
+            return self.category.description
+        return self.notes
 
     class Meta:
         ordering = ["transacted_at", "id"]
