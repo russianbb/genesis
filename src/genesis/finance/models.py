@@ -16,7 +16,7 @@ class ServiceOrder(AbstractBaseModel):
         return f"{self.description}"
 
     class Meta:
-        ordering = ["created_at"]
+        ordering = ["-created_at"]
         verbose_name = "Ordem de Serviço"
         verbose_name_plural = "Ordens de Serviço"
 
@@ -30,7 +30,7 @@ class CostCenter(AbstractBaseModel):
         return f"{self.description}"
 
     class Meta:
-        ordering = ["created_at"]
+        ordering = ["-created_at"]
         verbose_name = "Centro de Custo"
         verbose_name_plural = "Centros de Custos"
 
@@ -72,7 +72,7 @@ class Invoice(AbstractBaseModel):
         return f"{self.get_category_display()} {self.number}"
 
     class Meta:
-        ordering = ["issued_at", "number"]
+        ordering = ["-issued_at", "-number"]
         verbose_name = "Recebível"
         verbose_name_plural = "Recebíveis"
 
@@ -95,7 +95,7 @@ class Category(AbstractBaseModel):
         return f"{self.description}"
 
     class Meta:
-        ordering = ["created_at"]
+        ordering = ["description"]
         verbose_name = "Categoria"
         verbose_name_plural = "Categorias"
 
@@ -113,7 +113,7 @@ class Transaction(AbstractBaseModel):
         Category,
         related_name="transactions",
         on_delete=models.CASCADE,
-        verbose_name="Cetegoria",
+        verbose_name="Categoria",
     )
     notes = models.CharField(max_length=254, verbose_name="Anotações", blank=True)
     document = models.FileField(
@@ -126,6 +126,6 @@ class Transaction(AbstractBaseModel):
         return self.notes
 
     class Meta:
-        ordering = ["transacted_at", "id"]
+        ordering = ["-transacted_at", "-id"]
         verbose_name = "Transação"
         verbose_name_plural = "Transações"
