@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Detalhes da {{ invoice.get_category_display }} {% endblock %}
+
+{% block stylesheets %}
+{{ block.super}}
+{% endblock %}
+
+{% block content %}
+
+<a href="#">
+    <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" value="Adicionar Pagamento">
+</a>
+
+
+<div class="card card-primary">
+    <div class="card-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h3 class="card-title">{{ invoice.get_category_display }} &emsp; {{ invoice.number }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Data de Emissão</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="company_name">
+                    {{ invoice.issued_at|date:"d/m/Y" }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Valor</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="id">
+                    {{ invoice.amount|intcomma }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Ordem de Serviço</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="code">
+                    {{ invoice.service_order }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Centro de Custo</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="nickname">
+                    {{ invoice.cost_center }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card-header">
+        <h3 class="card-title">Valores Recebidos</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Responsável</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="contact">
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="card-header">
+        <h3 class="card-title">Dividendos Pagos</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <label for="id" class="col-sm-2 col-form-label">Responsável</label>
+            <div class="col-sm-4">
+                <p class="form-control-plaintext border-bottom border-top-0 border-gray" id="contact">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

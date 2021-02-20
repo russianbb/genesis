@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block stylesheets %}
+{{ block.super}}
+{% endblock %}
+
+{% block content %}
+
+{% include "_includes/errors_form.html" %}
+{{ form.media }}
+
+<form method="post">
+{% csrf_token %}
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Cadastrar Pagamento de {{ invoice.get_category_display }} - {{invoice.number}}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.transacted_at.label_tag }}
+            </div>
+            <div class="col-sm-4 col-form-label">
+                {{ form.transacted_at }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.amount.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.amount }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.cost_center.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.cost_center }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.category.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.category }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.document.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.document }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.notes.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.notes }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
+            value="Salvar">
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

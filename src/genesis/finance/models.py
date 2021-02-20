@@ -1,5 +1,6 @@
 from django.db import models
 from model_utils.choices import Choices
+from utils.constants import CATEGORY_ND, CATEGORY_NF
 from utils.models import AbstractBaseModel
 
 
@@ -36,9 +37,7 @@ class CostCenter(AbstractBaseModel):
 
 
 class Invoice(AbstractBaseModel):
-    INVOICE_CATEGORY = Choices(
-        ("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"), ("loan", "Empréstimo")
-    )
+    INVOICE_CATEGORY = Choices(("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"))
     number = models.PositiveIntegerField(verbose_name="Número")
     issued_at = models.DateField(verbose_name="Data de Emissão")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
@@ -75,6 +74,14 @@ class Invoice(AbstractBaseModel):
         ordering = ["-issued_at", "-number"]
         verbose_name = "Recebível"
         verbose_name_plural = "Recebíveis"
+
+    @property
+    def get_transaction_category(self):
+        if self.category == "invoice":
+            return CATEGORY_NF["description"]
+        if self.category == "debit":
+            return CATEGORY_ND["description"]
+        return None
 
 
 class Category(AbstractBaseModel):
