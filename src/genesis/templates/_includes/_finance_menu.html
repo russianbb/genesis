@@ -1,0 +1,24 @@
+<li class="nav-item has-tree-view ">
+    <a href="#" class="nav-link  bg-secondary">
+        <i class="nav-icon fas fa-piggy-bank"></i>
+        <p>Financeiro</p>
+        <p><i class="right fas fa-angle-left"></i></p>
+    </a>
+    <ul class="nav nav-treeview menu-open">
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-indent"></i>Painel
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'finance:expense' %}" class="nav-link">
+                <i class="nav-icon fas fa-money-bill-wave"></i>Saída de Caixa
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'finance:invoice_list' %}" class="nav-link">
+                <i class="nav-icon fas fa-file-invoice-dollar"></i>Recebíveis
+            </a>
+        </li>
+    </ul>
+</li>
