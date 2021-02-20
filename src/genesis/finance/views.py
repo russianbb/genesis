@@ -3,9 +3,10 @@ from datetime import datetime
 from django.contrib import messages
 from django.http import Http404
 from django.views.generic import CreateView, ListView
+from utils.constants import CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
-from .forms import ExpenseForm, InvoiceForm, InvoicePayForm
+from .forms import DividendsPayForm, ExpenseForm, InvoiceForm, InvoicePayForm
 from .models import Category, Invoice, Transaction
 
 
@@ -65,7 +66,42 @@ class InvoicePayView(SuperUserRequiredMixin, CreateView):
         return context
 
 
+class DividendsPayView(SuperUserRequiredMixin, CreateView):
+    template_name = "finance/invoice/dividends_pay.html"
+    model = Transaction
+    form_class = DividendsPayForm
+    success_url = "/"  # TODO: redirecionar para a página do centro de custo
+
+    def get_initial(self):
+        number = self.kwargs["number"]
+        self.invoice = Invoice.objects.filter(number=number).first()
+        transaction_category = Category.objects.filter(
+            description=CATEGORY_DIVIDENDS["description"]
+        ).first()
+        if not self.invoice:
+            raise Http404
+        return {
+            "transacted_at": datetime.now(),
+            "cost_center": self.invoice.cost_center,
+            "category": transaction_category,
+            "notes": f"Pagamento de Dividendos | {self.invoice.get_category_display()} - {self.invoice.number}",  # noqa
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["invoice"] = self.invoice
+        return context
+
+    def form_valid(self, form):
+        notes = f"{self.invoice.get_category_display()} {self.invoice.number} | {form.cleaned_data['receiver']}"  # noqa
+        transaction = form.save(commit=False)
+        transaction.notes = notes
+        self.object = transaction.save()
+        return super().form_valid(form)
+
+
 expense_create = ExpenseCreateView.as_view()
 invoice_create = InvoiceCreateView.as_view()
 invoice_list = InvoiceListView.as_view()
 invoice_pay = InvoicePayView.as_view()
+dividends_pay = DividendsPayView.as_view()
