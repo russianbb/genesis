@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %} Distribuidores{% endblock %}
+{% block title %} Recebíveis{% endblock %}
 
 {% block stylesheets %}
 <!-- Font Awesome -->
@@ -49,8 +49,17 @@
                     <td>{{ invoice.get_category_display }}</td>
                     <td>{{ invoice.amount|intcomma }}</td>
                     <td>{{ invoice.issued_at|date:"d/m/Y" }}</td>
-                    <td><a href="{% url 'finance:invoice_pay' invoice.number %}"><i class="nav-icon fas fa-donate text-green"></i> Receber</a></td>
-                    <td><a href="{% url 'finance:dividend_pay' invoice.number %}"><i class="nav-icon fas fa-hand-holding-usd text-orange"></i> Dividendo</a></td>
+                    {% if invoice.is_received or not invoice.cost_center.status %}
+                        <td></td>
+                    {% else %}
+                        <td><a href="{% url 'finance:invoice_pay' invoice.number %}"><i class="nav-icon fas fa-donate text-green"></i> Receber</a></td>
+                    {% endif %}
+
+                    {% if invoice.cost_center.status %}
+                        <td><a href="{% url 'finance:dividend_pay' invoice.number %}"><i class="nav-icon fas fa-hand-holding-usd text-orange"></i> Dividendo</a></td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>

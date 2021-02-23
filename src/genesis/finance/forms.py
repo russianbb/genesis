@@ -1,7 +1,10 @@
+from decimal import Decimal
+
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
-from .models import Category, Invoice, Transaction
+from .models import Category, CostCenter, Invoice, Transaction
 
 
 class ExpenseForm(forms.ModelForm):
@@ -15,6 +18,7 @@ class ExpenseForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
         self.fields["category"].queryset = Category.objects.filter(cash_flow="expense")
+        self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
 
 
 class InvoiceForm(forms.ModelForm):
@@ -27,6 +31,7 @@ class InvoiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
+        self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
 
 
 class InvoicePayForm(forms.ModelForm):
@@ -44,6 +49,13 @@ class InvoicePayForm(forms.ModelForm):
         self.fields["document"].widget.attrs = {"class": "form-control"}
         self.fields["amount"].widget.attrs = {"class": "form-control"}
         self.fields["transacted_at"].widget.attrs = {"class": "form-control"}
+
+    def clean_amount(self):
+        invoice_amount = Decimal(self.initial["amount"])
+        form_amount = Decimal(self.data["amount"])
+        if form_amount > invoice_amount:
+            raise ValidationError("O valor recebido é maior que o permitido")
+        return self.data["amount"]
 
 
 def get_dividends_receiver_choices():
@@ -75,3 +87,4 @@ class DividendsPayForm(forms.ModelForm):
         self.fields["amount"].widget.attrs = {"class": "form-control"}
         self.fields["transacted_at"].widget.attrs = {"class": "form-control"}
         self.fields["receiver"].widget.attrs = {"class": "form-control"}
+        self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)

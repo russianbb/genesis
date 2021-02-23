@@ -1,7 +1,14 @@
+from decimal import Decimal
+
 from django.db import models
 from model_utils.choices import Choices
 from utils.constants import CATEGORY_ND, CATEGORY_NF
 from utils.models import AbstractBaseModel
+
+
+def get_upload_to(instance, filename):
+    ext = filename.split(".")[-1]
+    return f"{instance.UPLOAD_PATH}/{instance.get_upload_filename}.{ext}"
 
 
 class ServiceOrder(AbstractBaseModel):
@@ -37,7 +44,11 @@ class CostCenter(AbstractBaseModel):
 
 
 class Invoice(AbstractBaseModel):
-    INVOICE_CATEGORY = Choices(("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"))
+    UPLOAD_PATH = "finance/invoices/"
+
+    INVOICE_CATEGORY = Choices(
+        ("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"), ("loan", "Empréstimo")
+    )
     number = models.PositiveIntegerField(verbose_name="Número")
     issued_at = models.DateField(verbose_name="Data de Emissão")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
@@ -64,16 +75,33 @@ class Invoice(AbstractBaseModel):
         related_name="invoices",
     )
     document = models.FileField(
-        upload_to="finance/invoices/", verbose_name="DANFE", blank=True
+        upload_to=get_upload_to, verbose_name="Arquivo", blank=True
     )
-
-    def __str__(self):
-        return f"{self.get_category_display()} {self.number}"
+    is_received = models.BooleanField(verbose_name="Já recebido?", default=False)
 
     class Meta:
         ordering = ["-issued_at", "-number"]
         verbose_name = "Recebível"
         verbose_name_plural = "Recebíveis"
+
+    def __str__(self):
+        return f"{self.get_category_display()} {self.number:03d}"
+
+    @property
+    def get_number_display(self):
+        return f"{self.number:03d}"
+
+    @property
+    def get_amount_display(self):
+        return (
+            f"{Decimal('%0.2f' % self.amount):,}".replace(",", "d")
+            .replace(".", ",")
+            .replace("d", ".")
+        )
+
+    @property
+    def get_upload_filename(self):
+        return f"{self}-{self.cost_center}"
 
     @property
     def get_transaction_category(self):
@@ -82,6 +110,12 @@ class Invoice(AbstractBaseModel):
         if self.category == "debit":
             return CATEGORY_ND["description"]
         return None
+
+    @property
+    def set_received(self):
+        if not self.is_received:
+            self.is_received = True
+            self.save()
 
 
 class Category(AbstractBaseModel):
@@ -108,6 +142,8 @@ class Category(AbstractBaseModel):
 
 
 class Transaction(AbstractBaseModel):
+    UPLOAD_PATH = "finance/transactions/"
+
     transacted_at = models.DateField(verbose_name="Data da Transação")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
     cost_center = models.ForeignKey(
@@ -124,15 +160,29 @@ class Transaction(AbstractBaseModel):
     )
     notes = models.CharField(max_length=254, verbose_name="Anotações", blank=True)
     document = models.FileField(
-        upload_to="finance/transactions/", verbose_name="Comprovante", blank=True
+        upload_to=get_upload_to, verbose_name="Comprovante", blank=True
     )
+
+    class Meta:
+        ordering = ["-transacted_at", "-id"]
+        verbose_name = "Transação"
+        verbose_name_plural = "Transações"
 
     def __str__(self):
         if not self.notes:
             return self.category.description
         return self.notes
 
-    class Meta:
-        ordering = ["-transacted_at", "-id"]
-        verbose_name = "Transação"
-        verbose_name_plural = "Transações"
+    @property
+    def get_amount_display(self):
+        return (
+            f"{Decimal('%0.2f' % self.amount):,}".replace(",", "d")
+            .replace(".", ",")
+            .replace("d", ".")
+        )
+
+    @property
+    def get_upload_filename(self):
+        subpath = self.transacted_at.strftime("%Y/%m/")
+        when = self.transacted_at.strftime("%d_%m_%Y")
+        return f"{subpath}/{when}-{self.category}-{self.notes}-RS_{self.get_amount_display}"  # noqa
