@@ -57,13 +57,18 @@ class InvoicePayView(SuperUserRequiredMixin, CreateView):
             "amount": self.invoice.amount,
             "cost_center": self.invoice.cost_center,
             "category": transaction_category,
-            "notes": f"Pagamento {self.invoice.get_category_display()} - {self.invoice.number}",  # noqa
+            "notes": f"{transaction_category} - {self.invoice.number}",  # noqa
         }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["invoice"] = self.invoice
         return context
+
+    def form_valid(self, form):
+        self.invoice.set_received
+        messages.success(self.request, "Recebimento cadastrado com sucesso!")
+        return super().form_valid(form)
 
 
 class DividendsPayView(SuperUserRequiredMixin, CreateView):
@@ -97,6 +102,7 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
         transaction = form.save(commit=False)
         transaction.notes = notes
         self.object = transaction.save()
+        messages.success(self.request, "Pagamento de dividendo cadastrado com sucesso!")
         return super().form_valid(form)
 
 

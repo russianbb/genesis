@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} {{ title }} {% endblock %}
+{% block title %} Pagamento de Recebível{% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -16,7 +16,7 @@
 {% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Cadastrar Pagamento de {{ invoice.get_category_display }} - {{invoice.number}}</h3>
+        <h3 class="card-title">Cadastrar Recebimento de {{ invoice.get_category_display }}  #{{invoice.number}}</h3>
     </div>
     <div class="card-body">
         <div class="row">

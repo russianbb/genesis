@@ -3,7 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
 
-# Create your models here.
 class AbstractBaseModel(models.Model):
     created_at = AutoCreatedField(verbose_name="Criado em")
     updated_at = AutoLastModifiedField(verbose_name="Atualizado em")

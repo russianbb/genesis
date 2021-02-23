@@ -7,14 +7,19 @@ from .models import Category, CostCenter, Invoice, ServiceOrder, Transaction
 
 class InvoiceInline(ReadOnlyAdminMixin, admin.TabularInline):
     model = Invoice
-    fields = ("amount", "category", "issued_at")
+    fields = ("get_amount_display", "category", "issued_at")
     readonly_fields = fields
     extra = 0
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
 
 
 class PaidInline(ReadOnlyAdminMixin, admin.TabularInline):
     model = Transaction
-    fields = ("amount", "category", "transacted_at")
+    fields = ("get_amount_display", "category", "transacted_at")
     readonly_fields = fields
     extra = 0
     verbose_name = "Recebido"
@@ -24,10 +29,15 @@ class PaidInline(ReadOnlyAdminMixin, admin.TabularInline):
         queryset = super().get_queryset(request)
         return queryset.filter(category__cash_flow="receipt")
 
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
+
 
 class DividendsInline(ReadOnlyAdminMixin, admin.TabularInline):
     model = Transaction
-    fields = ("amount", "category", "transacted_at")
+    fields = ("get_amount_display", "category", "transacted_at")
     readonly_fields = fields
     extra = 0
     verbose_name = "Dividendos Pagos"
@@ -40,13 +50,28 @@ class DividendsInline(ReadOnlyAdminMixin, admin.TabularInline):
             category__description=CATEGORY_DIVIDENDS["description"],
         )
 
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
+
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("number", "category", "amount", "issued_at")
+    list_display = ("get_number_display", "category", "get_amount_display", "issued_at")
     list_display_links = list_display
     search_fields = list_display
     list_filter = ("category", "issued_at")
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
+
+    def get_number_display(self, obj):
+        return obj.get_number_display
+
+    get_number_display.short_description = "Número"
 
 
 @admin.register(CostCenter)
@@ -78,7 +103,7 @@ class TransactionAdmin(admin.ModelAdmin):
         "id",
         "category",
         "cost_center",
-        "amount",
+        "get_amount_display",
         "transacted_at",
     )
     list_display_links = list_display
