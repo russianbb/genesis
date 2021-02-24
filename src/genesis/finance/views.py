@@ -7,7 +7,34 @@ from utils.constants import CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
 from .forms import DividendsPayForm, ExpenseForm, InvoiceForm, InvoicePayForm
+from .functions import get_balance_until, process_statement_report
 from .models import Category, Invoice, Transaction
+
+
+class StatementReportView(SuperUserRequiredMixin, ListView):
+    template_name = "finance/statement/report.html"
+    context_object_name = "transactions"
+    model = Transaction
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.start_date = datetime.strptime(self.kwargs["start"], "%d-%m-%Y")
+        self.end_date = datetime.strptime(self.kwargs["end"], "%d-%m-%Y")
+        return (
+            queryset.filter(
+                transacted_at__gte=self.start_date, transacted_at__lte=self.end_date
+            )
+            .select_related("category")
+            .order_by("transacted_at",)
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["start_date"] = self.start_date
+        context["end_date"] = self.end_date
+        context["start_balance"] = get_balance_until(self.start_date)
+        context["reports"] = process_statement_report(context)
+        return context
 
 
 class ExpenseCreateView(SuperUserRequiredMixin, CreateView):
@@ -111,3 +138,4 @@ invoice_create = InvoiceCreateView.as_view()
 invoice_list = InvoiceListView.as_view()
 invoice_pay = InvoicePayView.as_view()
 dividends_pay = DividendsPayView.as_view()
+statement_report = StatementReportView.as_view()
