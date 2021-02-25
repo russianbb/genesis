@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from django.db.models import Sum
 
 from .models import Transaction
 
 
-def get_balance_until(date):
+def get_balance_until(date=datetime.now()):
     get_receipt = Transaction.objects.filter(
         transacted_at__lt=date, category__cash_flow="receipt"
     ).aggregate(Sum("amount"))

@@ -2,13 +2,17 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.http import Http404
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 from utils.constants import CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
 from .forms import DividendsPayForm, ExpenseForm, InvoiceForm, InvoicePayForm
 from .functions import get_balance_until, process_statement_report
 from .models import Category, Invoice, Transaction
+
+
+class DashboardView(SuperUserRequiredMixin, TemplateView):
+    template_name = "finance/dashboard.html"
 
 
 class StatementReportView(SuperUserRequiredMixin, ListView):
@@ -133,9 +137,10 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+dashboard = DashboardView.as_view()
+dividends_pay = DividendsPayView.as_view()
 expense_create = ExpenseCreateView.as_view()
 invoice_create = InvoiceCreateView.as_view()
 invoice_list = InvoiceListView.as_view()
 invoice_pay = InvoicePayView.as_view()
-dividends_pay = DividendsPayView.as_view()
 statement_report = StatementReportView.as_view()

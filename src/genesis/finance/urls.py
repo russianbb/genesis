@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    dashboard,
     dividends_pay,
     expense_create,
     invoice_create,
@@ -12,6 +13,7 @@ from .views import (
 app_name = "finance"
 
 urlpatterns = [
+    path("painel/", dashboard, name="dashboard"),
     path("despesa/", expense_create, name="expense"),
     path("recebiveis/", invoice_list, name="invoice_list"),
     path("recebiveis/adicionar", invoice_create, name="invoice"),
