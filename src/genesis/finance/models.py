@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.db import models
+from django.db.models import Sum
 from model_utils.choices import Choices
 from utils.constants import CATEGORY_ND, CATEGORY_NF
 from utils.models import AbstractBaseModel
@@ -41,6 +42,20 @@ class CostCenter(AbstractBaseModel):
         ordering = ["-created_at"]
         verbose_name = "Centro de Custo"
         verbose_name_plural = "Centros de Custos"
+
+    @property
+    def get_billings_amount(self):
+        query = self.invoices.all().aggregate(Sum("amount"))
+        if query.get("amount__sum"):
+            return query["amount__sum"]
+        return 0
+
+    @property
+    def get_billings_not_received(self):
+        query = self.invoices.filter(is_received=False).all().aggregate(Sum("amount"))
+        if query.get("amount__sum"):
+            return query["amount__sum"]
+        return 0
 
 
 class Invoice(AbstractBaseModel):

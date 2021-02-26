@@ -1,8 +1,59 @@
 from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
 from django.db.models import Sum
 
-from .models import Transaction
+from .models import CostCenter, Invoice, Transaction
+
+
+def get_active_cost_center():
+    return CostCenter.objects.filter(status=True).all()
+
+
+def get_invoice_not_received_data():
+    amount_not_received = 0
+    query = Invoice.objects.all()
+
+    not_received = query.filter(is_received=False)
+
+    aggregate_not_received = not_received.aggregate(Sum("amount"))
+    if aggregate_not_received.get("amount__sum"):
+        amount_not_received = aggregate_not_received["amount__sum"]
+
+    return {
+        "amount_not_received": amount_not_received,
+        "invoices_not_received": not_received,
+    }
+
+
+def get_billings_history():
+    billings_12_months = 0
+    billings_annual = 0
+
+    today = datetime.now()
+
+    begin_12_months = (today - relativedelta(years=1)).replace(day=1)
+    end_12_months = today.replace(day=1) - relativedelta(days=1)
+
+    query = Invoice.objects.filter(category="invoice").all()
+
+    aggregate_12_months = query.filter(
+        issued_at__gte=begin_12_months, issued_at__lte=end_12_months
+    ).aggregate(Sum("amount"))
+    if aggregate_12_months.get("amount__sum"):
+        billings_12_months = aggregate_12_months["amount__sum"]
+
+    begin_year = today.replace(day=1, month=1)
+    aggregate_annual = query.filter(
+        issued_at__gte=begin_year, issued_at__lte=today
+    ).aggregate(Sum("amount"))
+    if aggregate_annual.get("amount__sum"):
+        billings_annual = aggregate_annual["amount__sum"]
+
+    return {
+        "billings_12_months": billings_12_months,
+        "billings_annual": billings_annual,
+    }
 
 
 def get_balance_until(date=datetime.now()):

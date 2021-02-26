@@ -58,7 +58,13 @@ class DividendsInline(ReadOnlyAdminMixin, admin.TabularInline):
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("get_number_display", "category", "get_amount_display", "issued_at")
+    list_display = (
+        "get_number_display",
+        "category",
+        "get_amount_display",
+        "cost_center",
+        "issued_at",
+    )
     list_display_links = list_display
     search_fields = list_display
     list_filter = ("category", "issued_at")

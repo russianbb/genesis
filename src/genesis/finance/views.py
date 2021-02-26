@@ -7,12 +7,34 @@ from utils.constants import CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
 from .forms import DividendsPayForm, ExpenseForm, InvoiceForm, InvoicePayForm
-from .functions import get_balance_until, process_statement_report
+from .functions import (
+    get_active_cost_center,
+    get_balance_until,
+    get_billings_history,
+    get_invoice_not_received_data,
+    process_statement_report,
+)
 from .models import Category, Invoice, Transaction
 
 
 class DashboardView(SuperUserRequiredMixin, TemplateView):
     template_name = "finance/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        context["balance"] = get_balance_until()
+
+        invoice_data = get_invoice_not_received_data()
+        context["invoices_not_received"] = invoice_data["invoices_not_received"]
+        context["amount_not_received"] = invoice_data["amount_not_received"]
+
+        billings_data = get_billings_history()
+        context["billings_12_months"] = billings_data["billings_12_months"]
+        context["billings_annual"] = billings_data["billings_annual"]
+
+        context["cost_centers"] = get_active_cost_center()
+
+        return context
 
 
 class StatementReportView(SuperUserRequiredMixin, ListView):
