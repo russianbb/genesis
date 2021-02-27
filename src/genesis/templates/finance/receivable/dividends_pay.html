@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Recebíveis{% endblock %}
+{% block title %} Pagamento de Dividendos{% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -12,27 +12,19 @@
 {% include "_includes/errors_form.html" %}
 {{ form.media }}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post">
 {% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Cadastrar Recebível</h3>
+        <h3 class="card-title">Cadastrar Pagamento de Dividendos da {{ receivable.get_category_display }} - {{receivable.number}}</h3>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.number.label_tag }}
+                {{ form.transacted_at.label_tag }}
             </div>
             <div class="col-sm-4 col-form-label">
-                {{ form.number }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-form-label">
-                {{ form.issued_at.label_tag }}
-            </div>
-            <div class="col-sm-4 col-form-label">
-                {{ form.issued_at }}
+                {{ form.transacted_at }}
             </div>
         </div>
         <div class="row">
@@ -45,10 +37,10 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.taxes.label_tag }}
+                {{ form.cost_center.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.taxes }}
+                {{ form.cost_center }}
             </div>
         </div>
         <div class="row">
@@ -61,29 +53,20 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.service_order.label_tag }}
+                {{ form.file.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.service_order }}
+                {{ form.file }}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.cost_center.label_tag }}
+                {{ form.receiver.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.cost_center }}
+                {{ form.receiver }}
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-2 col-form-label">
-                {{ form.document.label_tag }}
-            </div>
-            <div class="col-sm-4">
-                {{ form.document }}
-            </div>
-        </div>
-
         <br>
         <div class="row">
             <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"

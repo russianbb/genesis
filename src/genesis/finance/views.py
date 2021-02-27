@@ -7,15 +7,16 @@ from django.views.generic import CreateView, ListView, TemplateView
 from utils.constants import CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
-from .forms import DividendsPayForm, ExpenseForm, InvoiceForm, InvoicePayForm
+from .forms import DividendsPayForm, ExpenseForm, ReceivableForm, ReceivableReceiveForm
 from .functions import (
     get_active_cost_center,
     get_balance_until,
     get_billings_history,
-    get_invoice_not_received_data,
+    get_cost_center_chart_data,
+    get_receivables_not_received_data,
     process_statement_report,
 )
-from .models import Category, Invoice, Transaction
+from .models import Category, Receivable, Transaction
 
 
 class DashboardView(SuperUserRequiredMixin, TemplateView):
@@ -25,9 +26,11 @@ class DashboardView(SuperUserRequiredMixin, TemplateView):
         context = {}
         context["balance"] = get_balance_until()
 
-        invoice_data = get_invoice_not_received_data()
-        context["invoices_not_received"] = invoice_data["invoices_not_received"]
-        context["amount_not_received"] = invoice_data["amount_not_received"]
+        receivables_data = get_receivables_not_received_data()
+        context["receivables_not_received"] = receivables_data[
+            "receivables_not_received"
+        ]
+        context["amount_not_received"] = receivables_data["amount_not_received"]
 
         billings_data = get_billings_history()
         context["billings_12_months"] = billings_data["billings_12_months"]
@@ -35,7 +38,7 @@ class DashboardView(SuperUserRequiredMixin, TemplateView):
 
         context["cost_centers_active"] = get_active_cost_center()
 
-        context[""]
+        context["cost_center_chart"] = get_cost_center_chart_data()
 
         return context
 
@@ -86,10 +89,10 @@ class ExpenseCreateView(SuperUserRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class InvoiceCreateView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/invoice/create_edit.html"
-    form_class = InvoiceForm
-    model = Invoice
+class ReceivableCreateView(SuperUserRequiredMixin, CreateView):
+    template_name = "finance/receivable/create_edit.html"
+    form_class = ReceivableForm
+    model = Receivable
     success_url = "/"
 
     def form_valid(self, form):
@@ -97,73 +100,73 @@ class InvoiceCreateView(SuperUserRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class InvoiceListView(SuperUserRequiredMixin, ListView):
-    template_name = "finance/invoice/list.html"
-    context_object_name = "invoices"
-    model = Invoice
+class ReceivableListView(SuperUserRequiredMixin, ListView):
+    template_name = "finance/receivable/list.html"
+    context_object_name = "receivables"
+    model = Receivable
 
 
-class InvoicePayView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/invoice/pay.html"
+class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
+    template_name = "finance/receivable/pay.html"
     model = Transaction
-    form_class = InvoicePayForm
+    form_class = ReceivableReceiveForm
     success_url = "/"  # TODO: redirecionar para a página do centro de custo
 
     def get_initial(self):
         number = self.kwargs["number"]
-        self.invoice = Invoice.objects.filter(number=number).first()
+        self.receivable = Receivable.objects.filter(number=number).first()
         transaction_category = Category.objects.filter(
-            description=self.invoice.get_transaction_category
+            description=self.receivable.get_transaction_category
         ).first()
-        if not self.invoice:
+        if not self.receivable:
             raise Http404
         return {
             "transacted_at": datetime.now(),
-            "amount": self.invoice.amount,
-            "cost_center": self.invoice.cost_center,
+            "amount": self.receivable.amount,
+            "cost_center": self.receivable.cost_center,
             "category": transaction_category,
-            "notes": f"{transaction_category} - {self.invoice.number}",  # noqa
+            "notes": f"{transaction_category} - {self.receivable.number}",  # noqa
         }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["invoice"] = self.invoice
+        context["receivable"] = self.receivable
         return context
 
     def form_valid(self, form):
-        self.invoice.set_received
+        self.receivable.set_received
         messages.success(self.request, "Recebimento cadastrado com sucesso!")
         return super().form_valid(form)
 
 
 class DividendsPayView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/invoice/dividends_pay.html"
+    template_name = "finance/receivable/dividends_pay.html"
     model = Transaction
     form_class = DividendsPayForm
     success_url = "/"  # TODO: redirecionar para a página do centro de custo
 
     def get_initial(self):
         number = self.kwargs["number"]
-        self.invoice = Invoice.objects.filter(number=number).first()
+        self.receivable = Receivable.objects.filter(number=number).first()
         transaction_category = Category.objects.filter(
             description=CATEGORY_DIVIDENDS["description"]
         ).first()
-        if not self.invoice:
+        if not self.receivable:
             raise Http404
         return {
             "transacted_at": datetime.now(),
-            "cost_center": self.invoice.cost_center,
+            "cost_center": self.receivable.cost_center,
             "category": transaction_category,
-            "notes": f"Pagamento de Dividendos | {self.invoice.get_category_display()} - {self.invoice.number}",  # noqa
+            "notes": f"Pagamento de Dividendos | {self.receivable.get_category_display()} - {self.receivable.number}",  # noqa
         }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["invoice"] = self.invoice
+        context["receivable"] = self.receivable
         return context
 
     def form_valid(self, form):
-        notes = f"{self.invoice.get_category_display()} {self.invoice.number} | {form.cleaned_data['receiver']}"  # noqa
+        notes = f"{self.receivable.get_category_display()} {self.receivable.number} | {form.cleaned_data['receiver']}"  # noqa
         transaction = form.save(commit=False)
         transaction.notes = notes
         self.object = transaction.save()
@@ -174,7 +177,7 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
 dashboard = DashboardView.as_view()
 dividends_pay = DividendsPayView.as_view()
 expense_create = ExpenseCreateView.as_view()
-invoice_create = InvoiceCreateView.as_view()
-invoice_list = InvoiceListView.as_view()
-invoice_pay = InvoicePayView.as_view()
+receivable_create = ReceivableCreateView.as_view()
+receivable_list = ReceivableListView.as_view()
+receivable_receive = ReceivableReceiveView.as_view()
 statement_report = StatementReportView.as_view()

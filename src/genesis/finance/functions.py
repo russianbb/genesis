@@ -3,16 +3,24 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Sum
 
-from .models import CostCenter, Invoice, Transaction
+from .models import CostCenter, Receivable, Transaction
+
+
+def get_cost_center_chart_data():
+    pass
 
 
 def get_active_cost_center():
-    return CostCenter.objects.filter(status=True).all()
+    return (
+        CostCenter.objects.filter(status=True)
+        .exclude(description="Administrativo")
+        .all()
+    )
 
 
-def get_invoice_not_received_data():
+def get_receivables_not_received_data():
     amount_not_received = 0
-    query = Invoice.objects.all()
+    query = Receivable.objects.all()
 
     not_received = query.filter(is_received=False)
 
@@ -22,7 +30,7 @@ def get_invoice_not_received_data():
 
     return {
         "amount_not_received": amount_not_received,
-        "invoices_not_received": not_received,
+        "receivables_not_received": not_received,
     }
 
 
@@ -35,7 +43,7 @@ def get_billings_history():
     begin_12_months = (today - relativedelta(years=1)).replace(day=1)
     end_12_months = today.replace(day=1) - relativedelta(days=1)
 
-    query = Invoice.objects.filter(category="invoice").all()
+    query = Receivable.objects.filter(category="invoice").all()
 
     aggregate_12_months = query.filter(
         issued_at__gte=begin_12_months, issued_at__lte=end_12_months
@@ -58,10 +66,10 @@ def get_billings_history():
 
 def get_balance_until(date=datetime.now()):
     get_receipt = Transaction.objects.filter(
-        transacted_at__lt=date, category__cash_flow="receipt"
+        transacted_at__lte=date, category__cash_flow="receipt"
     ).aggregate(Sum("amount"))
     get_expense = Transaction.objects.filter(
-        transacted_at__lt=date, category__cash_flow="expense"
+        transacted_at__lte=date, category__cash_flow="expense"
     ).aggregate(Sum("amount"))
     receipt = 0 if get_receipt["amount__sum"] is None else get_receipt["amount__sum"]
     expense = 0 if get_expense["amount__sum"] is None else get_expense["amount__sum"]
@@ -83,7 +91,7 @@ def process_statement_report(context):
             "cost_center": _.cost_center,
             "amount": amount,
             "balance": balance,
-            "document": _.document,
+            "file": _.file,
             "notes": _.notes,
         }
         reports.append(row)

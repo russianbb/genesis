@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Pagamento de Recebível{% endblock %}
+{% block title %} Recebíveis{% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -12,19 +12,27 @@
 {% include "_includes/errors_form.html" %}
 {{ form.media }}
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Cadastrar Recebimento de {{ invoice.get_category_display }}  #{{invoice.number}}</h3>
+        <h3 class="card-title">Cadastrar Recebível</h3>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.transacted_at.label_tag }}
+                {{ form.number.label_tag }}
             </div>
             <div class="col-sm-4 col-form-label">
-                {{ form.transacted_at }}
+                {{ form.number }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.issued_at.label_tag }}
+            </div>
+            <div class="col-sm-4 col-form-label">
+                {{ form.issued_at }}
             </div>
         </div>
         <div class="row">
@@ -37,10 +45,10 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.cost_center.label_tag }}
+                {{ form.taxes.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.cost_center }}
+                {{ form.taxes }}
             </div>
         </div>
         <div class="row">
@@ -53,20 +61,29 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.document.label_tag }}
+                {{ form.service_order.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.document }}
+                {{ form.service_order }}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.notes.label_tag }}
+                {{ form.cost_center.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.notes }}
+                {{ form.cost_center }}
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.file.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.file }}
+            </div>
+        </div>
+
         <br>
         <div class="row">
             <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"

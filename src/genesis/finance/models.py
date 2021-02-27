@@ -45,28 +45,30 @@ class CostCenter(AbstractBaseModel):
 
     @property
     def get_billings_amount(self):
-        query = self.invoices.all().aggregate(Sum("amount"))
+        query = self.receivables.all().aggregate(Sum("amount"))
         if query.get("amount__sum"):
             return query["amount__sum"]
         return "-"
 
     @property
     def get_billings_not_received(self):
-        query = self.invoices.filter(is_received=False).all().aggregate(Sum("amount"))
+        query = (
+            self.receivables.filter(is_received=False).all().aggregate(Sum("amount"))
+        )
         if query.get("amount__sum"):
             return query["amount__sum"]
         return "-"
 
     @property
     def get_billings_received(self):
-        query = self.invoices.filter(is_received=True).all().aggregate(Sum("amount"))
+        query = self.receivables.filter(is_received=True).all().aggregate(Sum("amount"))
         if query.get("amount__sum"):
             return query["amount__sum"]
         return "-"
 
 
-class Invoice(AbstractBaseModel):
-    UPLOAD_PATH = "finance/invoices/"
+class Receivable(AbstractBaseModel):
+    UPLOAD_PATH = "finance/receivables/"
 
     INVOICE_CATEGORY = Choices(
         ("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"), ("loan", "Empréstimo")
@@ -88,17 +90,15 @@ class Invoice(AbstractBaseModel):
         ServiceOrder,
         on_delete=models.CASCADE,
         verbose_name="Ordem de Serviço",
-        related_name="invoices",
+        related_name="receivables",
     )
     cost_center = models.ForeignKey(
         CostCenter,
         on_delete=models.CASCADE,
         verbose_name="Centro de Custo",
-        related_name="invoices",
+        related_name="receivables",
     )
-    document = models.FileField(
-        upload_to=get_upload_to, verbose_name="Arquivo", blank=True
-    )
+    file = models.FileField(upload_to=get_upload_to, verbose_name="Arquivo", blank=True)
     is_received = models.BooleanField(verbose_name="Já recebido?", default=False)
 
     class Meta:
@@ -163,6 +163,54 @@ class Category(AbstractBaseModel):
         verbose_name_plural = "Categorias"
 
 
+class Bill(AbstractBaseModel):
+    UPLOAD_PATH = "finance/bills/"
+
+    due_date = models.DateField(verbose_name="Data de Vencimento")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
+    cost_center = models.ForeignKey(
+        CostCenter,
+        related_name="bills",
+        on_delete=models.CASCADE,
+        verbose_name="Centro de Custo",
+    )
+    category = models.ForeignKey(
+        Category,
+        related_name="bills",
+        on_delete=models.CASCADE,
+        verbose_name="Categoria",
+    )
+    notes = models.CharField(max_length=254, verbose_name="Anotações", blank=True)
+    file = models.FileField(
+        upload_to=get_upload_to, verbose_name="Comprovante", blank=True
+    )
+    is_paid = models.BooleanField(verbose_name="Pago?", default=False)
+
+    class Meta:
+        ordering = ["-due_date", "-id"]
+        verbose_name = "Conta a Pagar"
+        verbose_name_plural = "Contas a Pagar"
+
+    def __str__(self):
+        if not self.notes:
+            return self.category.description
+        return self.notes
+
+    @property
+    def get_amount_display(self):
+        return (
+            f"{Decimal('%0.2f' % self.amount):,}".replace(",", "d")
+            .replace(".", ",")
+            .replace("d", ".")
+        )
+
+    @property
+    def get_upload_filename(self):
+        subpath = self.due_date.strftime("%Y/%m/")
+        when = self.due_date.strftime("%d_%m_%Y")
+        return f"{subpath}/{when}-{self.category}-{self.notes}-RS_{self.get_amount_display}"  # noqa
+
+
 class Transaction(AbstractBaseModel):
     UPLOAD_PATH = "finance/transactions/"
 
@@ -181,8 +229,16 @@ class Transaction(AbstractBaseModel):
         verbose_name="Categoria",
     )
     notes = models.CharField(max_length=254, verbose_name="Anotações", blank=True)
-    document = models.FileField(
+    file = models.FileField(
         upload_to=get_upload_to, verbose_name="Comprovante", blank=True
+    )
+    bill = models.ForeignKey(
+        Bill,
+        related_name="transaction",
+        on_delete=models.CASCADE,
+        verbose_name="Conta a Pagar",
+        null=True,
+        blank=True,
     )
 
     class Meta:

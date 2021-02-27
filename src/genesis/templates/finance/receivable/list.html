@@ -20,7 +20,7 @@
 
 {% block content %}
 
-<a href="{% url 'finance:invoice' %}">
+<a href="{% url 'finance:receivable' %}">
     <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" value="Adicionar Recebível">
 </a>
 
@@ -43,20 +43,20 @@
                 </tr>
             </thead>
             <tbody>
-                {% for invoice in invoices %}
+                {% for receivable in receivables %}
                 <tr>
-                    <td>{{ invoice.number }}</td>
-                    <td>{{ invoice.get_category_display }}</td>
-                    <td>{{ invoice.amount|intcomma }}</td>
-                    <td>{{ invoice.issued_at|date:"d/m/Y" }}</td>
-                    {% if invoice.is_received or not invoice.cost_center.status %}
+                    <td>{{ receivable.number }}</td>
+                    <td>{{ receivable.get_category_display }}</td>
+                    <td>{{ receivable.amount|intcomma }}</td>
+                    <td>{{ receivable.issued_at|date:"d/m/Y" }}</td>
+                    {% if receivable.is_received or not receivable.cost_center.status %}
                         <td></td>
                     {% else %}
-                        <td><a href="{% url 'finance:invoice_pay' invoice.number %}"><i class="nav-icon fas fa-donate text-green"></i> Receber</a></td>
+                        <td><a href="{% url 'finance:receivable_receive' receivable.number %}"><i class="nav-icon fas fa-donate text-green"></i> Receber</a></td>
                     {% endif %}
 
-                    {% if invoice.cost_center.status %}
-                        <td><a href="{% url 'finance:dividend_pay' invoice.number %}"><i class="nav-icon fas fa-hand-holding-usd text-orange"></i> Dividendo</a></td>
+                    {% if receivable.cost_center.status %}
+                        <td><a href="{% url 'finance:dividend_pay' receivable.number %}"><i class="nav-icon fas fa-hand-holding-usd text-orange"></i> Dividendo</a></td>
                     {% else %}
                         <td></td>
                     {% endif %}

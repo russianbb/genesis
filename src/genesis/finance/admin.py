@@ -2,11 +2,11 @@ from django.contrib import admin
 from utils.admin import ReadOnlyAdminMixin
 from utils.constants import CATEGORY_DIVIDENDS
 
-from .models import Category, CostCenter, Invoice, ServiceOrder, Transaction
+from .models import Bill, Category, CostCenter, Receivable, ServiceOrder, Transaction
 
 
-class InvoiceInline(ReadOnlyAdminMixin, admin.TabularInline):
-    model = Invoice
+class ReceivableInline(ReadOnlyAdminMixin, admin.TabularInline):
+    model = Receivable
     fields = ("get_amount_display", "category", "issued_at")
     readonly_fields = fields
     extra = 0
@@ -56,8 +56,8 @@ class DividendsInline(ReadOnlyAdminMixin, admin.TabularInline):
     get_amount_display.short_description = "Valor"
 
 
-@admin.register(Invoice)
-class InvoiceAdmin(admin.ModelAdmin):
+@admin.register(Receivable)
+class ReceivableAdmin(admin.ModelAdmin):
     list_display = (
         "get_number_display",
         "category",
@@ -85,7 +85,7 @@ class CostCenterAdmin(admin.ModelAdmin):
     list_display = ("id", "description", "updated_at")
     list_display_links = ("id", "description")
     search_fields = ("id", "description")
-    inlines = (InvoiceInline, PaidInline, DividendsInline)
+    inlines = (ReceivableInline, PaidInline, DividendsInline)
 
 
 @admin.register(Category)
@@ -101,6 +101,26 @@ class ServiceOrderAdmin(admin.ModelAdmin):
     list_display = ("id", "description", "buy_order", "updated_at")
     list_display_links = ("id", "description")
     search_fields = ("id", "description", "buy_order")
+
+
+@admin.register(Bill)
+class BillAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "category",
+        "cost_center",
+        "get_amount_display",
+        "due_date",
+    )
+    list_display_links = list_display
+    search_fields = (
+        "id",
+        "category__description",
+        "cost_center__description",
+        "notes",
+        "amount",
+    )
+    list_filter = ("category", "cost_center", "due_date")
 
 
 @admin.register(Transaction)
