@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.http import Http404
 from django.views.generic import CreateView, ListView, TemplateView
@@ -32,7 +33,9 @@ class DashboardView(SuperUserRequiredMixin, TemplateView):
         context["billings_12_months"] = billings_data["billings_12_months"]
         context["billings_annual"] = billings_data["billings_annual"]
 
-        context["cost_centers"] = get_active_cost_center()
+        context["cost_centers_active"] = get_active_cost_center()
+
+        context[""]
 
         return context
 
@@ -44,8 +47,17 @@ class StatementReportView(SuperUserRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        self.start_date = datetime.strptime(self.kwargs["start"], "%d-%m-%Y")
-        self.end_date = datetime.strptime(self.kwargs["end"], "%d-%m-%Y")
+
+        params = self.request.GET
+
+        self.start_date = datetime.now() - relativedelta(days=1, months=1)
+        if params.get("start"):
+            self.start_date = datetime.strptime(params["start"], ("%d-%m-%Y"))
+
+        self.end_date = datetime.now()
+        if params.get("end"):
+            self.end_date = datetime.strptime(params["end"], ("%d-%m-%Y"))
+
         return (
             queryset.filter(
                 transacted_at__gte=self.start_date, transacted_at__lte=self.end_date

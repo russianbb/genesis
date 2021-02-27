@@ -48,14 +48,21 @@ class CostCenter(AbstractBaseModel):
         query = self.invoices.all().aggregate(Sum("amount"))
         if query.get("amount__sum"):
             return query["amount__sum"]
-        return 0
+        return "-"
 
     @property
     def get_billings_not_received(self):
         query = self.invoices.filter(is_received=False).all().aggregate(Sum("amount"))
         if query.get("amount__sum"):
             return query["amount__sum"]
-        return 0
+        return "-"
+
+    @property
+    def get_billings_received(self):
+        query = self.invoices.filter(is_received=True).all().aggregate(Sum("amount"))
+        if query.get("amount__sum"):
+            return query["amount__sum"]
+        return "-"
 
 
 class Invoice(AbstractBaseModel):

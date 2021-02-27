@@ -8,6 +8,29 @@
 {{ block.super}}
 <!-- daterange picker -->
 <link rel="stylesheet" href="{% static 'admin-lte/plugins/daterangepicker/daterangepicker.css' %}">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/fontawesome-free/css/all.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/daterangepicker/daterangepicker.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+<!-- Tempusdominus Bbootstrap 4 -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'admin-lte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'admin-lte/dist/css/adminlte.min.css' %}">
+<!-- Google Font: Source Sans Pro -->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
 {% endblock %}
 
 {% block content %}
@@ -35,17 +58,17 @@
             <div class="col-md-4">
 
                 <!-- Saldo Atual -->
-                    <div class="info-box">
-                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-wallet"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Saldo Atual</span>
-                            <span class="info-box-number">
-                                <small>R$</small>
-                                {{ balance|intcomma }}
-                                <!-- TODO: saldo do dia -->
-                            </span>
-                        </div>
+                <div class="info-box">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-wallet"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Saldo Atual</span>
+                        <span class="info-box-number">
+                            <small>R$</small>
+                            {{ balance|intcomma }}
+                            <!-- TODO: saldo do dia -->
+                        </span>
                     </div>
+                </div>
 
                 <!-- A receber -->
                 <div class="info-box mb-3">
@@ -54,7 +77,7 @@
                         <span class="info-box-text">A receber</span>
                         <span class="info-box-number">
                             <small>R$ </small>
-                            {{ invoices_not_received_amount|intcomma }}
+                            {{ amount_not_received|intcomma }}
                             <!-- TODO: saldo do dia -->
                         </span>
                     </div>
@@ -87,31 +110,58 @@
                 </div>
 
                 <!-- Extrato -->
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Extrato</h3>
-                    </div>
-                    <div class="card-body">
-                        <!-- Date range -->
-                        <div class="form-group">
-                            <label>Período</label>
-
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                    </span>
+                <form action="{% url 'finance:statement_report' %}" method="GET">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Extrato</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Date -->
+                            <div class="form-group">
+                                <label>De:</label>
+                                <div class="input-group date" id="statementreportstart" data-target-input="nearest">
+                                    <input name="start" type="text" class="form-control datetimepicker-input" data-target="#statementreportstart" />
+                                    <div class="input-group-append" data-target="#statementreportstart" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control float-right" id="reservation">
                             </div>
+
+                            <div class="form-group">
+                                <label>Até:</label>
+                                <div class="input-group date" id="statementreportend" data-target-input="nearest">
+                                    <input name="end" type="text" class="form-control datetimepicker-input" data-target="#statementreportend" />
+                                    <div class="input-group-append" data-target="#statementreportend" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary float-right">Solicitar</button>
                         </div>
                     </div>
-                </div>
+                </form>
 
             </div>
 
             <!-- Right Column -->
             <div class="col-md-8">
+
+                <!-- BAR CHART -->
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">Centro de Custos</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                    class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart">
+                            <canvas id="barChart"
+                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Invoice not recieved -->
                 <div class="card card-info">
@@ -124,7 +174,8 @@
                                 <tr>
                                     <th>Data Emissão</th>
                                     <th>Recebível</th>
-                                    <th>Valor</th>
+                                    <th class="text-right">Centro Custo</th>
+                                    <th class="text-right">Valor</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -132,6 +183,7 @@
                                 <tr>
                                     <td>{{ invoice.issued_at|date:"d/m/Y" }}</td>
                                     <td>{{ invoice.get_category_display }} - {{ invoice.get_number_display }}</td>
+                                    <td class="text-right">{{ invoice.cost_center }}</td>
                                     <td class="text-right">{{ invoice.get_amount_display }}</td>
                                 </tr>
                                 {% endfor %}
@@ -151,16 +203,18 @@
                                 <tr>
                                     <th>Nº</th>
                                     <th>Descrição</th>
-                                    <th>Faturado</th>
-                                    <th>A Receber</th>
+                                    <th class="text-right">Faturado</th>
+                                    <th class="text-right">Recebido</th>
+                                    <th class="text-right">A Receber</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for cost_center in cost_centers %}
+                                {% for cost_center in cost_centers_active %}
                                 <tr>
                                     <td>{{ cost_center.id }}</td>
                                     <td>{{ cost_center.description }}</td>
                                     <td class="text-right">{{ cost_center.get_billings_amount|intcomma }}</td>
+                                    <td class="text-right">{{ cost_center.get_billings_received|intcomma }}</td>
                                     <td class="text-right">{{ cost_center.get_billings_not_received|intcomma }}</td>
                                 </tr>
                                 {% endfor %}
@@ -173,28 +227,6 @@
         </div>
         <!--/. End of first row -->
 
-        <!-- Cost Center Chart Row -->
-        <div class="row">
-            <div class="col-md-12">
-
-                <!-- BAR CHART -->
-                <div class="card card-warning">
-                    <div class="card-header">
-                        <h3 class="card-title">Centro de Custos</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <!--/. End of Cost Center Chart Row -->
     </div>
     <!--/. container-fluid -->
 </section>
@@ -207,12 +239,12 @@
 {% block extra_js %}
 <!-- jQuery -->
 <script src="{% static 'admin-lte/plugins/jquery/jquery.min.js' %}"></script>
-<!-- ChartJS -->
-<script src="{% static 'admin-lte/plugins/chart.js/Chart.min.js' %}"></script>
-<!-- date-range-picker -->
-<script src="{% static 'admin-lte/plugins/daterangepicker/daterangepicker.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- Select2 -->
 <script src="{% static 'admin-lte/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'admin-lte/plugins/chart.js/Chart.min.js' %}"></script>
 <!-- Bootstrap4 Duallistbox -->
 <script src="{% static 'admin-lte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
 <!-- InputMask -->
@@ -231,73 +263,15 @@
 
 <script>
     $(function () {
-        //Initialize Select2 Elements
-        $('.select2').select2()
 
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-
-        //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-        //Datemask2 mm/dd/yyyy
-        $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-        //Money Euro
-        $('[data-mask]').inputmask()
-
-        //Date range picker
-        $('#reservationdate').datetimepicker({
-            format: 'L'
-        });
-        //Date range picker
-        $('#reservation').daterangepicker()
-        //Date range picker with time picker
-        $('#reservationtime').daterangepicker({
-            timePicker: true,
-            timePickerIncrement: 30,
-            locale: {
-                format: 'MM/DD/YYYY hh:mm A'
-            }
-        })
-        //Date range as a button
-        $('#daterange-btn').daterangepicker(
-            {
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment()
-            },
-            function (start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-            }
-        )
-
-        //Timepicker
-        $('#timepicker').datetimepicker({
-            format: 'LT'
-        })
-
-        //Bootstrap Duallistbox
-        $('.duallistbox').bootstrapDualListbox()
-
-        //Colorpicker
-        $('.my-colorpicker1').colorpicker()
-        //color picker with addon
-        $('.my-colorpicker2').colorpicker()
-
-        $('.my-colorpicker2').on('colorpickerChange', function (event) {
-            $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+        //Extrato - De
+        $('#statementreportstart').datetimepicker({
+            format: 'DD-MM-YYYY'
         });
 
-        $("input[data-bootstrap-switch]").each(function () {
-            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        //Extrato - Ate
+        $('#statementreportend').datetimepicker({
+            format: 'DD-MM-YYYY'
         });
 
     })

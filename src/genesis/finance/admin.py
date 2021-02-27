@@ -113,5 +113,11 @@ class TransactionAdmin(admin.ModelAdmin):
         "transacted_at",
     )
     list_display_links = list_display
-    search_fields = list_display
+    search_fields = (
+        "id",
+        "category__description",
+        "cost_center__description",
+        "notes",
+        "amount",
+    )
     list_filter = ("category", "cost_center", "transacted_at")
