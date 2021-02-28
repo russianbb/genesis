@@ -2,11 +2,11 @@ from django.contrib import admin
 from utils.admin import ReadOnlyAdminMixin
 from utils.constants import CATEGORY_DIVIDENDS
 
-from .models import Category, CostCenter, Invoice, ServiceOrder, Transaction
+from .models import Bill, Category, CostCenter, Receivable, ServiceOrder, Transaction
 
 
-class InvoiceInline(ReadOnlyAdminMixin, admin.TabularInline):
-    model = Invoice
+class ReceivableInline(ReadOnlyAdminMixin, admin.TabularInline):
+    model = Receivable
     fields = ("get_amount_display", "category", "issued_at")
     readonly_fields = fields
     extra = 0
@@ -56,9 +56,15 @@ class DividendsInline(ReadOnlyAdminMixin, admin.TabularInline):
     get_amount_display.short_description = "Valor"
 
 
-@admin.register(Invoice)
-class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("get_number_display", "category", "get_amount_display", "issued_at")
+@admin.register(Receivable)
+class ReceivableAdmin(admin.ModelAdmin):
+    list_display = (
+        "get_number_display",
+        "category",
+        "get_amount_display",
+        "cost_center",
+        "issued_at",
+    )
     list_display_links = list_display
     search_fields = list_display
     list_filter = ("category", "issued_at")
@@ -79,7 +85,7 @@ class CostCenterAdmin(admin.ModelAdmin):
     list_display = ("id", "description", "updated_at")
     list_display_links = ("id", "description")
     search_fields = ("id", "description")
-    inlines = (InvoiceInline, PaidInline, DividendsInline)
+    inlines = (ReceivableInline, PaidInline, DividendsInline)
 
 
 @admin.register(Category)
@@ -97,6 +103,32 @@ class ServiceOrderAdmin(admin.ModelAdmin):
     search_fields = ("id", "description", "buy_order")
 
 
+@admin.register(Bill)
+class BillAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "category",
+        "cost_center",
+        "get_amount_display",
+        "due_date",
+        "is_paid",
+    )
+    list_display_links = list_display
+    search_fields = (
+        "id",
+        "category__description",
+        "cost_center__description",
+        "notes",
+        "amount",
+    )
+    list_filter = ("category", "cost_center", "due_date")
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
+
+
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = (
@@ -107,5 +139,16 @@ class TransactionAdmin(admin.ModelAdmin):
         "transacted_at",
     )
     list_display_links = list_display
-    search_fields = list_display
+    search_fields = (
+        "id",
+        "category__description",
+        "cost_center__description",
+        "notes",
+        "amount",
+    )
     list_filter = ("category", "cost_center", "transacted_at")
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Pagamento de Dividendos{% endblock %}
+{% block title %} Pagamento de Recebível{% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -16,7 +16,7 @@
 {% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Cadastrar Pagamento de Dividendos da {{ invoice.get_category_display }} - {{invoice.number}}</h3>
+        <h3 class="card-title">Cadastrar Recebimento de {{ receivable.get_category_display }}  #{{receivable.number}}</h3>
     </div>
     <div class="card-body">
         <div class="row">
@@ -53,18 +53,18 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.document.label_tag }}
+                {{ form.file.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.document }}
+                {{ form.file }}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.receiver.label_tag }}
+                {{ form.notes.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.receiver }}
+                {{ form.notes }}
             </div>
         </div>
         <br>

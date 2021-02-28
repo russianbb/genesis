@@ -14,6 +14,7 @@
 
 <form method="post" enctype="multipart/form-data">
 {% csrf_token %}
+{{ form.bill_id }}
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Cadastrar Saída de Caixa</h3>
@@ -53,10 +54,10 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.document.label_tag }}
+                {{ form.file.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.document }}
+                {{ form.file }}
             </div>
         </div>
         <div class="row">

@@ -7,3 +7,4 @@ git+https://github.com/darklow/django-suit.git@v2
 validate-docbr==1.4.
 mysqlclient==1.4.2
 django-localflavor==2.2
+python-dateutil==2.8.1
