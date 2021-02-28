@@ -192,9 +192,9 @@ class Bill(AbstractBaseModel):
         verbose_name_plural = "Contas a Pagar"
 
     def __str__(self):
-        if not self.notes:
-            return self.category.description
-        return self.notes
+        if self.notes:
+            return f"{self.due_date.strftime('%d/%m/%Y')} - {self.category.description} - {self.notes} - R$ {self.get_amount_display}"  # noqa
+        return f"{self.due_date.strftime('%d/%m/%Y')} - {self.category.description} - R$ {self.get_amount_display}"  # noqa
 
     @property
     def get_amount_display(self):

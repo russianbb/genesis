@@ -111,6 +111,7 @@ class BillAdmin(admin.ModelAdmin):
         "cost_center",
         "get_amount_display",
         "due_date",
+        "is_paid",
     )
     list_display_links = list_display
     search_fields = (
@@ -121,6 +122,11 @@ class BillAdmin(admin.ModelAdmin):
         "amount",
     )
     list_filter = ("category", "cost_center", "due_date")
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
 
 
 @admin.register(Transaction)
@@ -141,3 +147,8 @@ class TransactionAdmin(admin.ModelAdmin):
         "amount",
     )
     list_filter = ("category", "cost_center", "transacted_at")
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
