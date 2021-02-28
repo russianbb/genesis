@@ -9,6 +9,7 @@ from .models import Category, CostCenter, Receivable, Transaction
 
 class ExpenseForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
+    bill_id = forms.IntegerField(label="Conta a Pagar", required=False)
 
     class Meta:
         model = Transaction
@@ -19,6 +20,7 @@ class ExpenseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
+        self.fields["bill_id"].widget = forms.HiddenInput()
         self.fields["category"].queryset = Category.objects.filter(cash_flow="expense")
         self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
 

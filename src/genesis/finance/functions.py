@@ -3,11 +3,15 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Sum
 
-from .models import CostCenter, Receivable, Transaction
+from .models import Bill, CostCenter, Receivable, Transaction
 
 
 def get_cost_center_chart_data():
     pass
+
+
+def get_bills_not_paid():
+    return Bill.objects.filter(is_paid=False).all()
 
 
 def get_active_cost_center():

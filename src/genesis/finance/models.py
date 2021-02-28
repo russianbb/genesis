@@ -134,7 +134,7 @@ class Receivable(AbstractBaseModel):
         return None
 
     @property
-    def set_received(self):
+    def set_as_received(self):
         if not self.is_received:
             self.is_received = True
             self.save()
@@ -209,6 +209,12 @@ class Bill(AbstractBaseModel):
         subpath = self.due_date.strftime("%Y/%m/")
         when = self.due_date.strftime("%d_%m_%Y")
         return f"{subpath}/{when}-{self.category}-{self.notes}-RS_{self.get_amount_display}"  # noqa
+
+    @property
+    def set_as_paid(self):
+        if not self.is_paid:
+            self.is_paid = True
+            self.save()
 
 
 class Transaction(AbstractBaseModel):

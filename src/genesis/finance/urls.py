@@ -1,3 +1,5 @@
+from django.conf import settings  # TODO: remover no deploy
+from django.conf.urls.static import static  # TODO: remover no deploy
 from django.urls import path
 
 from .views import (
@@ -22,4 +24,6 @@ urlpatterns = [
     ),
     path("dividendos/<int:number>/pagar", dividends_pay, name="dividend_pay"),
     path("extrato/", statement_report, name="statement_report"),
-]
+] + static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+)  # TODO: remover no deploy

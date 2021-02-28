@@ -12,11 +12,12 @@ from .functions import (
     get_active_cost_center,
     get_balance_until,
     get_billings_history,
+    get_bills_not_paid,
     get_cost_center_chart_data,
     get_receivables_not_received_data,
     process_statement_report,
 )
-from .models import Category, Receivable, Transaction
+from .models import Bill, Category, Receivable, Transaction
 
 
 class DashboardView(SuperUserRequiredMixin, TemplateView):
@@ -39,6 +40,8 @@ class DashboardView(SuperUserRequiredMixin, TemplateView):
         context["cost_centers_active"] = get_active_cost_center()
 
         context["cost_center_chart"] = get_cost_center_chart_data()
+
+        context["bills_not_paid"] = get_bills_not_paid
 
         return context
 
@@ -84,8 +87,29 @@ class ExpenseCreateView(SuperUserRequiredMixin, CreateView):
     model = Transaction
     success_url = "/"
 
+    def get_initial(self):
+        bill_id = self.request.GET.get("bill_id")
+        if bill_id:
+            self.bill = Bill.objects.get(pk=bill_id)
+            initial_data = {
+                "transacted_at": datetime.now(),
+                "amount": self.bill.get_amount_display,
+                "cost_center": self.bill.cost_center,
+                "category": self.bill.category,
+                "notes": self.bill.notes,
+                "bill_id": bill_id,
+            }
+            return initial_data
+        return {"transacted_at": datetime.now()}
+
     def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.bill = self.bill
+        self.object.save()
+
+        self.bill.set_as_paid
         messages.success(self.request, "Despesa cadastrada com sucesso!")
+
         return super().form_valid(form)
 
 
@@ -134,7 +158,7 @@ class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        self.receivable.set_received
+        self.receivable.set_as_received
         messages.success(self.request, "Recebimento cadastrado com sucesso!")
         return super().form_valid(form)
 

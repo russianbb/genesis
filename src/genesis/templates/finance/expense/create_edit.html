@@ -14,6 +14,7 @@
 
 <form method="post" enctype="multipart/form-data">
 {% csrf_token %}
+{{ form.bill_id }}
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Cadastrar Saída de Caixa</h3>

@@ -8,7 +8,6 @@
 {{ block.super}}
 <!-- daterange picker -->
 <link rel="stylesheet" href="{% static 'admin-lte/plugins/daterangepicker/daterangepicker.css' %}">
-
 <!-- Font Awesome -->
 <link rel="stylesheet" href="{% static 'admin-lte/plugins/fontawesome-free/css/all.min.css' %}">
 <!-- Ionicons -->
@@ -145,6 +144,53 @@
 
             <!-- Right Column -->
             <div class="col-md-8">
+
+                <!-- BILLS NOT PAID -->
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">Contas a Pagar</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                    class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;"></th>
+                                    <th>Vencimento</th>
+                                    <th>Categoria</th>
+                                    <th class="text-right">Valor</th>
+                                    <th class="text-right" style="width: 80px">Boleto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for bill in bills_not_paid %}
+                                <tr>
+                                    <td style="padding-left: 0.5rem;">
+                                        <form action="{% url 'finance:expense' %}" method="GET">
+                                            <input type="hidden" name="bill_id" value="{{ bill.id }}">
+                                            <button class="btn-sm btn-primary" style="padding: 2px 10px;">Pagar</button>
+                                        </form>
+                                    </td>
+                                    <td>{{ bill.due_date|date:"d/m/Y" }}</td>
+                                    <td>{{ bill.category }}</td>
+                                    <td class="text-right">{{ bill.amount|intcomma }}</td>
+                                    {% if bill.file %}
+                                    <td class="text-center">
+                                        <a href="{{ bill.file.url }}" target="_blank">
+                                            <i class="nav-icon fas fa-file-download text-primary"></i>
+                                        </a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
 
                 <!-- BAR CHART -->
                 <div class="card card-warning">
