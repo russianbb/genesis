@@ -145,6 +145,7 @@ class BillCreateView(SuperUserRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
+        self.object.status = True
         self.object.save()
 
         messages.success(
@@ -199,7 +200,12 @@ class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        transaction = form.save(commit=False)
+        transaction.set_as_paid
+        self.object = transaction.save()
+
         self.receivable.set_as_received
+
         messages.success(self.request, "Recebimento cadastrado com sucesso!")
         return super().form_valid(form)
 

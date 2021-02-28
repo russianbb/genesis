@@ -2,12 +2,20 @@ from django.contrib import admin
 from utils.admin import ReadOnlyAdminMixin
 from utils.constants import CATEGORY_DIVIDENDS
 
-from .models import Bill, Category, CostCenter, Receivable, ServiceOrder, Transaction
+from .models import (
+    Bill,
+    Category,
+    CostCenter,
+    Receivable,
+    Revenue,
+    ServiceOrder,
+    Transaction,
+)
 
 
 class ReceivableInline(ReadOnlyAdminMixin, admin.TabularInline):
     model = Receivable
-    fields = ("get_amount_display", "category", "issued_at")
+    fields = ("get_amount_display", "category", "issued_at", "is_received")
     readonly_fields = fields
     extra = 0
 
@@ -18,16 +26,16 @@ class ReceivableInline(ReadOnlyAdminMixin, admin.TabularInline):
 
 
 class PaidInline(ReadOnlyAdminMixin, admin.TabularInline):
-    model = Transaction
+    model = Revenue
     fields = ("get_amount_display", "category", "transacted_at")
     readonly_fields = fields
     extra = 0
     verbose_name = "Recebido"
     verbose_name_plural = "Recebidos"
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.filter(category__cash_flow="revenue")
+    # def get_queryset(self, request):
+    #     queryset = super().get_queryset(request)
+    #     return queryset.filter(category__cash_flow="revenue")
 
     def get_amount_display(self, obj):
         return obj.get_amount_display
@@ -63,11 +71,17 @@ class ReceivableAdmin(admin.ModelAdmin):
         "category",
         "get_amount_display",
         "cost_center",
+        "service_order",
         "issued_at",
+        "is_received",
     )
     list_display_links = list_display
     search_fields = list_display
-    list_filter = ("category", "issued_at")
+    list_filter = (
+        "category",
+        "issued_at",
+        "service_order",
+    )
 
     def get_amount_display(self, obj):
         return obj.get_amount_display
@@ -82,25 +96,27 @@ class ReceivableAdmin(admin.ModelAdmin):
 
 @admin.register(CostCenter)
 class CostCenterAdmin(admin.ModelAdmin):
-    list_display = ("id", "description", "updated_at")
+    list_display = ("id", "description", "updated_at", "status")
     list_display_links = ("id", "description")
     search_fields = ("id", "description")
+    list_filter = ("status",)
     inlines = (ReceivableInline, PaidInline, DividendsInline)
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "cash_flow", "description", "updated_at")
+    list_display = ("id", "cash_flow", "description", "updated_at", "status")
     list_display_links = ("id", "cash_flow", "description")
     search_fields = ("id", "description")
-    list_filter = ("cash_flow",)
+    list_filter = ("cash_flow", "status")
 
 
 @admin.register(ServiceOrder)
 class ServiceOrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "description", "buy_order", "updated_at")
+    list_display = ("id", "description", "buy_order", "updated_at", "status")
     list_display_links = ("id", "description")
-    search_fields = ("id", "description", "buy_order")
+    search_fields = ("id", "description", "buy_order", "status")
+    list_filter = ("status",)
 
 
 @admin.register(Bill)
@@ -137,6 +153,8 @@ class TransactionAdmin(admin.ModelAdmin):
         "cost_center",
         "get_amount_display",
         "transacted_at",
+        "due_date",
+        "is_paid",
     )
     list_display_links = list_display
     search_fields = (
@@ -146,7 +164,7 @@ class TransactionAdmin(admin.ModelAdmin):
         "notes",
         "amount",
     )
-    list_filter = ("category", "cost_center", "transacted_at")
+    list_filter = ("cost_center", "is_paid", "transacted_at", "category")
 
     def get_amount_display(self, obj):
         return obj.get_amount_display
