@@ -190,24 +190,6 @@
                     </div>
                 </div>
 
-
-                <!-- BAR CHART -->
-                <div class="card card-warning">
-                    <div class="card-header">
-                        <h3 class="card-title">Centro de Custos</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                    class="fas fa-minus"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas id="barChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- RECEIVABLE NOT RECEIVED -->
                 <div class="card card-info">
                     <div class="card-header">
@@ -221,6 +203,7 @@
                         <table class="table table-sm">
                             <thead>
                                 <tr>
+                                    <th style="width: 50px;"></th>
                                     <th>Data Emissão</th>
                                     <th>Recebível</th>
                                     <th class="text-right">Centro Custo</th>
@@ -230,6 +213,11 @@
                             <tbody>
                                 {% for receivable in receivables_not_received %}
                                 <tr>
+                                    <td style="padding-left: 0.5rem;">
+                                        <a href="{% url 'finance:receivable_receive' receivable.id %}">
+                                            <button class="btn-sm btn-primary" style="padding: 2px 4px;">Receber</button>
+                                        </a>
+                                    </td>
                                     <td>{{ receivable.issued_at|date:"d/m/Y" }}</td>
                                     <td>{{ receivable.get_category_display }} - {{ receivable.get_number_display }}</td>
                                     <td class="text-right">{{ receivable.cost_center }}</td>
@@ -246,8 +234,7 @@
                     <div class="card-header">
                         <h3 class="card-title">Centros de Custo Ativos</h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                    class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -276,9 +263,28 @@
                     </div>
                 </div>
 
+
+                <!-- BAR CHART -->
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">Centro de Custos</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                    class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart">
+                            <canvas id="barChart"
+                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+                </div>
             </div>
-        </div>
-        <!--/. End of first row -->
+            <!--/. End of first row -->
 
     </div>
     <!--/. container-fluid -->
