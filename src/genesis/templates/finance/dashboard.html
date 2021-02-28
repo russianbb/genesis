@@ -176,12 +176,14 @@
                                     <td>{{ bill.due_date|date:"d/m/Y" }}</td>
                                     <td>{{ bill.category }}</td>
                                     <td class="text-right">{{ bill.amount|intcomma }}</td>
-                                    {% if bill.file %}
+                                    {% if bill.bill %}
                                     <td class="text-center">
-                                        <a href="{{ bill.file.url }}" target="_blank">
+                                        <a href="{{ bill.bill.url }}" target="_blank">
                                             <i class="nav-icon fas fa-file-download text-primary"></i>
                                         </a>
                                     </td>
+                                    {% else %}
+                                    <td>foo</td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
