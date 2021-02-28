@@ -27,7 +27,7 @@ class PaidInline(ReadOnlyAdminMixin, admin.TabularInline):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.filter(category__cash_flow="receipt")
+        return queryset.filter(category__cash_flow="revenue")
 
     def get_amount_display(self, obj):
         return obj.get_amount_display

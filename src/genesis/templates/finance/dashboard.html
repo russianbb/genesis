@@ -169,10 +169,9 @@
                                 {% for bill in bills_not_paid %}
                                 <tr>
                                     <td style="padding-left: 0.5rem;">
-                                        <form action="{% url 'finance:expense' %}" method="GET">
-                                            <input type="hidden" name="bill_id" value="{{ bill.id }}">
+                                        <a href="{% url 'finance:bill_pay' bill.id %}">
                                             <button class="btn-sm btn-primary" style="padding: 2px 10px;">Pagar</button>
-                                        </form>
+                                        </a>
                                     </td>
                                     <td>{{ bill.due_date|date:"d/m/Y" }}</td>
                                     <td>{{ bill.category }}</td>

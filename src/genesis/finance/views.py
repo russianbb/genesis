@@ -3,11 +3,18 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.http import Http404
-from django.views.generic import CreateView, ListView, TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 from utils.constants import CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
-from .forms import DividendsPayForm, ExpenseForm, ReceivableForm, ReceivableReceiveForm
+from .forms import (
+    BillForm,
+    DividendsPayForm,
+    ExpenseForm,
+    ReceivableForm,
+    ReceivableReceiveForm,
+)
 from .functions import (
     get_active_cost_center,
     get_balance_until,
@@ -17,7 +24,7 @@ from .functions import (
     get_receivables_not_received_data,
     process_statement_report,
 )
-from .models import Bill, Category, Receivable, Transaction
+from .models import Bill, Category, Expense, Receivable, Transaction
 
 
 class DashboardView(SuperUserRequiredMixin, TemplateView):
@@ -82,33 +89,67 @@ class StatementReportView(SuperUserRequiredMixin, ListView):
 
 
 class ExpenseCreateView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/expense/create_edit.html"
+    template_name = "finance/expense/create.html"
     form_class = ExpenseForm
-    model = Transaction
-    success_url = "/"
+    model = Expense
+    success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
-        bill_id = self.request.GET.get("bill_id")
-        if bill_id:
-            self.bill = Bill.objects.get(pk=bill_id)
-            initial_data = {
-                "transacted_at": datetime.now(),
-                "amount": self.bill.get_amount_display,
-                "cost_center": self.bill.cost_center,
-                "category": self.bill.category,
-                "notes": self.bill.notes,
-                "bill_id": bill_id,
-            }
-            return initial_data
         return {"transacted_at": datetime.now()}
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.bill = self.bill
+        self.object.save()
+        self.object.set_as_paid
+
+        if self.object.is_recurrent:
+            self.object.create_recurrent
+            messages.success(
+                self.request, "Agendamento de pagamento cadastrado com sucesso!"
+            )
+        messages.success(self.request, "Pagamento cadastrado com sucesso!")
+
+        return super().form_valid(form)
+
+
+class BillPayView(SuperUserRequiredMixin, UpdateView):
+    template_name = "finance/bill/pay.html"
+    form_class = ExpenseForm
+    model = Bill
+    success_url = reverse_lazy("finance:dashboard")
+
+    def get_initial(self):
+        return {"transacted_at": datetime.now()}
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.status = True
+        self.object.save()
+        self.object.set_as_paid
+
+        if self.object.is_recurrent:
+            self.object.create_recurrent
+            messages.success(
+                self.request, "Agendamento de pagamento cadastrado com sucesso!"
+            )
+        messages.success(self.request, "Pagamento cadastrado com sucesso!")
+
+        return super().form_valid(form)
+
+
+class BillCreateView(SuperUserRequiredMixin, CreateView):
+    template_name = "finance/bill/create.html"
+    form_class = BillForm
+    model = Bill
+    success_url = reverse_lazy("finance:dashboard")
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
         self.object.save()
 
-        self.bill.set_as_paid
-        messages.success(self.request, "Despesa cadastrada com sucesso!")
+        messages.success(
+            self.request, "Agendamento de pagamento cadastrado com sucesso!"
+        )
 
         return super().form_valid(form)
 
@@ -117,7 +158,7 @@ class ReceivableCreateView(SuperUserRequiredMixin, CreateView):
     template_name = "finance/receivable/create_edit.html"
     form_class = ReceivableForm
     model = Receivable
-    success_url = "/"
+    success_url = reverse_lazy("finance:dashboard")
 
     def form_valid(self, form):
         messages.success(self.request, "Recebível cadastrado com sucesso!")
@@ -134,7 +175,7 @@ class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
     template_name = "finance/receivable/pay.html"
     model = Transaction
     form_class = ReceivableReceiveForm
-    success_url = "/"  # TODO: redirecionar para a página do centro de custo
+    success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
         number = self.kwargs["number"]
@@ -167,7 +208,7 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
     template_name = "finance/receivable/dividends_pay.html"
     model = Transaction
     form_class = DividendsPayForm
-    success_url = "/"  # TODO: redirecionar para a página do centro de custo
+    success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
         number = self.kwargs["number"]
@@ -193,11 +234,14 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
         notes = f"{self.receivable.get_category_display()} {self.receivable.number} | {form.cleaned_data['receiver']}"  # noqa
         transaction = form.save(commit=False)
         transaction.notes = notes
+        transaction.set_as_paid
         self.object = transaction.save()
         messages.success(self.request, "Pagamento de dividendo cadastrado com sucesso!")
         return super().form_valid(form)
 
 
+bill_create = BillCreateView.as_view()
+bill_pay = BillPayView.as_view()
 dashboard = DashboardView.as_view()
 dividends_pay = DividendsPayView.as_view()
 expense_create = ExpenseCreateView.as_view()

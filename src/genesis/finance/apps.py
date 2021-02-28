@@ -22,8 +22,7 @@ def prepopulate_categories(sender, **kwargs):
     for _ in PREPOPULATED_FINANCE_CATEGORIES:
         cash_flow = _["cash_flow"]
         description = _["description"]
-        if not Category.objects.filter(cash_flow=cash_flow, description=description):
-            Category.objects.create(cash_flow=cash_flow, description=description)
+        Category.objects.get_or_create(cash_flow=cash_flow, description=description)
 
 
 def prepopulate_cost_center(sender, **kwargs):
@@ -31,5 +30,4 @@ def prepopulate_cost_center(sender, **kwargs):
 
     for _ in PREPOPULATED_FINANCE_COSTCENTER:
         description = _["description"]
-        if not CostCenter.objects.filter(description=description):
-            CostCenter.objects.create(description=description)
+        CostCenter.objects.get_or_create(description=description)

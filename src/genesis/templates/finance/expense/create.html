@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Saída de Caixa{% endblock %}
+{% block title %} Pagamento{% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
@@ -14,10 +14,9 @@
 
 <form method="post" enctype="multipart/form-data">
 {% csrf_token %}
-{{ form.bill_id }}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Cadastrar Saída de Caixa</h3>
+        <h3 class="card-title">Cadastrar Pagamento</h3>
     </div>
     <div class="card-body">
         <div class="row">
@@ -54,10 +53,10 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.file.label_tag }}
+                {{ form.bill.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.file }}
+                {{ form.bill }}
             </div>
         </div>
         <div class="row">
@@ -66,6 +65,22 @@
             </div>
             <div class="col-sm-4">
                 {{ form.notes }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.file.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.file }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-form-label">
+                {{ form.is_recurrent.label_tag }}
+            </div>
+            <div class="col-sm-4">
+                {{ form.is_recurrent }}
             </div>
         </div>
         <br>
