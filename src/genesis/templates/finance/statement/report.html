@@ -28,16 +28,16 @@
     <!-- /.card-header -->
     <div class="card-body">
         <h6 class="card_title">De: {{ start_date|date:"d/m/Y" }} &emsp;&emsp; Até: {{ end_date|date:"d/m/Y" }}</h6>
-        <table id="report" class="table table-bordered table-hover">
+        <table id="report" class="table table-sm table-hover">
             <thead>
                 <tr class='bg-primary'>
-                    <th></th>
+                    <th style="width: 30px;"></th>
                     <th>Data</th>
                     <th>Categoria</th>
                     <th>Centro de Custo</th>
                     <th>Anotação</th>
-                    <th>Valor</th>
-                    <th>Saldo</th>
+                    <th class="text-right">Valor</th>
+                    <th class="text-right">Saldo</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,15 +57,28 @@
                 <tr>
                 {% endif %}
                 <tr>
-                    <td><a href="#"><i class="fas fa-file text-green"></a></i></td>
+                    <td class="text-center">
+                        {% if report.file %}
+                        <a href="#"><i class="fas fa-file-download text-primary"></a></i>
+                        {% endif %}
+                    </td>
                     <td>{{ report.transacted_at|date:"d/m/Y" }}</a></td>
                     <td>{{ report.category }}</a></td>
                     <td>{{ report.cost_center }}</a></td>
                     <td>{{ report.notes }}</td>
-                    {% if report.category.cash_flow == "expense" %}<td class="text-red">{% else %}<td>{% endif %}
+                    {% if report.category.cash_flow == "expense" %}
+                        <td class="text-red text-right">
+                    {% else %}
+                        <td class="text-right">
+                    {% endif %}
                         R$ {{ report.amount|intcomma }}
-                    </td>
-                    {% if report.balance < 0 %}<td class="text-red">{% else %}<td>{% endif %}
+                        </td>
+
+                    {% if report.balance < 0 %}
+                        <td class="text-red text-right">
+                    {% else %}
+                        <td class="text-right">
+                    {% endif %}
                         R$ {{ report.balance|intcomma }}
                     </td>
                 </tr>

@@ -73,7 +73,9 @@ class StatementReportView(SuperUserRequiredMixin, ListView):
 
         return (
             queryset.filter(
-                transacted_at__gte=self.start_date, transacted_at__lte=self.end_date
+                transacted_at__gte=self.start_date,
+                transacted_at__lte=self.end_date,
+                is_paid=True,
             )
             .select_related("category")
             .order_by("transacted_at",)
