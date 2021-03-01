@@ -5,7 +5,9 @@
 
 {% block stylesheets %}
 {{ block.super}}
+{% include '_includes/_styles.html'%}
 {% endblock %}
+
 
 {% block content %}
 
@@ -23,8 +25,13 @@
             <div class="col-sm-2 col-form-label">
                 {{ form.due_date.label_tag }}
             </div>
-            <div class="col-sm-4 col-form-label">
-                {{ form.due_date }}
+            <div class="col-sm-4">
+                <div class="input-group date" id="due_date" data-target-input="nearest">
+                    <input name="start" type="text" class="form-control datetimepicker-input" data-target="#due_date" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask required id="id_due_date" />
+                    <div class="input-group-append" data-target="#due_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -79,4 +86,17 @@
 {% endblock %}
 
 {% block extra_js %}
+{% include '_includes/_scripts.html' %}
+<script>
+    $(function () {
+        // Data picker
+        $('#due_date').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        //Datemask dd/mm/yyyy
+        $('[data-mask]').inputmask()
+
+    })
+</script>
 {% endblock %}

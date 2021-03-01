@@ -32,6 +32,12 @@ class DashboardView(SuperUserRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {}
+
+        context["statementreportstart"] = (
+            datetime.now() - relativedelta(months=1)
+        ).strftime("%d-%m-%Y")
+        context["statementreportend"] = datetime.now().strftime("%d-%m-%Y")
+
         context["balance"] = get_balance_until()
 
         receivables_data = get_receivables_not_received_data()
@@ -97,7 +103,7 @@ class ExpenseCreateView(SuperUserRequiredMixin, CreateView):
     success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
-        return {"transacted_at": datetime.now()}
+        return {"transacted_at": datetime.now().strftime("%d-%m-%Y")}
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -121,7 +127,7 @@ class BillPayView(SuperUserRequiredMixin, UpdateView):
     success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
-        return {"transacted_at": datetime.now()}
+        return {"transacted_at": datetime.now().strftime("%d-%m-%Y")}
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -158,10 +164,13 @@ class BillCreateView(SuperUserRequiredMixin, CreateView):
 
 
 class ReceivableCreateView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/receivable/create_edit.html"
+    template_name = "finance/receivable/create.html"
     form_class = ReceivableForm
     model = Receivable
     success_url = reverse_lazy("finance:dashboard")
+
+    def get_initial(self):
+        return {"issued_at": datetime.now().strftime("%d-%m-%Y")}
 
     def form_valid(self, form):
         messages.success(self.request, "Recebível cadastrado com sucesso!")
@@ -175,7 +184,7 @@ class ReceivableListView(SuperUserRequiredMixin, ListView):
 
 
 class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/receivable/pay.html"
+    template_name = "finance/receivable/receive.html"
     model = Transaction
     form_class = ReceivableReceiveForm
     success_url = reverse_lazy("finance:dashboard")
@@ -189,7 +198,7 @@ class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
         if not self.receivable:
             raise Http404
         return {
-            "transacted_at": datetime.now(),
+            "transacted_at": datetime.now().strftime("%d-%m-%Y"),
             "amount": self.receivable.amount,
             "cost_center": self.receivable.cost_center,
             "category": transaction_category,
@@ -227,7 +236,7 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
         if not self.receivable:
             raise Http404
         return {
-            "transacted_at": datetime.now(),
+            "transacted_at": datetime.now().strftime("%d-%m-%Y"),
             "cost_center": self.receivable.cost_center,
             "category": transaction_category,
             "notes": f"Pagamento de Dividendos | {self.receivable.get_category_display()} - {self.receivable.number}",  # noqa

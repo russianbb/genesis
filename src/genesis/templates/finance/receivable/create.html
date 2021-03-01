@@ -5,6 +5,7 @@
 
 {% block stylesheets %}
 {{ block.super}}
+{% include '_includes/_styles.html'%}
 {% endblock %}
 
 {% block content %}
@@ -31,9 +32,16 @@
             <div class="col-sm-2 col-form-label">
                 {{ form.issued_at.label_tag }}
             </div>
-            <div class="col-sm-4 col-form-label">
-                {{ form.issued_at }}
+
+            <div class="col-sm-4">
+                <div class="input-group date" id="issued_at" data-target-input="nearest">
+                    <input name="start" type="text" class="form-control datetimepicker-input" data-target="#issued_at" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask required id="id_issued_at" value="{{ form.issued_at.value }}"   />
+                    <div class="input-group-append" data-target="#issued_at" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
             </div>
+
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
@@ -96,4 +104,17 @@
 {% endblock %}
 
 {% block extra_js %}
+{% include '_includes/_scripts.html' %}
+<script>
+    $(function () {
+        // Data picker
+        $('#issued_at').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        //Datemask dd/mm/yyyy
+        $('[data-mask]').inputmask()
+
+    })
+</script>
 {% endblock %}
