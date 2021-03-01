@@ -1,15 +1,17 @@
 from django.contrib import admin
+from rangefilter.filter import DateRangeFilter
 from utils.admin import ReadOnlyAdminMixin
-from utils.constants import CATEGORY_DIVIDENDS
+from utils.constants import TRANSACTION_CATEGORY_DIVIDENDS
 
 from .models import (
     Bill,
-    Category,
     CostCenter,
+    Expense,
     Receivable,
     Revenue,
     ServiceOrder,
     Transaction,
+    TransactionCategory,
 )
 
 
@@ -33,10 +35,6 @@ class PaidInline(ReadOnlyAdminMixin, admin.TabularInline):
     verbose_name = "Recebido"
     verbose_name_plural = "Recebidos"
 
-    # def get_queryset(self, request):
-    #     queryset = super().get_queryset(request)
-    #     return queryset.filter(category__cash_flow="revenue")
-
     def get_amount_display(self, obj):
         return obj.get_amount_display
 
@@ -54,8 +52,8 @@ class DividendsInline(ReadOnlyAdminMixin, admin.TabularInline):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.filter(
-            category__cash_flow=CATEGORY_DIVIDENDS["cash_flow"],
-            category__description=CATEGORY_DIVIDENDS["description"],
+            category__cash_flow=TRANSACTION_CATEGORY_DIVIDENDS["cash_flow"],
+            category__description=TRANSACTION_CATEGORY_DIVIDENDS["description"],
         )
 
     def get_amount_display(self, obj):
@@ -79,7 +77,7 @@ class ReceivableAdmin(admin.ModelAdmin):
     search_fields = list_display
     list_filter = (
         "category",
-        "issued_at",
+        ("issued_at", DateRangeFilter),
         "service_order",
     )
 
@@ -103,8 +101,8 @@ class CostCenterAdmin(admin.ModelAdmin):
     inlines = (ReceivableInline, PaidInline, DividendsInline)
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(TransactionCategory)
+class TransactionCategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "cash_flow", "description", "updated_at", "status")
     list_display_links = ("id", "cash_flow", "description")
     search_fields = ("id", "description")
@@ -137,7 +135,59 @@ class BillAdmin(admin.ModelAdmin):
         "notes",
         "amount",
     )
-    list_filter = ("category", "cost_center", "due_date")
+    list_filter = ("category", "cost_center", ("due_date", DateRangeFilter))
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
+
+
+@admin.register(Expense)
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "category",
+        "cost_center",
+        "get_amount_display",
+        "transacted_at",
+        "is_paid",
+    )
+    list_display_links = list_display
+    search_fields = (
+        "id",
+        "category__description",
+        "cost_center__description",
+        "notes",
+        "amount",
+    )
+    list_filter = ("category", "cost_center", ("transacted_at", DateRangeFilter))
+
+    def get_amount_display(self, obj):
+        return obj.get_amount_display
+
+    get_amount_display.short_description = "Valor"
+
+
+@admin.register(Revenue)
+class RevenueAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "category",
+        "cost_center",
+        "get_amount_display",
+        "transacted_at",
+        "is_paid",
+    )
+    list_display_links = list_display
+    search_fields = (
+        "id",
+        "category__description",
+        "cost_center__description",
+        "notes",
+        "amount",
+    )
+    list_filter = ("category", "cost_center", ("transacted_at", DateRangeFilter))
 
     def get_amount_display(self, obj):
         return obj.get_amount_display
@@ -164,7 +214,12 @@ class TransactionAdmin(admin.ModelAdmin):
         "notes",
         "amount",
     )
-    list_filter = ("cost_center", "is_paid", "transacted_at", "category")
+    list_filter = (
+        "cost_center",
+        "is_paid",
+        ("transacted_at", DateRangeFilter),
+        "category",
+    )
 
     def get_amount_display(self, obj):
         return obj.get_amount_display

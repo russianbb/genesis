@@ -4,7 +4,14 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from .functions import get_dividends_receiver_choices
-from .models import Bill, Category, CostCenter, Expense, Receivable, Transaction
+from .models import (
+    Bill,
+    CostCenter,
+    Expense,
+    Receivable,
+    Transaction,
+    TransactionCategory,
+)
 
 
 class ExpenseForm(forms.ModelForm):
@@ -21,7 +28,9 @@ class ExpenseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
-        self.fields["category"].queryset = Category.objects.filter(cash_flow="expense")
+        self.fields["category"].queryset = TransactionCategory.objects.filter(
+            cash_flow="expense"
+        )
         self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
         self.fields["due_date"].widget = forms.HiddenInput()
 
@@ -44,7 +53,9 @@ class BillForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
-        self.fields["category"].queryset = Category.objects.filter(cash_flow="expense")
+        self.fields["category"].queryset = TransactionCategory.objects.filter(
+            cash_flow="expense"
+        )
         self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
 
     def clean_amount(self):

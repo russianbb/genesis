@@ -1,9 +1,6 @@
 from django.apps import AppConfig
 from django.db.models.signals import post_migrate
-from utils.constants import (
-    PREPOPULATED_FINANCE_CATEGORIES,
-    PREPOPULATED_FINANCE_COSTCENTER,
-)
+from utils.constants import BASE_COSTCENTER, BASE_TRANSACTION_CATEGORIES
 
 
 class FinanceConfig(AppConfig):
@@ -17,17 +14,19 @@ class FinanceConfig(AppConfig):
 
 
 def prepopulate_categories(sender, **kwargs):
-    from .models import Category
+    from .models import TransactionCategory
 
-    for _ in PREPOPULATED_FINANCE_CATEGORIES:
+    for _ in BASE_TRANSACTION_CATEGORIES:
         cash_flow = _["cash_flow"]
         description = _["description"]
-        Category.objects.get_or_create(cash_flow=cash_flow, description=description)
+        TransactionCategory.objects.get_or_create(
+            cash_flow=cash_flow, description=description
+        )
 
 
 def prepopulate_cost_center(sender, **kwargs):
     from .models import CostCenter
 
-    for _ in PREPOPULATED_FINANCE_COSTCENTER:
+    for _ in BASE_COSTCENTER:
         description = _["description"]
         CostCenter.objects.get_or_create(description=description)

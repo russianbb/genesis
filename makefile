@@ -1,17 +1,21 @@
+run:
+	@echo "--> Running Docker."
+	docker-compose up
+
+run-debug:
+	@echo "--> Running Debug Mode with IPDB"
+	docker-compose run --service-ports web
+
 close:
 	@echo "--> Close Docker."
 	docker-compose down
 
-develop:
+build:
 	@echo "--> Creating Docker."
-	docker-compose build ## --no-cache
+	docker-compose build ## --no-cache -t genesis -f docker/dev/dockerfile .
 
 bash:
 	docker-compose run --rm web bash
-
-run:
-	@echo "--> Running Docker."
-	docker-compose up
 
 test: ## Run all tests (pytest).
 	@echo "--> Testing on Docker."

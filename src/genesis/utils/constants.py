@@ -1,17 +1,23 @@
-CATEGORY_DIVIDENDS = {"cash_flow": "expense", "description": "Pagamento de Dividendos"}
-CATEGORY_LOAN_OUT = {"cash_flow": "expense", "description": "Pagamento de Empréstimo"}
-CATEGORY_LOAN_IN = {"cash_flow": "revenue", "description": "Recebimento de Empréstimo"}
-CATEGORY_NF = {"cash_flow": "revenue", "description": "Recebimento de Nota Fiscal"}
-CATEGORY_ND = {"cash_flow": "revenue", "description": "Recebimento de Nota de Débito"}
+TRANSACTION_CATEGORY_DIVIDENDS = {"cash_flow": "expense", "description": "Dividendos"}
+TRANSACTION_CATEGORY_LOAN_OUT = {
+    "cash_flow": "expense",
+    "description": "Empréstimo Pagamento",
+}
+TRANSACTION_CATEGORY_LOAN_IN = {
+    "cash_flow": "revenue",
+    "description": "Empréstimo Recebimento",
+}
+TRANSACTION_CATEGORY_NF = {"cash_flow": "revenue", "description": "Nota Fiscal"}
+TRANSACTION_CATEGORY_ND = {"cash_flow": "revenue", "description": "Nota de Débito"}
 
-PREPOPULATED_FINANCE_CATEGORIES = (
-    CATEGORY_DIVIDENDS,
-    CATEGORY_NF,
-    CATEGORY_ND,
-    CATEGORY_LOAN_IN,
-    CATEGORY_LOAN_OUT,
+BASE_TRANSACTION_CATEGORIES = (
+    TRANSACTION_CATEGORY_DIVIDENDS,
+    TRANSACTION_CATEGORY_NF,
+    TRANSACTION_CATEGORY_ND,
+    TRANSACTION_CATEGORY_LOAN_IN,
+    TRANSACTION_CATEGORY_LOAN_OUT,
 )
 
 
 COSTCENTER_ADMINISTRATIVE = {"description": "Administrativo"}
-PREPOPULATED_FINANCE_COSTCENTER = (COSTCENTER_ADMINISTRATIVE,)
+BASE_COSTCENTER = (COSTCENTER_ADMINISTRATIVE,)

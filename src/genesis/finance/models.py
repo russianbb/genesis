@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models import Sum
 from model_utils.choices import Choices
-from utils.constants import CATEGORY_ND, CATEGORY_NF
+from utils.constants import TRANSACTION_CATEGORY_ND, TRANSACTION_CATEGORY_NF
 from utils.models import AbstractBaseModel
 
 from .managers import BillManager, ExpenseManager, RevenueManager
@@ -73,7 +73,7 @@ class CostCenter(AbstractBaseModel):
 class Receivable(AbstractBaseModel):
     UPLOAD_PATH = "finance/receivables/"
 
-    INVOICE_CATEGORY = Choices(
+    RECEIVABLE_CATEGORY = Choices(
         ("invoice", "Nota Fiscal"), ("debit", "Nota de Débito"), ("loan", "Empréstimo")
     )
     number = models.PositiveIntegerField(verbose_name="Número")
@@ -83,7 +83,7 @@ class Receivable(AbstractBaseModel):
         max_digits=10, decimal_places=2, verbose_name="Imposto", blank=True, null=True
     )
     category = models.CharField(
-        choices=INVOICE_CATEGORY,
+        choices=RECEIVABLE_CATEGORY,
         max_length=20,
         null=False,
         blank=False,
@@ -131,9 +131,9 @@ class Receivable(AbstractBaseModel):
     @property
     def get_transaction_category(self):
         if self.category == "invoice":
-            return CATEGORY_NF["description"]
+            return TRANSACTION_CATEGORY_NF["description"]
         if self.category == "debit":
-            return CATEGORY_ND["description"]
+            return TRANSACTION_CATEGORY_ND["description"]
         return None
 
     @property
@@ -143,7 +143,7 @@ class Receivable(AbstractBaseModel):
             self.save()
 
 
-class Category(AbstractBaseModel):
+class TransactionCategory(AbstractBaseModel):
     CASH_FLOW_CHOICES = Choices(("revenue", "Receita"), ("expense", "Despesa"))
     cash_flow = models.CharField(
         choices=CASH_FLOW_CHOICES,
@@ -170,10 +170,10 @@ class Transaction(AbstractBaseModel):
     UPLOAD_PATH = "finance/"
 
     due_date = models.DateField(
-        verbose_name="Data de Vencimento", null=True, blank=False
+        verbose_name="Data de Vencimento", null=True, blank=True
     )
     transacted_at = models.DateField(
-        verbose_name="Data da Transação", null=True, blank=False
+        verbose_name="Data da Transação", null=True, blank=True
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
     cost_center = models.ForeignKey(
@@ -183,7 +183,7 @@ class Transaction(AbstractBaseModel):
         verbose_name="Centro de Custo",
     )
     category = models.ForeignKey(
-        Category,
+        TransactionCategory,
         related_name="transactions",
         on_delete=models.CASCADE,
         verbose_name="Categoria",
@@ -251,8 +251,8 @@ class Bill(Transaction):
     class Meta:
         proxy = True
         ordering = ["due_date", "id"]
-        verbose_name = "Conta a Pagar"
-        verbose_name_plural = "Contas a Pagar"
+        verbose_name = "Transação a Pagar"
+        verbose_name_plural = "Transações a Pagar"
 
     objects = BillManager()
 
@@ -260,8 +260,8 @@ class Bill(Transaction):
 class Expense(Transaction):
     class Meta:
         proxy = True
-        verbose_name = "Conta Paga"
-        verbose_name_plural = "Contas Pagas"
+        verbose_name = "Transação Paga"
+        verbose_name_plural = "Transações Pagas"
 
     objects = ExpenseManager()
 
@@ -269,7 +269,7 @@ class Expense(Transaction):
 class Revenue(Transaction):
     class Meta:
         proxy = True
-        verbose_name = "Receita"
-        verbose_name_plural = "Receitas"
+        verbose_name = "Transação Recebida"
+        verbose_name_plural = "Transações Recebidas"
 
     objects = RevenueManager()

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, TemplateView, UpdateView
-from utils.constants import CATEGORY_DIVIDENDS
+from utils.constants import TRANSACTION_CATEGORY_DIVIDENDS
 from utils.views import SuperUserRequiredMixin
 
 from .forms import (
@@ -24,7 +24,7 @@ from .functions import (
     get_receivables_not_received_data,
     process_statement_report,
 )
-from .models import Bill, Category, Expense, Receivable, Transaction
+from .models import Bill, Expense, Receivable, Transaction, TransactionCategory
 
 
 class DashboardView(SuperUserRequiredMixin, TemplateView):
@@ -192,7 +192,7 @@ class ReceivableReceiveView(SuperUserRequiredMixin, CreateView):
     def get_initial(self):
         number = self.kwargs["number"]
         self.receivable = Receivable.objects.filter(number=number).first()
-        transaction_category = Category.objects.filter(
+        transaction_category = TransactionCategory.objects.filter(
             description=self.receivable.get_transaction_category
         ).first()
         if not self.receivable:
@@ -230,8 +230,8 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
     def get_initial(self):
         number = self.kwargs["number"]
         self.receivable = Receivable.objects.filter(number=number).first()
-        transaction_category = Category.objects.filter(
-            description=CATEGORY_DIVIDENDS["description"]
+        transaction_category = TransactionCategory.objects.filter(
+            description=TRANSACTION_CATEGORY_DIVIDENDS["description"]
         ).first()
         if not self.receivable:
             raise Http404

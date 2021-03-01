@@ -35,8 +35,9 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     # Third Party Apps
     "adminlte3",
-    "utils.apps.SuitConfig",
     "import_export",
+    "rangefilter",
+    "utils.apps.SuitConfig",
     # My Apps
     "comercial",
     "finance",
