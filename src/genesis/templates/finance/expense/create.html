@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Pagamento{% endblock %}
+
+{% block stylesheets %}
+{{ block.super}}
+{% include '_includes/_styles.html'%}
+{% endblock %}
+
+{% block content %}
+
+{% include "_includes/errors_form.html" %}
+{{ form.media }}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Cadastrar Pagamento</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.transacted_at.label_tag }}
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="input-group date" id="transacted_at" data-target-input="nearest">
+                        <input name="start" type="text" class="form-control datetimepicker-input" data-target="#transacted_at" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask required id="id_transacted_at" value="{{ form.transacted_at.value }}"   />
+                        <div class="input-group-append" data-target="#transacted_at" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.amount.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.amount }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.cost_center.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.cost_center }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.category.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.category }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.bill.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.bill }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.notes.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.notes }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.file.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.file }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.is_recurrent.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.is_recurrent }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
+                    value="Salvar">
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+{% include '_includes/_scripts.html' %}
+<script>
+    $(function () {
+        // Data picker
+        $('#transacted_at').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        //Datemask dd/mm/yyyy
+        $('[data-mask]').inputmask()
+
+    })
+</script>
+{% endblock %}

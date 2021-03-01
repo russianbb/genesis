@@ -1,17 +1,18 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
+from django.contrib.auth.models import User
 from django.db.models import Sum
 
-from .models import Bill, CostCenter, Receivable, Transaction
+from .models import Bill, CostCenter, Expense, Receivable, Revenue
 
 
 def get_cost_center_chart_data():
-    pass
+    pass  # TODO: como somar por grupo?
 
 
 def get_bills_not_paid():
-    return Bill.objects.filter(is_paid=False).all()
+    return Bill.objects.all()
 
 
 def get_active_cost_center():
@@ -69,15 +70,15 @@ def get_billings_history():
 
 
 def get_balance_until(date=datetime.now()):
-    get_receipt = Transaction.objects.filter(
-        transacted_at__lte=date, category__cash_flow="receipt"
-    ).aggregate(Sum("amount"))
-    get_expense = Transaction.objects.filter(
-        transacted_at__lte=date, category__cash_flow="expense"
-    ).aggregate(Sum("amount"))
-    receipt = 0 if get_receipt["amount__sum"] is None else get_receipt["amount__sum"]
-    expense = 0 if get_expense["amount__sum"] is None else get_expense["amount__sum"]
-    balance = receipt - expense
+    sum_revenue = Revenue.objects.filter(transacted_at__lte=date).aggregate(
+        Sum("amount")
+    )
+    sum_expense = Expense.objects.filter(transacted_at__lte=date).aggregate(
+        Sum("amount")
+    )
+    revenue = 0 if sum_revenue["amount__sum"] is None else sum_revenue["amount__sum"]
+    expense = 0 if sum_expense["amount__sum"] is None else sum_expense["amount__sum"]
+    balance = revenue - expense
     return balance
 
 
@@ -100,3 +101,11 @@ def process_statement_report(context):
         }
         reports.append(row)
     return reports
+
+
+def get_dividends_receiver_choices():
+    superusers = User.objects.filter(is_superuser=True).all()
+    receiver_choices = []
+    for _ in superusers:
+        receiver_choices.append((_.username, _.get_full_name))
+    return receiver_choices

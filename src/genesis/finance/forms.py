@@ -1,18 +1,19 @@
 from decimal import Decimal
 
 from django import forms
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import Category, CostCenter, Receivable, Transaction
+from .functions import get_dividends_receiver_choices
+from .models import Bill, Category, CostCenter, Expense, Receivable, Transaction
 
 
 class ExpenseForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
-    bill_id = forms.IntegerField(label="Conta a Pagar", required=False)
+    is_recurrent = forms.BooleanField(label="Agendar Próxima?", required=False)
+    due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:
-        model = Transaction
+        model = Expense
         fields = "__all__"
         exclude = ("created_at", "updated_at")
 
@@ -20,7 +21,29 @@ class ExpenseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs = {"class": "form-control"}
-        self.fields["bill_id"].widget = forms.HiddenInput()
+        self.fields["category"].queryset = Category.objects.filter(cash_flow="expense")
+        self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
+        self.fields["due_date"].widget = forms.HiddenInput()
+
+    def clean_amount(self):
+        return self.data["amount"].replace(",", ".")
+
+
+class BillForm(forms.ModelForm):
+    amount = forms.CharField(label="Valor", required=True)
+    is_recurrent = forms.BooleanField(label="Agendar Próxima?", required=False)
+    due_date = forms.DateField(label="Vencimento")
+    transacted_at = forms.DateField(required=False)
+
+    class Meta:
+        model = Bill
+        fields = "__all__"
+        exclude = ("created_at", "updated_at")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs = {"class": "form-control"}
         self.fields["category"].queryset = Category.objects.filter(cash_flow="expense")
         self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
 
@@ -52,6 +75,7 @@ class ReceivableForm(forms.ModelForm):
 
 class ReceivableReceiveForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
+    due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:
         model = Transaction
@@ -76,19 +100,12 @@ class ReceivableReceiveForm(forms.ModelForm):
         return form_amount
 
 
-def get_dividends_receiver_choices():
-    superusers = User.objects.filter(is_superuser=True).all()
-    receiver_choices = []
-    for _ in superusers:
-        receiver_choices.append((_.username, _.get_full_name))
-    return receiver_choices
-
-
 class DividendsPayForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
     receiver = forms.ChoiceField(
         choices=get_dividends_receiver_choices(), label="Pago para"
     )
+    due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:
         model = Transaction

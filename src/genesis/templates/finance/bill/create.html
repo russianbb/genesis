@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Recebíveis{% endblock %}
+{% block title %} Agendar Pagamento{% endblock %}
 
 {% block stylesheets %}
 {{ block.super}}
+{% include '_includes/_styles.html'%}
 {% endblock %}
+
 
 {% block content %}
 
@@ -16,23 +18,20 @@
 {% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Cadastrar Recebível</h3>
+        <h3 class="card-title">Agendar Pagamento</h3>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.number.label_tag }}
+                {{ form.due_date.label_tag }}
             </div>
-            <div class="col-sm-4 col-form-label">
-                {{ form.number }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-form-label">
-                {{ form.issued_at.label_tag }}
-            </div>
-            <div class="col-sm-4 col-form-label">
-                {{ form.issued_at }}
+            <div class="col-sm-4">
+                <div class="input-group date" id="due_date" data-target-input="nearest">
+                    <input name="start" type="text" class="form-control datetimepicker-input" data-target="#due_date" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask required id="id_due_date" />
+                    <div class="input-group-append" data-target="#due_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -45,10 +44,10 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.taxes.label_tag }}
+                {{ form.cost_center.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.taxes }}
+                {{ form.cost_center }}
             </div>
         </div>
         <div class="row">
@@ -61,29 +60,20 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.service_order.label_tag }}
+                {{ form.bill.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.service_order }}
+                {{ form.bill }}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-2 col-form-label">
-                {{ form.cost_center.label_tag }}
+                {{ form.notes.label_tag }}
             </div>
             <div class="col-sm-4">
-                {{ form.cost_center }}
+                {{ form.notes }}
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-2 col-form-label">
-                {{ form.file.label_tag }}
-            </div>
-            <div class="col-sm-4">
-                {{ form.file }}
-            </div>
-        </div>
-
         <br>
         <div class="row">
             <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
@@ -96,4 +86,17 @@
 {% endblock %}
 
 {% block extra_js %}
+{% include '_includes/_scripts.html' %}
+<script>
+    $(function () {
+        // Data picker
+        $('#due_date').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        //Datemask dd/mm/yyyy
+        $('[data-mask]').inputmask()
+
+    })
+</script>
 {% endblock %}

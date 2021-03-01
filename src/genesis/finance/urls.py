@@ -3,6 +3,8 @@ from django.conf.urls.static import static  # TODO: remover no deploy
 from django.urls import path
 
 from .views import (
+    bill_create,
+    bill_pay,
     dashboard,
     dividends_pay,
     expense_create,
@@ -16,7 +18,9 @@ app_name = "finance"
 
 urlpatterns = [
     path("painel/", dashboard, name="dashboard"),
-    path("despesas/", expense_create, name="expense"),
+    path("despesas/cadastrar", expense_create, name="expense"),
+    path("despesas/agendar", bill_create, name="bill"),
+    path("despesas/<int:pk>/pagar", bill_pay, name="bill_pay"),
     path("recebiveis/", receivable_list, name="receivable_list"),
     path("recebiveis/adicionar", receivable_create, name="receivable"),
     path(

@@ -1,10 +1,13 @@
 from decimal import Decimal
 
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models import Sum
 from model_utils.choices import Choices
 from utils.constants import CATEGORY_ND, CATEGORY_NF
 from utils.models import AbstractBaseModel
+
+from .managers import BillManager, ExpenseManager, RevenueManager
 
 
 def get_upload_to(instance, filename):
@@ -141,7 +144,7 @@ class Receivable(AbstractBaseModel):
 
 
 class Category(AbstractBaseModel):
-    CASH_FLOW_CHOICES = Choices(("receipt", "Receita"), ("expense", "Despesa"))
+    CASH_FLOW_CHOICES = Choices(("revenue", "Receita"), ("expense", "Despesa"))
     cash_flow = models.CharField(
         choices=CASH_FLOW_CHOICES,
         max_length=15,
@@ -163,64 +166,15 @@ class Category(AbstractBaseModel):
         verbose_name_plural = "Categorias"
 
 
-class Bill(AbstractBaseModel):
-    UPLOAD_PATH = "finance/bills/"
-
-    due_date = models.DateField(verbose_name="Data de Vencimento")
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
-    cost_center = models.ForeignKey(
-        CostCenter,
-        related_name="bills",
-        on_delete=models.CASCADE,
-        verbose_name="Centro de Custo",
-    )
-    category = models.ForeignKey(
-        Category,
-        related_name="bills",
-        on_delete=models.CASCADE,
-        verbose_name="Categoria",
-    )
-    notes = models.CharField(max_length=254, verbose_name="Anotações", blank=True)
-    file = models.FileField(
-        upload_to=get_upload_to, verbose_name="Comprovante", blank=True
-    )
-    is_paid = models.BooleanField(verbose_name="Pago?", default=False)
-
-    class Meta:
-        ordering = ["-due_date", "-id"]
-        verbose_name = "Conta a Pagar"
-        verbose_name_plural = "Contas a Pagar"
-
-    def __str__(self):
-        if self.notes:
-            return f"{self.due_date.strftime('%d/%m/%Y')} - {self.category.description} - {self.notes} - R$ {self.get_amount_display}"  # noqa
-        return f"{self.due_date.strftime('%d/%m/%Y')} - {self.category.description} - R$ {self.get_amount_display}"  # noqa
-
-    @property
-    def get_amount_display(self):
-        return (
-            f"{Decimal('%0.2f' % self.amount):,}".replace(",", "d")
-            .replace(".", ",")
-            .replace("d", ".")
-        )
-
-    @property
-    def get_upload_filename(self):
-        subpath = self.due_date.strftime("%Y/%m/")
-        when = self.due_date.strftime("%d_%m_%Y")
-        return f"{subpath}/{when}-{self.category}-{self.notes}-RS_{self.get_amount_display}"  # noqa
-
-    @property
-    def set_as_paid(self):
-        if not self.is_paid:
-            self.is_paid = True
-            self.save()
-
-
 class Transaction(AbstractBaseModel):
-    UPLOAD_PATH = "finance/transactions/"
+    UPLOAD_PATH = "finance/"
 
-    transacted_at = models.DateField(verbose_name="Data da Transação")
+    due_date = models.DateField(
+        verbose_name="Data de Vencimento", null=True, blank=False
+    )
+    transacted_at = models.DateField(
+        verbose_name="Data da Transação", null=True, blank=False
+    )
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
     cost_center = models.ForeignKey(
         CostCenter,
@@ -238,14 +192,9 @@ class Transaction(AbstractBaseModel):
     file = models.FileField(
         upload_to=get_upload_to, verbose_name="Comprovante", blank=True
     )
-    bill = models.ForeignKey(
-        Bill,
-        related_name="transaction",
-        on_delete=models.CASCADE,
-        verbose_name="Conta a Pagar",
-        null=True,
-        blank=True,
-    )
+    bill = models.FileField(upload_to=get_upload_to, verbose_name="Boleto", blank=True)
+    is_paid = models.BooleanField(verbose_name="Pago?", default=False)
+    is_recurrent = models.BooleanField(verbose_name="Recorrente?", default=False)
 
     class Meta:
         ordering = ["-transacted_at", "-id"]
@@ -267,6 +216,60 @@ class Transaction(AbstractBaseModel):
 
     @property
     def get_upload_filename(self):
-        subpath = self.transacted_at.strftime("%Y/%m/")
-        when = self.transacted_at.strftime("%d_%m_%Y")
+        if not self.is_paid and self.due_date:
+            subpath = f"bills/{self.due_date.strftime('%Y/%m/')}"
+            when = self.due_date.strftime("%d_%m_%Y")
+        else:
+            subpath = f"transactions/{self.transacted_at.strftime('%Y/%m/')}"
+            when = self.transacted_at.strftime("%d_%m_%Y")
+
         return f"{subpath}/{when}-{self.category}-{self.notes}-RS_{self.get_amount_display}"  # noqa
+
+    @property
+    def set_as_paid(self):
+        if not self.is_paid:
+            self.is_paid = True
+            self.save()
+
+    @property
+    def create_recurrent(self):
+        due_date = self.transacted_at + relativedelta(months=1)
+        if self.due_date:
+            due_date = self.due_date + relativedelta(months=1)
+
+        recurrent = Transaction(
+            amount=self.amount,
+            cost_center=self.cost_center,
+            category=self.category,
+            notes=self.notes,
+            due_date=due_date,
+        )
+        recurrent.save()
+
+
+class Bill(Transaction):
+    class Meta:
+        proxy = True
+        ordering = ["due_date", "id"]
+        verbose_name = "Conta a Pagar"
+        verbose_name_plural = "Contas a Pagar"
+
+    objects = BillManager()
+
+
+class Expense(Transaction):
+    class Meta:
+        proxy = True
+        verbose_name = "Conta Paga"
+        verbose_name_plural = "Contas Pagas"
+
+    objects = ExpenseManager()
+
+
+class Revenue(Transaction):
+    class Meta:
+        proxy = True
+        verbose_name = "Receita"
+        verbose_name_plural = "Receitas"
+
+    objects = RevenueManager()
