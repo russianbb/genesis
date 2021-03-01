@@ -27,7 +27,7 @@
             </div>
             <div class="col-sm-4">
                 <div class="input-group date" id="due_date" data-target-input="nearest">
-                    <input name="start" type="text" class="form-control datetimepicker-input" data-target="#due_date" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask required id="id_due_date" />
+                    <input name="due_date" type="text" class="form-control datetimepicker-input" data-target="#due_date" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required id="id_due_date" />
                     <div class="input-group-append" data-target="#due_date" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -91,7 +91,7 @@
     $(function () {
         // Data picker
         $('#due_date').datetimepicker({
-            format: 'DD-MM-YYYY'
+            format: 'DD/MM/YYYY'
         });
 
         //Datemask dd/mm/yyyy

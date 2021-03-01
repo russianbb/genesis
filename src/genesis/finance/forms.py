@@ -17,6 +17,7 @@ from .models import (
 class ExpenseForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
     is_recurrent = forms.BooleanField(label="Agendar Próxima?", required=False)
+    transacted_at = forms.DateField(label="Data de Transação", required=True)
     due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:
@@ -40,9 +41,9 @@ class ExpenseForm(forms.ModelForm):
 
 class BillForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
-    is_recurrent = forms.BooleanField(label="Agendar Próxima?", required=False)
-    due_date = forms.DateField(label="Vencimento")
-    transacted_at = forms.DateField(required=False)
+    # is_recurrent = forms.BooleanField(label="Agendar Próxima?", required=False)
+    transacted_at = forms.DateField(label="Data de Transação", required=False)
+    due_date = forms.DateField(label="Data de Vencimento")
 
     class Meta:
         model = Bill
@@ -57,6 +58,9 @@ class BillForm(forms.ModelForm):
             cash_flow="expense"
         )
         self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
+
+    # def clean(self):
+    #     import ipdb; ipdb.set_trace()
 
     def clean_amount(self):
         return self.data["amount"].replace(",", ".")
@@ -86,6 +90,7 @@ class ReceivableForm(forms.ModelForm):
 
 class ReceivableReceiveForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
+    transacted_at = forms.DateField(label="Data de Vencimento", required=True)
     due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:
@@ -116,6 +121,7 @@ class DividendsPayForm(forms.ModelForm):
     receiver = forms.ChoiceField(
         choices=get_dividends_receiver_choices(), label="Pago para"
     )
+    transacted_at = forms.DateField(label="Data de Vencimento", required=True)
     due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:

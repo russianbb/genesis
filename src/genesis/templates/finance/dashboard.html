@@ -146,7 +146,11 @@
             <div class="col-md-8">
 
                 <!-- BILLS NOT PAID -->
-                <div class="card card-danger">
+                {% if not bills_not_paid %}
+                <div class="card card-danger collapsed-card">
+                {% else %}
+                <div class="card card-danger ">
+                {% endif %}
                     <div class="card-header">
                         <h3 class="card-title">Contas a Pagar</h3>
                         <div class="card-tools">
@@ -183,7 +187,7 @@
                                         </a>
                                     </td>
                                     {% else %}
-                                    <td>foo</td>
+                                        <td class="text-center">-</td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
@@ -193,7 +197,11 @@
                 </div>
 
                 <!-- RECEIVABLE NOT RECEIVED -->
-                <div class="card card-info">
+                {% if not receivables_not_received %}
+                <div class="card card-info collapsed-card">
+                {% else %}
+                <div class="card card-info ">
+                {% endif %}
                     <div class="card-header">
                         <h3 class="card-title">A receber</h3>
                         <div class="card-tools">
@@ -216,7 +224,7 @@
                                 {% for receivable in receivables_not_received %}
                                 <tr>
                                     <td style="padding-left: 0.5rem;">
-                                        <a href="{% url 'finance:receivable_receive' receivable.id %}">
+                                        <a href="{% url 'finance:receivable_receive' receivable.number %}">
                                             <button class="btn-sm btn-primary" style="padding: 2px 4px;">Receber</button>
                                         </a>
                                     </td>
@@ -231,8 +239,13 @@
                     </div>
                 </div>
 
+
                 <!-- Cost Center Active -->
-                <div class="card card-purple">
+                {% if not cost_centers_active %}
+                <div class="card card-purple collapsed-card">
+                {% else %}
+                <div class="card card-purple ">
+                {% endif %}
                     <div class="card-header">
                         <h3 class="card-title">Centros de Custo Ativos</h3>
                         <div class="card-tools">

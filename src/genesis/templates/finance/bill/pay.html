@@ -21,14 +21,24 @@
             <h3 class="card-title">Confirmar Pagamento</h3>
         </div>
         <div class="card-body">
+            {% if form.due_date.value %}
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.due_date.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" name="amount" value="{{ form.due_date.value|date:'d/m/Y' }}" class="form-control" readonly required="" id="id_amount">
+                </div>
+            </div>
+            {% endif %}
+
             <div class="row">
                 <div class="col-sm-2 col-form-label">
                     {{ form.transacted_at.label_tag }}
                 </div>
-
                 <div class="col-sm-4">
                     <div class="input-group date" id="transacted_at" data-target-input="nearest">
-                        <input name="start" type="text" class="form-control datetimepicker-input" data-target="#transacted_at" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask required id="id_transacted_at" value="{{ form.transacted_at.value }}" />
+                        <input name="transacted_at" type="text" class="form-control datetimepicker-input" data-target="#transacted_at" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required id="id_transacted_at" value="{{ form.transacted_at.value }}" />
                         <div class="input-group-append" data-target="#transacted_at" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>

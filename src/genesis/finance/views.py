@@ -127,7 +127,10 @@ class BillPayView(SuperUserRequiredMixin, UpdateView):
     success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
-        return {"transacted_at": datetime.now().strftime("%d-%m-%Y")}
+        return {
+            "transacted_at": datetime.now().strftime("%d-%m-%Y"),
+            "is_recurrent": Bill.is_recurrent,
+        }
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
