@@ -129,7 +129,7 @@ class BillPayView(SuperUserRequiredMixin, UpdateView):
     def get_initial(self):
         return {
             "transacted_at": datetime.now().strftime("%d-%m-%Y"),
-            "is_recurrent": Bill.is_recurrent,
+            "is_recurrent": "checked" if self.object.is_recurrent else None,
         }
 
     def form_valid(self, form):
@@ -148,11 +148,22 @@ class BillPayView(SuperUserRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class BillCreateView(SuperUserRequiredMixin, CreateView):
-    template_name = "finance/bill/create.html"
+class BillCreateView(SuperUserRequiredMixin, UpdateView):
+    template_name = "finance/bill/create_edit.html"
     form_class = BillForm
     model = Bill
     success_url = reverse_lazy("finance:dashboard")
+
+    def get_object(self, queryset=None):
+        try:
+            return super().get_object(queryset)
+        except AttributeError:
+            return None
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["is_recurrent"] = "checked" if self.object.is_recurrent else None
+        return initial
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -173,7 +184,7 @@ class ReceivableCreateView(SuperUserRequiredMixin, CreateView):
     success_url = reverse_lazy("finance:dashboard")
 
     def get_initial(self):
-        return {"issued_at": datetime.now().strftime("%d-%m-%Y")}
+        return {"issued_at": datetime.now().strftime("%d-%m-%Y"), "is_recurrent": False}
 
     def form_valid(self, form):
         messages.success(self.request, "Recebível cadastrado com sucesso!")
@@ -260,7 +271,7 @@ class DividendsPayView(SuperUserRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-bill_create = BillCreateView.as_view()
+bill_create_edit = BillCreateView.as_view()
 bill_pay = BillPayView.as_view()
 dashboard = DashboardView.as_view()
 dividends_pay = DividendsPayView.as_view()

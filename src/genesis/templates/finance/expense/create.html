@@ -84,16 +84,17 @@
             </div>
             <div class="row">
                 <div class="col-sm-2 col-form-label">
-                    {{ form.is_recurrent.label_tag }}
+                    <label for="id_is_recurrent">Cadastrar Recorrência?</label>
                 </div>
                 <div class="col-sm-4">
-                    {{ form.is_recurrent }}
+                    <input type="checkbox" name="is_recurrent" id="id_is_recurrent" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="Sim" data-off-text="Não">
                 </div>
             </div>
             <br>
+            <br>
             <div class="row">
                 <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
-                    value="Salvar">
+                    value="Confirmar Pagamento">
             </div>
         </div>
     </div>
@@ -113,6 +114,12 @@
         //Datemask dd/mm/yyyy
         $('[data-mask]').inputmask()
 
+        $("input[data-bootstrap-switch]").each(function(){
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        });
+
+
     })
+
 </script>
 {% endblock %}

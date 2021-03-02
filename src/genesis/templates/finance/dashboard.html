@@ -163,6 +163,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 50px;"></th>
+                                    <th style="width: 50px;"></th>
                                     <th>Vencimento</th>
                                     <th>Categoria</th>
                                     <th class="text-right">Valor</th>
@@ -172,9 +173,14 @@
                             <tbody>
                                 {% for bill in bills_not_paid %}
                                 <tr>
-                                    <td style="padding-left: 0.5rem;">
+                                    <td style="padding-left: 0.3rem;">
                                         <a href="{% url 'finance:bill_pay' bill.id %}">
-                                            <button class="btn-sm btn-primary" style="padding: 2px 10px;">Pagar</button>
+                                            <button class="btn btn-primary" style="padding: 0px 8px;">Pagar</button>
+                                        </a>
+                                    </td>
+                                    <td style="padding-left: 0.0rem;">
+                                        <a href="{% url 'finance:bill_edit' bill.id %}">
+                                            <button class="btn btn-warning" style="padding: 0px 8px;">Editar</button>
                                         </a>
                                     </td>
                                     <td>{{ bill.due_date|date:"d/m/Y" }}</td>
@@ -225,7 +231,7 @@
                                 <tr>
                                     <td style="padding-left: 0.5rem;">
                                         <a href="{% url 'finance:receivable_receive' receivable.number %}">
-                                            <button class="btn-sm btn-primary" style="padding: 2px 4px;">Receber</button>
+                                            <button class="btn-sm btn-primary" style="padding: 1px 4px;">Receber</button>
                                         </a>
                                     </td>
                                     <td>{{ receivable.issued_at|date:"d/m/Y" }}</td>

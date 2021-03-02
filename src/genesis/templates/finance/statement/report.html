@@ -48,40 +48,46 @@
                     <td></td>
                     <td>Saldo Anterior</td>
                     <td></td>
-                    <td>R$ {{ start_balance|intcomma }}</td>
+                    {% if start_balance < 0 %}
+                        <td class="text-red text-right">
+                    {% else %}
+                        <td class="text-right">
+                    {% endif %}
+                        R$ {{ start_balance|intcomma }}
+                    </td>
                 </tr>
                 {% for report in reports %}
-                {% if report.category.cash_flow == "expense" %}
-                <tr class="text-red">
-                {% else %}
-                <tr>
-                {% endif %}
-                <tr>
-                    <td class="text-center">
-                        {% if report.file %}
-                        <a href="#"><i class="fas fa-file-download text-primary"></a></i>
-                        {% endif %}
-                    </td>
-                    <td>{{ report.transacted_at|date:"d/m/Y" }}</a></td>
-                    <td>{{ report.category }}</a></td>
-                    <td>{{ report.cost_center }}</a></td>
-                    <td>{{ report.notes }}</td>
                     {% if report.category.cash_flow == "expense" %}
-                        <td class="text-red text-right">
+                    <tr class="text-red">
                     {% else %}
-                        <td class="text-right">
+                    <tr>
                     {% endif %}
-                        R$ {{ report.amount|intcomma }}
+                    <tr>
+                        <td class="text-center">
+                            {% if report.file %}
+                            <a href="{{ report.file.url }}" target="_blank"><i class="fas fa-file-download text-primary"></a></i>
+                            {% endif %}
                         </td>
+                        <td>{{ report.transacted_at|date:"d/m/Y" }}</a></td>
+                        <td>{{ report.category }}</a></td>
+                        <td>{{ report.cost_center }}</a></td>
+                        <td>{{ report.notes }}</td>
+                        {% if report.category.cash_flow == "expense" %}
+                            <td class="text-red text-right">
+                        {% else %}
+                            <td class="text-right">
+                        {% endif %}
+                            R$ {{ report.amount|intcomma }}
+                            </td>
 
-                    {% if report.balance < 0 %}
-                        <td class="text-red text-right">
-                    {% else %}
-                        <td class="text-right">
-                    {% endif %}
-                        R$ {{ report.balance|intcomma }}
-                    </td>
-                </tr>
+                        {% if report.balance < 0 %}
+                            <td class="text-red text-right">
+                        {% else %}
+                            <td class="text-right">
+                        {% endif %}
+                            R$ {{ report.balance|intcomma }}
+                        </td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>

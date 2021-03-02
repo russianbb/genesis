@@ -59,9 +59,6 @@ class BillForm(forms.ModelForm):
         )
         self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
 
-    # def clean(self):
-    #     import ipdb; ipdb.set_trace()
-
     def clean_amount(self):
         return self.data["amount"].replace(",", ".")
 
