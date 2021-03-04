@@ -95,7 +95,7 @@ class Store(AbstractBaseModel, AddressBaseModel):
     )
 
     class Meta:
-        ordering = ["status", "company__name", "city", "nickname"]
+        ordering = ["status", "company__trade_name", "city", "nickname"]
         verbose_name = "Filial"
         verbose_name_plural = "Filiais"
         unique_together = [["document", "code", "nickname", "company"]]
