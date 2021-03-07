@@ -162,7 +162,8 @@ class BillCreateView(SuperUserRequiredMixin, UpdateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial["is_recurrent"] = "checked" if self.object.is_recurrent else None
+        if self.object:
+            initial["is_recurrent"] = "checked" if self.object.is_recurrent else None
         return initial
 
     def form_valid(self, form):

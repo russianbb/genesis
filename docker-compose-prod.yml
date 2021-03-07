@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/dev/dockerfile
+    command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - .:/code
+    ports:
+      - "80:8080"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_USER=${DATABASE_USER}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
