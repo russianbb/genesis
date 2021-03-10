@@ -4,8 +4,8 @@
 {% block title %} Pagamento{% endblock %}
 
 {% block stylesheets %}
+{% include '_styles/_forms.html' %}
 {{ block.super}}
-{% include '_includes/_styles.html'%}
 {% endblock %}
 
 {% block content %}
@@ -103,7 +103,7 @@
 {% endblock %}
 
 {% block extra_js %}
-{% include '_includes/_scripts.html' %}
+{% include '_scripts/_forms.html' %}
 <script>
     $(function () {
         // Data picker

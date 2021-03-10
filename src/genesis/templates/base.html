@@ -1,4 +1,3 @@
-{% load adminlte_helpers i18n %}
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -16,8 +15,7 @@
     {% endblock %}
 
     {% block stylesheets %}
-    {% include 'adminlte/lib/_styles.html' %}
-    <script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
+        {% include '_styles/_base.html' %}
     {% endblock %}
 
     {% block extra_head %}{% endblock %}
@@ -59,7 +57,7 @@
             {% block content_outer %}
             <section class="content">
                 {% block messages %}
-                {% include 'adminlte/lib/_messages.html' %}
+                {% include '_includes/_messages.html' %}
                 {% endblock %}
 
                 {% block content_block_wrap %}
@@ -79,7 +77,19 @@
     {% endblock body %}
 
     {% block javascript %}
-    {% include 'adminlte/lib/_scripts.html' %}
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+
+
+    {% block datatable_js %}{% endblock %}
+
+    <script src="{% static 'js/adminlte.min.js' %}"></script>
+    <script src="{% static 'js/demo.js' %}"></script>
     {% endblock %}
 
     {% block extra_js %}{% endblock %}
