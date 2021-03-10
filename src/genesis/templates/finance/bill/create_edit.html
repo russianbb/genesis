@@ -4,10 +4,9 @@
 {% block title %} Agendar Pagamento{% endblock %}
 
 {% block stylesheets %}
+{% include '_styles/_forms.html' %}
 {{ block.super}}
-{% include '_includes/_styles.html'%}
 {% endblock %}
-
 
 {% block content %}
 
@@ -79,7 +78,7 @@
                 <label for="id_is_recurrent">Cadastrar Recorrência?</label>
             </div>
             <div class="col-sm-4">
-                <input type="checkbox" name="is_recurrent" id="id_is_recurrent" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="Sim" data-off-text="Não" {{ form.is_recurrent.value }}>
+                <input type="checkbox" name="is_recurrent" id="id_is_recurrent" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="Sim" data-off-text="Não" {% if form.is_recurrent %}{{ form.is_recurrent.value }}{%endif%}>
             </div>
         </div>
         <br>
@@ -94,7 +93,7 @@
 {% endblock %}
 
 {% block extra_js %}
-{% include '_includes/_scripts.html' %}
+{% include '_scripts/_forms.html' %}
 <script>
     $(function () {
         // Data picker

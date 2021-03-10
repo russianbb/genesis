@@ -3,10 +3,6 @@
 
 {% block title %} {{ title }} {% endblock %}
 
-{% block stylesheets %}
-{{ block.super}}
-{% endblock %}
-
 {% block content %}
 
 {% include "_includes/errors_form.html" %}
@@ -88,7 +84,4 @@
     </form>
 </div>
 
-{% endblock %}
-
-{% block extra_js %}
 {% endblock %}
