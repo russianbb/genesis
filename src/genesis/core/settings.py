@@ -34,12 +34,10 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     # Third Party Apps
-    "adminlte3",
     "import_export",
     "rangefilter",
     "utils.apps.SuitConfig",
     "storages",
-    "fontawesome-free",
     # My Apps
     "comercial",
     "finance",
@@ -189,6 +187,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
 # STATICFILES_STORAGE = 'core.storage_backends.StaticStorage'
 
-DEFAULT_FILE_STORAGE = "core.storage_backends.MediaStorage"
+# DEFAULT_FILE_STORAGE = "core.storage_backends.MediaStorage"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

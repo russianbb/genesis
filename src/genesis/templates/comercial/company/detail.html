@@ -3,10 +3,6 @@
 
 {% block title %} {{ company.company_name }}{% endblock %}
 
-{% block stylesheets %}
-{{ block.super}}
-{% endblock %}
-
 {% block content %}
 <div class="card card-primary">
     <div class="card-header">
@@ -193,7 +189,4 @@
     </div>
     <!-- /.card -->
 </div>
-{% endblock %}
-
-{% block extra_js %}
 {% endblock %}
