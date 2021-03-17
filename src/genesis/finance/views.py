@@ -84,14 +84,16 @@ class StatementReportView(SuperUserRequiredMixin, ListView):
                 is_paid=True,
             )
             .select_related("category")
-            .order_by("transacted_at",)
+            .order_by("transacted_at")
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["start_date"] = self.start_date
         context["end_date"] = self.end_date
-        context["start_balance"] = get_balance_until(self.start_date)
+        context["start_balance"] = get_balance_until(
+            self.start_date - relativedelta(days=1)
+        )
         context["reports"] = process_statement_report(context)
         return context
 
