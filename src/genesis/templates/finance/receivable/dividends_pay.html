@@ -13,7 +13,7 @@
 {% include "_includes/errors_form.html" %}
 {{ form.media }}
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <div class="card card-primary">
     <div class="card-header">
