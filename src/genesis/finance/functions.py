@@ -104,7 +104,7 @@ def process_statement_report(context):
 
 
 def get_dividends_receiver_choices():
-    superusers = User.objects.filter(is_superuser=True).all()
+    superusers = User.objects.filter(is_superuser=True).all().order_by("username")
     receiver_choices = []
     for _ in superusers:
         receiver_choices.append((_.username, _.get_full_name))
