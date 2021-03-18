@@ -87,8 +87,7 @@ class ReceivableForm(forms.ModelForm):
 
 class ReceivableReceiveForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
-    transacted_at = forms.DateField(label="Data de Vencimento", required=True)
-    due_date = forms.DateField(label="Data de Vencimento", required=False)
+    transacted_at = forms.DateField(label="Data da Transação", required=True)
 
     class Meta:
         model = Transaction
@@ -118,8 +117,6 @@ class DividendsPayForm(forms.ModelForm):
     receiver = forms.ChoiceField(
         choices=get_dividends_receiver_choices(), label="Pago para"
     )
-    transacted_at = forms.DateField(label="Data de Vencimento", required=True)
-    due_date = forms.DateField(label="Data de Vencimento", required=False)
 
     class Meta:
         model = Transaction
