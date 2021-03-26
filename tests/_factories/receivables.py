@@ -2,7 +2,8 @@ from datetime import datetime
 
 import factory
 
-from . import CostCenterFactory, ServiceOrderFactory
+from .cost_center import CostCenterFactory
+from .service_order import ServiceOrderFactory
 
 
 class InvoiceFactory(factory.django.DjangoModelFactory):

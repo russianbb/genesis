@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from .._factories import CostCenterFactory, InvoiceFactory, ServiceOrderFactory
+from tests._factories import CostCenterFactory, InvoiceFactory, ServiceOrderFactory
 
 
 @pytest.fixture
