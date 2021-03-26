@@ -1,8 +1,12 @@
 from datetime import datetime
 
 import pytest
-
-from tests._factories import CostCenterFactory, InvoiceFactory, ServiceOrderFactory
+from factories import (
+    CostCenterFactory,
+    InvoiceFactory,
+    ServiceOrderFactory,
+    TransactionCategoryFactory,
+)
 
 
 @pytest.fixture
@@ -52,3 +56,8 @@ def debit_received(service_order, cost_center):
         service_order=service_order,
         is_received=True,
     )
+
+
+@pytest.fixture
+def transaction_category():
+    return TransactionCategoryFactory()

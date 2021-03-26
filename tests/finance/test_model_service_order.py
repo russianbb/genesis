@@ -1,6 +1,9 @@
+import pytest
 from django.db import models
 from finance.models import ServiceOrder
 from utils.models import AbstractBaseModel
+
+pytestmark = pytest.mark.django_db
 
 
 class TestServiceOrderModel:
@@ -40,6 +43,6 @@ class TestServiceOrderModel:
         assert field.verbose_name == "Solicitante"
         assert type(field) == models.CharField
 
-    def test_str(self):
-        instance = ServiceOrder(description="foo")
-        assert str(instance) == "foo"
+
+def test_str(service_order):
+    assert str(service_order) == "Some Service order"

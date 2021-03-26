@@ -4,8 +4,9 @@ from finance.models import CostCenter, Receivable, ServiceOrder
 from model_utils.choices import Choices
 from utils.models import AbstractBaseModel
 
+pytestmark = pytest.mark.django_db
 
-@pytest.mark.django_db
+
 class TestReceivableModel:
     @classmethod
     def setup_class(cls):
@@ -100,24 +101,30 @@ class TestReceivableModel:
         assert field.verbose_name == "Já recebido?"
         assert type(field) == models.BooleanField
 
-    def test_str(self, invoice_received):
-        assert str(invoice_received) == "Nota Fiscal 002"
 
-    def test_get_number_display(self, invoice_received):
-        assert invoice_received.get_number_display == "002"
+def test_str(invoice_received):
+    assert str(invoice_received) == "Nota Fiscal 002"
 
-    def test_get_amount_display(self, invoice_received):
-        assert invoice_received.get_amount_display == "22,22"
 
-    def test_get_upload_filename(self, invoice_received):
-        assert (
-            invoice_received.get_upload_filename == "Nota Fiscal 002-Some Cost Center"
-        )  # noqa
+def test_get_number_display(invoice_received):
+    assert invoice_received.get_number_display == "002"
 
-    def test_get_transaction_category(self, invoice_received, debit_received):
-        assert invoice_received.get_transaction_category == "Nota Fiscal"
-        assert debit_received.get_transaction_category == "Nota de Débito"
 
-    def test_set_as_received(self, invoice_not_received):
-        invoice_not_received.set_as_received
-        assert invoice_not_received.is_received is True
+def test_get_amount_display(invoice_received):
+    assert invoice_received.get_amount_display == "22,22"
+
+
+def test_get_upload_filename(invoice_received):
+    assert (
+        invoice_received.get_upload_filename == "Nota Fiscal 002-Some Cost Center"
+    )  # noqa
+
+
+def test_get_transaction_category(invoice_received, debit_received):
+    assert invoice_received.get_transaction_category == "Nota Fiscal"
+    assert debit_received.get_transaction_category == "Nota de Débito"
+
+
+def test_set_as_received(invoice_not_received):
+    invoice_not_received.set_as_received
+    assert invoice_not_received.is_received is True
