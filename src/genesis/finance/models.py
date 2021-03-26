@@ -134,7 +134,6 @@ class Receivable(AbstractBaseModel):
             return TRANSACTION_CATEGORY_NF["description"]
         if self.category == "debit":
             return TRANSACTION_CATEGORY_ND["description"]
-        return None
 
     @property
     def set_as_received(self):

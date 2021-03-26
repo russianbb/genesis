@@ -1,9 +1,9 @@
 from datetime import date
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from django.db import models
-from finance.models import CostCenter, Transaction, TransactionCategory
+from finance.models import CostCenter, Transaction, TransactionCategory, get_upload_to
 from utils.models import AbstractBaseModel
 
 pytestmark = pytest.mark.django_db
@@ -164,3 +164,9 @@ def test_create_recurrent_without_due_date(mock_model, transaction_paid):
     )
 
     mock_model.return_value.save.assert_called_once()
+
+
+def test_get_upload_to():
+    instance = MagicMock(UPLOAD_PATH="foo", get_upload_filename="bar")
+    response = get_upload_to(instance, "file.ext")
+    assert response == "foo/bar.ext"
