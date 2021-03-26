@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import date, datetime
+from decimal import Decimal
 
 import pytest
 from factories import (
@@ -6,6 +7,7 @@ from factories import (
     InvoiceFactory,
     ServiceOrderFactory,
     TransactionCategoryFactory,
+    TransactionFactory,
 )
 
 
@@ -61,3 +63,40 @@ def debit_received(service_order, cost_center):
 @pytest.fixture
 def transaction_category():
     return TransactionCategoryFactory()
+
+
+@pytest.fixture
+def transaction(transaction_category):
+    return TransactionFactory(amount=Decimal(1.99), category=transaction_category,)
+
+
+@pytest.fixture
+def transaction_not_paid(transaction_category):
+    return TransactionFactory(
+        amount=Decimal(1.99),
+        category=transaction_category,
+        is_paid=False,
+        due_date=date(2021, 1, 1),
+    )
+
+
+@pytest.fixture
+def transaction_paid(transaction_category):
+    return TransactionFactory(
+        amount=Decimal(1.99),
+        category=transaction_category,
+        transacted_at=date(2021, 1, 1),
+        is_paid=True,
+        notes="Some Notes",
+    )
+
+
+@pytest.fixture
+def transaction_paid_with_due_date(transaction_category):
+    return TransactionFactory(
+        amount=Decimal(1.99),
+        category=transaction_category,
+        due_date=date(2021, 1, 1),
+        transacted_at=date(2021, 1, 1),
+        is_paid=True,
+    )

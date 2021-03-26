@@ -217,10 +217,10 @@ class Transaction(AbstractBaseModel):
     @property
     def get_upload_filename(self):
         if not self.is_paid and self.due_date:
-            subpath = f"bills/{self.due_date.strftime('%Y/%m/')}"
+            subpath = f"bills/{self.due_date.strftime('%Y/%m')}"
             when = self.due_date.strftime("%d_%m_%Y")
         else:
-            subpath = f"transactions/{self.transacted_at.strftime('%Y/%m/')}"
+            subpath = f"transactions/{self.transacted_at.strftime('%Y/%m')}"
             when = self.transacted_at.strftime("%d_%m_%Y")
 
         return f"{subpath}/{when}-{self.category}-{self.notes}-RS_{self.get_amount_display}"  # noqa
