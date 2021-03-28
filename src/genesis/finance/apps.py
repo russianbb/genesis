@@ -10,7 +10,6 @@ class FinanceConfig(AppConfig):
     def ready(self):
         post_migrate.connect(prepopulate_categories, sender=self)
         post_migrate.connect(prepopulate_cost_center, sender=self)
-        import finance.signals  # noqa
 
 
 def prepopulate_categories(sender, **kwargs):

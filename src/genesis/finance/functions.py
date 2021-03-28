@@ -7,10 +7,6 @@ from django.db.models import Sum
 from .models import Bill, CostCenter, Expense, Receivable, Revenue
 
 
-def get_cost_center_chart_data():
-    pass  # TODO: como somar por grupo?
-
-
 def get_bills_not_paid():
     return Bill.objects.all()
 
