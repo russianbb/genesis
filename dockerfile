@@ -23,3 +23,5 @@ RUN pip install -r base.txt
 
 COPY . /code/
 WORKDIR /code/src/genesis/
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]

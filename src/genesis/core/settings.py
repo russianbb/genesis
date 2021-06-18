@@ -144,26 +144,10 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "standard",
         },
-        "file_all": {
-            "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": os.path.join(BASE_DIR, "../../logs/", "all.log"),
-            "maxBytes": 50 * 1024 * 1024,  # 50 MB
-            "backupCount": 1,
-            "formatter": "standard",
-        },
-        "file_warning": {
-            "level": "WARNING",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": os.path.join(BASE_DIR, "../../logs/", "warning.log"),
-            "maxBytes": 50 * 1024 * 1024,  # 50 MB
-            "backupCount": 1,
-            "formatter": "standard",
-        },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "file_all", "file_warning"],
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": True,
         },
