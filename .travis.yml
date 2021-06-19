@@ -13,12 +13,12 @@ before_install:
 script:
   - docker run -e CI=true russianbb/genesis-test py.test -s ../../tests
 
-after-success:
+before_deploy:
   - echo "--> Starting Building Process"
   - docker --version  # document the version travis is using
   - pip install --user awscli # install aws cli w/o sudo
   - export PATH=$PATH:$HOME/.local/bin # put aws in the path
   - eval $(aws ecr get-login --no-include-email --region sa-east-1)
   - docker build -t $APP_NAME:$TRAVIS_BUILD_ID .
-  - docker tag $APP_NAME:$TRAVIS_BUILD_ID $AWS_ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
-  - docker push $AWS_ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
+  - docker tag $APP_NAME:$TRAVIS_BUILD_ID $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
+  - docker push $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
