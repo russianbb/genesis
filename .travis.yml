@@ -1,0 +1,14 @@
+sudo: required
+
+services: docker
+
+branches:
+  only:
+    - develop
+    - main
+
+before_install:
+  - docker build -t russianbb/genesis-test .
+
+script:
+  - docker run -e CI=true russianbb/genesis-test py.test -s ../../tests
