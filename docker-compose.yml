@@ -14,7 +14,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: docker/dockerfile
     restart: always
     volumes:
       - .:/code
