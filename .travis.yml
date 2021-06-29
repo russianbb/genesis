@@ -1,3 +1,5 @@
+language: generic
+
 branches:
   only:
     - develop
@@ -20,8 +22,8 @@ jobs:
     - docker run -e CI=true russianbb/genesis-test py.test -s ../../tests
 
   - stage: Build
-    name: "Building and pushing docker images to be deployed"
-    before_script:
+    name: "Building image"
+    script:
     - echo "--> Starting Building Process"
     - docker --version
     - pip install --user awscli
@@ -32,13 +34,23 @@ jobs:
     - docker push $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
     - docker tag $APP_NAME:$TRAVIS_BUILD_ID $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:latest
     - docker push $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:latest
+    on:
+      branches:
+      - master
 
   - stage: Deploy
-    name: "Running django deploy: docker pull, migrate, collectstatic, runserver"
-    scripts:
+    name: "Deploying to production"
+    before_deploy:
     - openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
     - eval "$(ssh-agent -s)"
     - chmod 600 /tmp/deploy_rsa
     - ssh-add /tmp/deploy_rsa
-    - scp -o "StrictHostKeyChecking=no" ./deploy/deploy.sh $SSH_HOST:/home/ubuntu
-    - ssh $SSH_HOST 'sh deploy.'
+
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script:
+      - scp -o "StrictHostKeyChecking=no" ./deploy/deploy.sh $SSH_HOST:/home/ubuntu
+      - ssh $SSH_HOST 'sh deploy.'
+      on:
+        branch: master
