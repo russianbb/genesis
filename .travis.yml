@@ -1,24 +1,44 @@
-sudo: required
-
-services: docker
-
 branches:
   only:
     - develop
     - main
 
-before_install:
-  - docker build -t russianbb/genesis-test .
+stages:
+  - Test
+  - name: Build
+    if: branch = main
+  - name: Deploy
+    if: branch = main
 
-script:
-  - docker run -e CI=true russianbb/genesis-test py.test -s ../../tests
+jobs:
+  include:
+  - stage: Test
+    name: "Running full test suit"
+    before_install:
+      - docker build -f dockerfile.dev -t russianbb/genesis-test .
+    script:
+    - docker run -e CI=true russianbb/genesis-test py.test -s ../../tests
 
-before_deploy:
-  - echo "--> Starting Building Process"
-  - docker --version  # document the version travis is using
-  - pip install --user awscli # install aws cli w/o sudo
-  - export PATH=$PATH:$HOME/.local/bin # put aws in the path
-  - eval $(aws ecr get-login --no-include-email --region sa-east-1)
-  - docker build -t $APP_NAME:$TRAVIS_BUILD_ID .
-  - docker tag $APP_NAME:$TRAVIS_BUILD_ID $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
-  - docker push $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
+  - stage: Build
+    name: "Building and pushing docker images to be deployed"
+    before_script:
+    - echo "--> Starting Building Process"
+    - docker --version
+    - pip install --user awscli
+    - export PATH=$PATH:$HOME/.local/bin
+    - eval $(aws ecr get-login --no-include-email --region sa-east-1)
+    - docker build -f deploy/dockerfile -t $APP_NAME:$TRAVIS_BUILD_ID .
+    - docker tag $APP_NAME:$TRAVIS_BUILD_ID $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
+    - docker push $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:$TRAVIS_BUILD_ID
+    - docker tag $APP_NAME:$TRAVIS_BUILD_ID $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:latest
+    - docker push $AWS_ECR_ACCOUNT.dkr.ecr.sa-east-1.amazonaws.com/$APP_NAME:latest
+
+  - stage: Deploy
+    name: "Running django deploy: docker pull, migrate, collectstatic, runserver"
+    scripts:
+    - openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+    - eval "$(ssh-agent -s)"
+    - chmod 600 /tmp/deploy_rsa
+    - ssh-add /tmp/deploy_rsa
+    - scp -o "StrictHostKeyChecking=no" ./deploy/deploy.sh $SSH_HOST:/home/ubuntu
+    - ssh $SSH_HOST 'sh deploy.'
