@@ -7,8 +7,6 @@ branches:
 
 stages:
   - Test
-  - name: Build
-    if: branch = main
   - name: Deploy
     if: branch = main
 
