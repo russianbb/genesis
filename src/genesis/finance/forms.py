@@ -115,7 +115,8 @@ class ReceivableReceiveForm(forms.ModelForm):
 class DividendsPayForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
     receiver = forms.ChoiceField(
-        choices=get_dividends_receiver_choices(), label="Pago para"
+        # choices=get_dividends_receiver_choices(), label="Pago para"
+        choices=("foo", "bar"), label="Pago para"
     )
 
     class Meta:
