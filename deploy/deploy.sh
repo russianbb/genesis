@@ -9,6 +9,7 @@ echo $(date ++%x-%r)  "---> Login docker to ECR" >> mylog.txt
 aws ecr get-login-password --region sa-east-1 | docker login --username AWS --password-stdin $ECR_DNS
 
 echo $(date ++%x-%r)  "---> Pulling image" >> mylog.txt
+eval $(aws ecr get-login --no-include-email --region sa-east-1)
 docker pull $ECR_DNS:latest
 
 echo $(date ++%x-%r)  "---> Running Django migrations on Docker." >> mylog.txt
