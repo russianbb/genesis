@@ -36,6 +36,11 @@ jobs:
     - eval "$(ssh-agent -s)"
     - chmod 600 /tmp/deploy_rsa
     - ssh-add /tmp/deploy_rsa
+    - ssh $SSH_HOST 'aws ecr get-login-password --region sa-east-1 | docker login --username AWS --password-stdin $ECR_DNS'
+    - ssh $SSH_HOST 'docker stop $(docker ps -aq)'
+    - ssh $SSH_HOST 'docker rm $(docker ps -aq)'
+    - ssh $SSH_HOST 'docker image rm $(docker image ls -aq)'
+    - ssh $SSH_HOST 'docker pull $ECR_DNS:latest'
 
     deploy:
       provider: script
