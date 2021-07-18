@@ -1,0 +1,1 @@
+scp -o "StrictHostKeyChecking=no" ./deploy/deploy.sh $SSH_HOST:/home/ubuntu ssh $SSH_HOST 'sh deploy.sh'
