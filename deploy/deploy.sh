@@ -14,8 +14,10 @@ docker pull $ECR_DNS:latest
 echo $(date ++%x-%r)  "---> Running Django migrations on Docker." >> mylog.txt
 docker run --env-file .env --rm $ECR_DNS:latest python manage.py migrate
 
-# echo $(date ++%x-%r)  "---> Running Django collectstatic on Docker." >> mylog.txt
-# docker run --env-file .env --rm $ECR_DNS:latest python manage.py collectstatic
+echo $(date ++%x-%r)  "---> Running Django collectstatic on Docker." >> mylog.txt
+docker run --env-file .env --rm $ECR_DNS:latest python manage.py collectstatic
 
 echo $(date ++%x-%r)  "---> Running Django Server." >> mylog.txt
-docker run --env-file .env $ECR_DNS:latest
+docker run --env-file .env -p 80:8080 -d $ECR_DNS:latest
+
+echo $(date ++%x-%r)  "#### Finish deploy.sh" >> mylog.txt
