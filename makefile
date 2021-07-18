@@ -12,7 +12,7 @@ close:
 
 build:
 	@echo "--> Creating Docker."
-	docker-compose build ## --no-cache -t genesis -f docker/dev/dockerfile .
+	docker-compose build -t genesis -f docker/dev/dockerfile .
 
 bash:
 	docker-compose run --rm web bash
@@ -32,15 +32,3 @@ django-migrate:
 
 open-test:
 	open htmlcov/index.html
-
-django-create-app:
-	@echo "--> Creating new app on Docker."
-	docker-compose run --rm web python manage.py startapp $(name)
-
-django-create-superuser:
-	@echo "--> Creating superuser on Docker."
-	docker-compose run --rm web python manage.py createsuperuser
-
-django-merge-migration:
-	@echo "--> Merging Migration."
-	docker-compose run --rm web python manage.py makemigrations --merge
