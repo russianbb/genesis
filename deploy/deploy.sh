@@ -12,7 +12,7 @@ echo $(date ++%x-%r)  "---> Pulling image" >> mylog.txt
 docker pull $ECR_DNS:latest
 
 echo $(date ++%x-%r)  "---> Running Django migrations on Docker." >> mylog.txt
-docker run --env-file .env --rm $ECR_DNS:latest python manage.py migrate
+docker run --env-file .env --rm $ECR_DNS:latest python manage.py migrate --noinput
 
 echo $(date ++%x-%r)  "---> Running Django collectstatic on Docker." >> mylog.txt
 docker run --env-file .env --rm $ECR_DNS:latest python manage.py collectstatic --noinput

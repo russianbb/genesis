@@ -38,8 +38,6 @@ django==2.2.19
     #   django-storages
 et-xmlfile==1.0.1
     # via openpyxl
-fontawesome-free==5.15.3
-    # via -r base.in
 jmespath==0.10.0
     # via
     #   boto3
