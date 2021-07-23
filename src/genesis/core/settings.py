@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "rangefilter",
     "utils.apps.SuitConfig",
     "storages",
-    "fontawesome-free",
     # My Apps
     "comercial",
     "finance",
