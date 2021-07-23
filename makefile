@@ -12,7 +12,7 @@ close:
 
 build:
 	@echo "--> Creating Docker."
-	docker-compose build -t genesis -f docker/dev/dockerfile .
+	docker-compose build
 
 bash:
 	docker-compose run --rm web bash

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "rangefilter",
     "utils.apps.SuitConfig",
     "storages",
+    "fontawesome-free",
     # My Apps
     "comercial",
     "finance",
@@ -146,11 +147,7 @@ LOGGING = {
         },
     },
     "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "INFO",
-            "propagate": True,
-        },
+        "django": {"handlers": ["console"], "level": "INFO", "propagate": True},
     },
 }
 
