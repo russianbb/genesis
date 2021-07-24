@@ -3,6 +3,11 @@
 
 {% block title %} {{ company.company_name }}{% endblock %}
 
+{% block stylesheets %}
+    {% include '_styles/_datatables.html' %}
+    {{ block.super }}
+{% endblock %}
+
 {% block content %}
 <div class="card card-primary">
     <div class="card-header">
@@ -189,4 +194,42 @@
     </div>
     <!-- /.card -->
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(function () {
+        $('#stores').DataTable({
+            "order": [[ 1, "asc" ]],
+            "paging": false,
+            "lengthChange": true,
+            "searching": false,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+    $(function () {
+        $('#focals').DataTable({
+            "order": [[ 1, "asc" ]],
+            "paging": false,
+            "lengthChange": true,
+            "searching": false,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+    $(function () {
+        $('#rtvs').DataTable({
+            "order": [[ 1, "asc" ]],
+            "paging": false,
+            "lengthChange": true,
+            "searching": false,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
 {% endblock %}
