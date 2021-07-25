@@ -11,6 +11,7 @@ services:
       - mysql-db:/var/lib/mysql
     ports:
       - "3306:3306"
+
   web:
     build:
       context: .
@@ -20,7 +21,7 @@ services:
       - .:/code
     ports:
       - "8080:8080"
-    environment:
+    environment: &environment
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
@@ -30,8 +31,24 @@ services:
       - DATABASE_USER=${DATABASE_USER}
       - DJANGO_SETTINGS_MODULE=core.development
       - SECRET_KEY=${SECRET_KEY}
-    depends_on:
+      - JUPYTER_CONFIG_DIR=/code/jupyter/config/
+    depends_on: &depends_on
       - db
+
+  jupyter:
+    build:
+      context: .
+      dockerfile: dockerfile.dev
+    command: bash -c "jupyter notebook"
+    volumes:
+      - .:/code
+    ports:
+      - "8888:8888"
+    environment:
+      *environment
+    depends_on:
+      *depends_on
+
 
 volumes:
   mysql-db:
