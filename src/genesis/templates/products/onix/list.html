@@ -23,7 +23,7 @@
                     <th>Embalagem</th>
                     <th>Unidade</th>
                     <th>Volume</th>
-                    <th>Ativo</th>
+                    <th>Status</th>
                     <th>Atualizado em</th>
                 </tr>
             </thead>
@@ -35,8 +35,8 @@
                     <td><a href="{% url 'products:onix' product.id %}">{{ product.unit_size }}</a></td>
                     <td><a href="{% url 'products:onix' product.id %}">{{ product.unit_mesure }}</a></td>
                     <td><a href="{% url 'products:onix' product.id %}">{{ product.unit_volume }}</a></td>
-                    <td>{% if product.status %} Sim {% else %} Não {% endif %}</td>
-                    <td>{{ product.updated_at }}</td>
+                    <td>{{ product.get_status }}</td>
+                    <td>{{ product.updated_at|date:"d/m/Y" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -12,7 +12,7 @@ class OnixProductResource(resources.ModelResource):
     unit_size = Field(attribute="unit_size", column_name="Tamanho da embalagem")
     unit_mesure = Field(attribute="unit_mesure", column_name="Tipo de unidade")
     unit_volume = Field(attribute="unit_volume", column_name="Volume")
-    status = Field(attribute="status", column_name="Ativo")
+    status = Field(attribute="status", column_name="Status")
 
     class Meta:
         model = OnixProduct
@@ -33,12 +33,15 @@ class OnixProductResource(resources.ModelResource):
     def dehydrate_unit_volume(self, obj):
         return formats.number_format(obj.unit_volume, 4)
 
+    def dehydrate_status(self, obj):
+        return "Ativo" if obj.status else "Inativo"
+
 
 class SyngentaProductResource(resources.ModelResource):
     agicode = Field(attribute="agicode", column_name="Agicode")
     family = Field(attribute="family", column_name="Família")
     description = Field(attribute="description", column_name="Descrição")
-    status = Field(attribute="status", column_name="Ativo")
+    status = Field(attribute="status", column_name="Status")
     onix = Field(attribute="onix__pk", column_name="Id Onix")
     onix_description = Field(attribute="onix__description", column_name="Produto Onix")
     onix_unit_volume = Field(attribute="onix__unit_volume", column_name="Volume")
@@ -59,11 +62,15 @@ class SyngentaProductResource(resources.ModelResource):
     def dehydrate_onix_unit_volume(self, obj):
         return formats.number_format(obj.onix.unit_volume, 4)
 
+    def dehydrate_status(self, obj):
+        return "Ativo" if obj.status else "Inativo"
+
 
 class CompanyProductResource(resources.ModelResource):
     company = Field(attribute="company", column_name="Distribuidor")
     code = Field(attribute="code", column_name="Código")
     description = Field(attribute="description", column_name="Descrição")
+    status = Field(attribute="status", column_name="Status")
     onix = Field(attribute="onix__id", column_name="Id Onix")
     onix_description = Field(attribute="onix__description", column_name="Produto Onix")
     onix_unit_volume = Field(attribute="onix__unit_volume", column_name="Volume")
@@ -82,3 +89,6 @@ class CompanyProductResource(resources.ModelResource):
 
     def dehydrate_onix_unit_volume(self, obj):
         return formats.number_format(obj.onix.unit_volume, 4)
+
+    def dehydrate_status(self, obj):
+        return "Ativo" if obj.status else "Inativo"

@@ -32,3 +32,7 @@ django-migrate:
 
 open-test:
 	open htmlcov/index.html
+
+shell-plus:
+	@echo "--> Run shell plus from django-extensions"
+	docker-compose run web python manage.py shell_plus
