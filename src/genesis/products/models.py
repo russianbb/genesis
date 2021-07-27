@@ -48,6 +48,9 @@ class OnixProduct(AbstractBaseModel):
     def __str__(self):
         return f"{self.description}"
 
+    def get_status(self):
+        return "Ativo" if self.status else "Inativo"
+
 
 class SyngentaProduct(AbstractBaseModel):
     onix = models.ForeignKey(
@@ -71,6 +74,9 @@ class SyngentaProduct(AbstractBaseModel):
 
     def get_onix_product(self):
         return f"{self.onix}"
+
+    def get_status(self):
+        return "Ativo" if self.status else "Inativo"
 
 
 class CompanyProduct(AbstractBaseModel):
@@ -109,3 +115,6 @@ class CompanyProduct(AbstractBaseModel):
 
     def get_syngenta_product(self):
         return f"{self.product_syngenta}"
+
+    def get_status(self):
+        return "Ativo" if self.status else "Inativo"
