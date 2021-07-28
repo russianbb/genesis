@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "comercial",
     "finance",
     "products",
+    "projects",
     "utils",
     # Django Apps
     "django.contrib.admin",
