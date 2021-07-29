@@ -1,4 +1,3 @@
-from comercial.models import Company
 from django.db import models
 from utils.models import AbstractBaseModel
 
@@ -13,7 +12,7 @@ class Project(AbstractBaseModel):
         verbose_name="Data Base", help_text="Data de mensuração do estoque"
     )
     companies = models.ManyToManyField(
-        Company, related_name="projects", through="ProjectCompany"
+        "comercial.Company", related_name="projects", through="ProjectCompany"
     )
     category = models.CharField(
         verbose_name="Tipo de projeto", max_length=200, choices=PROJECT_CHOICES,
@@ -38,7 +37,7 @@ class ProjectCompany(models.Model):
         Project, on_delete=models.CASCADE, verbose_name="Projeto"
     )
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, verbose_name="Distribuidor"
+        "comercial.Company", on_delete=models.CASCADE, verbose_name="Distribuidor"
     )
 
     class Meta:
