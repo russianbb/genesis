@@ -5,7 +5,9 @@
 #    pip-compile base.in
 #
 boto3==1.17.19
-    # via -r base.in
+    # via
+    #   -r base.in
+    #   django-ses
 botocore==1.20.24
     # via
     #   boto3
@@ -24,6 +26,8 @@ django-localflavor==2.2
     # via -r base.in
 django-model-utils==4.0.0
     # via -r base.in
+django-ses==2.2.0
+    # via -r base.in
 django-storages==1.11.1
     # via -r base.in
 git+https://github.com/darklow/django-suit.git@v2
@@ -35,9 +39,12 @@ django==2.2.19
     #   django-import-export
     #   django-localflavor
     #   django-model-utils
+    #   django-ses
     #   django-storages
 et-xmlfile==1.0.1
     # via openpyxl
+future==0.18.2
+    # via django-ses
 jmespath==0.10.0
     # via
     #   boto3
@@ -55,7 +62,9 @@ python-dateutil==2.8.1
 python-stdnum==1.16
     # via django-localflavor
 pytz==2021.1
-    # via django
+    # via
+    #   django
+    #   django-ses
 pyyaml==5.4.1
     # via tablib
 s3transfer==0.3.4
