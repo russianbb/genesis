@@ -157,3 +157,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+EMAIL_BACKEND = "django_ses.SESBackend"
+AWS_SES_REGION_NAME = "sa-east-1"
+AWS_SES_REGION_ENDPOINT = "email.sa-east-1.amazonaws.com"
