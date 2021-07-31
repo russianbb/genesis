@@ -6,6 +6,10 @@ run-debug:
 	@echo "--> Running Debug Mode with IPDB"
 	docker-compose run --service-ports web
 
+run-extras:
+	@echo "--> Running Docker with Extras"
+	docker-compose --profile extras up
+
 close:
 	@echo "--> Close Docker."
 	docker-compose down
