@@ -161,3 +161,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 EMAIL_BACKEND = "django_ses.SESBackend"
 AWS_SES_REGION_NAME = "sa-east-1"
 AWS_SES_REGION_ENDPOINT = "email.sa-east-1.amazonaws.com"
+
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+
+
+# Celery Config
+BROKER_URL = f"sqs://{AWS_ACCESS_KEY_ID}:{AWS_SECRET_ACCESS_KEY}@"
+BROKER_TRANSPORT_OPTIONS = {
+    "region": "sa-east-1",
+    "polling_interval": 20,
+}
+CELERY_DEFAULT_QUEUE = "genesis-prod"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = None  # Disabling the results backend
