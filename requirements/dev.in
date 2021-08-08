@@ -1,3 +1,4 @@
 django-extensions
 pre-commit
 pip-tools
+jupyter==1.0.0

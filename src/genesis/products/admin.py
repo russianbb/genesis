@@ -26,6 +26,7 @@ class OnixProductAdmin(ExportMixin, admin.ModelAdmin):
         "unit_size",
         "unit_mesure",
         "unit_volume",
+        "status",
     )
     list_display_links = ("description",)
     search_fields = (
@@ -36,7 +37,7 @@ class OnixProductAdmin(ExportMixin, admin.ModelAdmin):
         "unit_mesure",
         "unit_volume",
     )
-    list_filter = ("unit_size", "unit_mesure", "unit_volume")
+    list_filter = ("status", "unit_mesure", "unit_volume")
     fields = (
         "prefix",
         "unit_size",
@@ -63,8 +64,10 @@ class SyngentaProductAdmin(ExportMixin, admin.ModelAdmin):
         "get_onix_id",
         "get_onix_description",
         "updated_at",
+        "status",
     )
     list_display_links = ("agicode", "description")
+    list_filter = ("status",)
     search_fields = ("agicode", "description", "family")
     fields = ("onix", "agicode", "family", "description", "status")
 

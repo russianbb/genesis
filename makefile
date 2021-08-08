@@ -6,6 +6,10 @@ run-debug:
 	@echo "--> Running Debug Mode with IPDB"
 	docker-compose run --service-ports web
 
+run-extras:
+	@echo "--> Running Docker with Extras"
+	docker-compose --profile extras up
+
 close:
 	@echo "--> Close Docker."
 	docker-compose down
@@ -32,3 +36,11 @@ django-migrate:
 
 open-test:
 	open htmlcov/index.html
+
+shell-plus:
+	@echo "--> Run shell plus from django-extensions"
+	docker-compose run web python manage.py shell_plus
+
+shell:
+	@echo "--> Run shell plus from django-extensions"
+	docker-compose run web python manage.py shell

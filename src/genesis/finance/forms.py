@@ -114,10 +114,9 @@ class ReceivableReceiveForm(forms.ModelForm):
 
 class DividendsPayForm(forms.ModelForm):
     amount = forms.CharField(label="Valor", required=True)
-    receiver = forms.ChoiceField(
-        # choices=get_dividends_receiver_choices(), label="Pago para"
-        choices=("foo", "bar"), label="Pago para"
-    )
+    receiver = forms.ChoiceField(choices=(), label="Pago para")
+
+    EDITABLE_FIELDS = ["file", "amount", "transacted_at", "receiver", "cost_center"]
 
     class Meta:
         model = Transaction
@@ -125,16 +124,15 @@ class DividendsPayForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.base_fields["receiver"].choices = get_dividends_receiver_choices()
+        self.base_fields["cost_center"].queryset = CostCenter.objects.filter(
+            status=True
+        )
+
         for field in self.fields:
-            self.fields[field].widget.attrs = {
-                "class": "form-control",
-                "readonly": True,
-            }
-        self.fields["file"].widget.attrs = {"class": "form-control"}
-        self.fields["amount"].widget.attrs = {"class": "form-control"}
-        self.fields["transacted_at"].widget.attrs = {"class": "form-control"}
-        self.fields["receiver"].widget.attrs = {"class": "form-control"}
-        self.fields["cost_center"].queryset = CostCenter.objects.filter(status=True)
+            self.fields[field].widget.attrs = {"class": "form-control"}
+            if field not in self.EDITABLE_FIELDS:
+                self.fields[field].widget.attrs["readonly"] = True
 
     def clean_amount(self):
         return self.data["amount"].replace(",", ".")

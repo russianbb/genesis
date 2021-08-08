@@ -31,7 +31,7 @@
                     <th></th>
                     <th>Código</th>
                     <th>Descrição</th>
-                    <th>Ativo</th>
+                    <th>Status</th>
                     <th>Id Onix</th>
                     <th>Produto Onix</th>
                     <th>Atualizado em</th>
@@ -43,15 +43,10 @@
                     <td><a href="{% url 'products:company_edit' code_sap product.id %}"><i class="fas fa-edit text-orange"></i></a></td>
                     <td><a href="{% url 'products:company' code_sap product.id %}">{{ product.code }}</a></td>
                     <td><a href="{% url 'products:company' code_sap product.id %}">{{ product.description }}</a></td>
-                    <td>
-                        {% if product.status %}
-                        Sim
-                        {% else %}
-                        Nao
-                        {% endif%}
+                    <td>{{ product.get_status }}</td>
                     <td>{{ product.onix.id }}</td>
                     <td>{{ product.onix }}</td>
-                    <td>{{ product.updated_at }}</td>
+                    <td>{{ product.updated_at|date:"d/m/Y" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

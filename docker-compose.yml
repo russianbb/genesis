@@ -11,6 +11,28 @@ services:
       - mysql-db:/var/lib/mysql
     ports:
       - "3306:3306"
+
+  worker:
+    build:
+      context: .
+      dockerfile: dockerfile.dev
+    command: bash -c "celery -A celery_app worker -l info"
+    volumes:
+      - .:/code
+    environment: &environment
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_USER=${DATABASE_USER}
+      - DJANGO_SETTINGS_MODULE=core.development
+      - JUPYTER_CONFIG_DIR=/code/jupyter/config/
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on: &depends_on
+      - db
+
   web:
     build:
       context: .
@@ -20,18 +42,30 @@ services:
       - .:/code
     ports:
       - "8080:8080"
+    environment: *environment
+    depends_on: *depends_on
+
+  jupyter:
+    profiles: ["extras"]
+    build:
+      context: .
+      dockerfile: dockerfile.dev
+    command: bash -c "jupyter notebook"
+    volumes:
+      - .:/code
+    ports:
+      - "8888:8888"
     environment:
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_USER=${DATABASE_USER}
-      - DJANGO_SETTINGS_MODULE=core.development
-      - SECRET_KEY=${SECRET_KEY}
+      *environment
     depends_on:
-      - db
+      *depends_on
+
+  mailhog:
+    profiles: ["extras"]
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - "8025:8025"
+    restart: unless-stopped
 
 volumes:
   mysql-db:
