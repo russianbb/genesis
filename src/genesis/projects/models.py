@@ -31,6 +31,10 @@ class Project(AbstractBaseModel):
     def date_display(self):
         return self.date.strftime("%d/%m/%Y")
 
+    @property
+    def status_display(self):
+        return "Ativo" if self.status else "Inativo"
+
 
 class ProjectCompany(models.Model):
     project = models.ForeignKey(

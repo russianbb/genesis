@@ -7,6 +7,7 @@ urlpatterns = [
     path("", include("comercial.urls")),
     path("", include("finance.urls")),
     path("", include("products.urls")),
+    path("", include("projects.urls")),
     path(r"", index, name="home"),
     path(r"ping/", ping),
     path("admin/", admin.site.urls),
