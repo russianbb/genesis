@@ -19,6 +19,10 @@ botocore==1.20.24
     #   s3transfer
 celery[sqs]==5.1.2
     # via -r base.in
+certifi==2021.5.30
+    # via requests
+charset-normalizer==2.0.4
+    # via requests
 click-didyoumean==0.0.3
     # via celery
 click-plugins==1.1.1
@@ -31,6 +35,8 @@ click==7.1.2
     #   click-didyoumean
     #   click-plugins
     #   click-repl
+cssutils==2.3.0
+    # via inlinestyler
 defusedxml==0.7.1
     # via odfpy
 diff-match-patch==20200713
@@ -64,12 +70,18 @@ et-xmlfile==1.0.1
     # via openpyxl
 future==0.18.2
     # via django-ses
+idna==3.2
+    # via requests
+inlinestyler==0.2.5
+    # via -r base.in
 jmespath==0.10.0
     # via
     #   boto3
     #   botocore
 kombu==5.1.0
     # via celery
+lxml==4.6.3
+    # via inlinestyler
 markuppy==1.14
     # via tablib
 mysqlclient==1.4.2
@@ -93,6 +105,8 @@ pytz==2021.1
     #   django-ses
 pyyaml==5.4.1
     # via tablib
+requests==2.26.0
+    # via inlinestyler
 s3transfer==0.3.4
     # via boto3
 six==1.15.0
@@ -105,7 +119,9 @@ sqlparse==0.4.1
 tablib[html,ods,xls,xlsx,yaml]==3.0.0
     # via django-import-export
 urllib3==1.26.3
-    # via botocore
+    # via
+    #   botocore
+    #   requests
 vine==5.0.0
     # via
     #   amqp
