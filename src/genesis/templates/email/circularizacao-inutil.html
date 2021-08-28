@@ -1,0 +1,90 @@
+{% extends 'email/base_email.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div align="left">
+</div>
+
+<table cellspacing="0" cellpadding="0" align="center">
+    <tr>
+        <td class="title-16 text-blue">
+            Prezados Distribuidores,
+        </td>
+    </tr>
+    <tr>
+        <td class="text-14">
+            <p>
+                &emsp;&emsp;Nos últimos dias uma série de contatos telefônicos
+                foi realizada, visando confirmar dados e facilitar a execução da “{{ project.get_category_display }} - {{project.date|date:"d/m/Y"}}”.
+                <br>
+                &emsp;&emsp;Com os contatos realizados e dados confirmados, chegou a hora de
+                solicitar os relatórios necessários para o projeto.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td class="title-16 text-blue">
+            O Projeto
+        </td>
+    </tr>
+    <tr>
+        <td class="text-14">
+            <p>
+                &emsp;&emsp;A <strong>“{{ project.get_category_display }} - {{project.date|date:"d/m/Y"}}”</strong>
+                consiste em validar as informações do sistema utilizado pela Syngenta
+                para controle de estoque em seus fornecedores.
+                <br>
+                &emsp;&emsp;Serão realizados confrontos entre as informações
+                fornecidas pelo distribuidor e as contidas no sistemas SalesForce e/ou AgroView.
+                Durante o processo, serão solicitadas informações ao distribuidor e algumas
+                possíveis justificativas sobre divergências encontradas.
+                <br>
+                &emsp;&emsp;Todo o trâmite de
+                informações, solicitações e envios será realizado exclusivamente por e-mail
+                e/ou carta, sem necessidade de visita ao local.
+                <br>
+                &emsp;&emsp;A cooperação entre as partes é essencial para a conclusão do projeto.
+            </p>
+            <p>
+                <span class="text-red">&emsp;&emsp;As solicitações de relatórios deverão
+                    ser atendidas por e-mail (em resposta a esse).</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td class="title-16 text-red" align="center">
+            Em anexo segue detalhamento dos documentos necessários
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br>
+        </td>
+    </tr>
+    <tr>
+        <td class="title-16 text-blue" align="center">
+            Prazo limite para envio dos documentos: <span class="text-red">{{ deadline|date:"d/m/Y" }}</span>
+        </td>
+    </tr>
+</table>
+
+<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=0 width=368 style='width:276.0pt;'>
+    <tr>
+        <td width=80 rowspan="3">
+            <img width=70 height=70 src="https://i.ibb.co/47F6xt3/image001.png">
+        </td>
+        <td class="text-2 text-blue">Anderson Mercadante</td>
+    </tr>
+    <tr>
+        <td>Gestor Administrativo</td>
+    </tr>
+    <tr>
+        <td class="text-blue">+55 16 98838 9790</td>
+    </tr>
+</table>
+{% endblock %}
