@@ -31,6 +31,22 @@ class Project(AbstractBaseModel):
     def date_display(self):
         return self.date.strftime("%d/%m/%Y")
 
+    @property
+    def date_display_dash(self):
+        return self.date.strftime("%d-%m-%Y")
+
+    @property
+    def status_display(self):
+        return "Ativo" if self.status else "Inativo"
+
+    @property
+    def initial_email_template(self):
+        return f"email/{self.category}/initial.html"
+
+    @property
+    def email_from(self):
+        return "Onix Soluções Empresariais <projetos@onixse.com>"
+
 
 class ProjectCompany(models.Model):
     project = models.ForeignKey(
@@ -42,8 +58,8 @@ class ProjectCompany(models.Model):
 
     class Meta:
         ordering = ("-project", "company__trade_name")
-        verbose_name = "distribuidor do drojeto"
-        verbose_name_plural = "distribuidores do drojeto"
+        verbose_name = "distribuidor no projeto"
+        verbose_name_plural = "distribuidores no projeto"
         unique_together = ("project", "company")
 
     def __str__(self):

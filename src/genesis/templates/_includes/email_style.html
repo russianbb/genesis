@@ -1,0 +1,771 @@
+<style>
+
+    /*
+        ========================================
+        DEFAULTS
+        ========================================
+    */
+    body{
+        margin: 0;
+        padding: 0;
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+    }
+
+    * {
+        text-rendering: optimizeLegibility;"
+    }
+
+    p{
+        margin-left: 0;
+        margin-top: 0;
+        margin-right: 0;
+        padding-top: 0;
+        padding-right: 0;
+        padding-left: 0;
+        line-height: 1em;
+    }
+
+    a{
+        color: #000;
+    }
+
+    img{
+        display: block;
+        border: 0;
+    }
+
+    .email-body{
+        width: 100%;
+        background-color: #fff;
+    }
+
+    .base-font{
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+    }
+
+    .inline{
+        display: inline;
+    }
+
+    .full-width{
+        width: 100%;
+    }
+
+    .half-width{
+        width: 80%;
+    }
+
+    .bold, strong{
+        font-weight: bold;
+    }
+
+    .base-color{
+        color: #555555;
+    }
+
+    .base-color-gray {
+        color: #666;
+    }
+
+    .base-color-red {
+        color: #bb312f;
+    }
+
+    .error-color{
+        color: #fb0007;
+    }
+
+    .base-background{
+        background-color: #000;
+    }
+
+    .text-center{
+        text-align: center;
+    }
+
+    .text-right{
+        text-align: right;
+    }
+
+    .black{
+        color: #000;
+    }
+
+    .gray-background{
+        background-color: #f4f4f4;
+    }
+
+    .container{
+        background-color: #ffffff;
+    }
+
+    .wrapper{
+        /*width: 700px;*/
+    }
+
+    .email-intro{
+        padding: 30px 0;
+    }
+
+    .email-intro p{
+        text-align: center;
+        font-size: 11px;
+        color: #878787;
+        margin: 0;
+    }
+
+    .email-intro a{
+        color: #878787;
+    }
+
+    .site-link a{
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        display: block;
+        padding-right: 15px;
+        color: #000;
+    }
+
+    .social-links{
+        padding: 0;
+    }
+
+    .social-links td{
+        padding-left: 5px;
+    }
+
+    .main-header{
+        border-top: 5px solid #B20A35;
+    }
+
+    /*
+        ========================================
+        FOOTER
+        ========================================
+    */
+
+    .footer{
+        margin-top: 30px;
+    }
+
+    .footer-content{
+        padding: 30px 30px 0 30px;
+        background-color: #5a2d72;
+    }
+
+    .footer-bottom{
+        background-color: #B20A35;
+    }
+
+    .footer-bottom-wrapper{
+        width: 650px;
+    }
+
+    .footer-links{
+        padding-bottom: 20px;
+    }
+
+    .footer-links .links-title{
+        color: #fff;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 30px 0 20px;
+    }
+
+    .footer-links .link{
+        padding-bottom: 5px;
+    }
+
+    .footer-links a{
+        font-size: 12px;
+        color: #ddd;
+        text-decoration: none;
+        margin: 0 2%;
+    }
+
+    .table-nav {
+        width: 100%;
+        text-align: center;
+    }
+
+    .table-nav a {
+        padding: 0 2%;
+        font-size: 13px;
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        /*border-right: 1px solid #8e9197;*/
+    }
+
+    .table-nav a.no-border {
+        border: 0 !important;
+    }
+
+    .stores td{
+        width: 240px;
+    }
+
+    .stores td + td{
+        padding-left: 40px;
+    }
+
+    .store-title{
+        font-size: 12px;
+        padding-bottom: 15px;
+        color: #fff;
+    }
+
+    .store-text{
+        font-size: 12px;
+        color: #fff;
+        line-height: 1.6em;
+        padding-bottom: 40px;
+    }
+
+    .store-text a{
+        color: #fff;
+    }
+
+    .selos{
+        vertical-align: top;
+    }
+
+    .selos td{
+        padding-bottom: 20px;
+    }
+
+    .card-flag{
+        padding-right: 10px;
+        vertical-align: middle;
+    }
+
+    /*
+        ========================================
+        E-MAIL CONTENT
+        ========================================
+    */
+
+    .email-content{
+        width: 100%;
+    }
+
+
+    /*
+        ========================================
+        TEXT STYLE 1
+        ========================================
+    */
+
+    .text-20 {
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 20px;
+        color: #355280;
+    }
+
+    .text-1 {
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        color: #555555;
+    }
+
+    .text-1 p{
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        line-height: 1.4em;
+        margin-bottom: 25px;
+        color: #555555;
+    }
+
+    .break {
+        display: block;
+        padding-top: 4px;
+    }
+
+    .text-small {
+        font-size: 11px !important;
+    }
+
+    /*
+        ========================================
+        TEXT STYLE 2
+        ========================================
+    */
+
+    .text-2 p{
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 12px;
+        line-height: 1.4em;
+        margin-bottom: 25px;
+        color: #646464;
+    }
+
+    .text-2 .title-2{
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        padding-bottom: 10px;
+    }
+
+    .text-14 p{
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 14px;
+        line-height: 1.4em;
+        margin-bottom: 25px;
+        color: #646464;
+    }
+
+    .title-16{
+        font-family: Calibri,Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        padding-bottom: 10px;
+    }
+
+    .text-blue{
+        color: #0070C0;
+    }
+
+    .text-red{
+        color: red;
+    }
+
+    /*
+        ========================================
+        SECTION TITLE
+        ========================================
+    */
+
+    .title{
+        width: 100%;
+        /*border-bottom: 1px solid #d5d5d5;*/
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .title td{
+        text-align: center;
+    }
+
+    .title span{
+        /*font-size: 20px;*/
+        font-size: 36px;
+        line-height: 1.5em;
+        font-weight: 300;
+    }
+
+    .title .icon{
+        display: inline-block ;
+        padding-right: 10px;
+        vertical-align: top;
+    }
+
+    .block-intro{
+        /* padding-top: 30px; */
+    }
+
+    .block-highlight{
+        background-color: #f4f4f4;
+        border: 1px solid #d5d5d5;
+        padding:20px;
+    }
+
+    .block-highlight p{
+        font-size: 12px;
+        line-height: 1.6em;
+        color: #646464;
+    }
+
+    .block-info td{
+        padding-right: 20px;
+    }
+
+    .block-info .large{
+        font-size: 16px;
+        padding-bottom: 5px;
+    }
+
+    .block-info .link{
+        font-size: 16px;
+    }
+
+    /*
+        ========================================
+        ORDER STATUS
+        ========================================
+    */
+
+    .order-status{
+        width: 100%;
+    }
+
+    .order-status tr td{
+        text-align: center;
+        text-decoration: line-through;
+    }
+
+    .order-status tr + tr td{
+        text-decoration: none;
+    }
+
+    .order-status tr:first-child td{
+        padding-top: 20px;
+        padding-bottom: 10px;
+        font-size: 12px;
+        color: #666666;
+        font-weight: bold;
+    }
+
+    .order-status tr td.current ~ td{
+        text-decoration: bold;
+        color: #000;
+        font-weight: normal;
+    }
+
+    .order-status tr td.current{
+        text-decoration: bold;
+        color: #000;
+    }
+
+    .order-status .separator{
+        width: 35px;
+        text-decoration: none;
+    }
+
+
+    /*
+        ========================================
+        TABLES
+        ========================================
+    */
+
+    .table{
+        width: 100%;
+        border-bottom: 30px solid #fff;
+    }
+
+    .table-header td{
+        font-size: 16px;
+        font-weight: bold;
+        background-color: #000;
+        color: #fff;
+        padding: 10px;
+    }
+
+    .table-row td{
+        font-size: 16px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #d5d5d5;
+    }
+
+    .table .table-row.last td{
+        border-bottom-color: #5a2c73;
+    }
+
+    .table-col-50 {
+        width: 50%;
+    }
+
+    .table-col-40px {
+        width: 40px;
+    }
+
+    .basket-abandoned{
+        margin-top: 20px;
+    }
+
+    .basket-abandoned .product-image{
+        padding-right: 13px;
+    }
+
+    .basket-abandoned .product-image:nth-child(3n){
+        padding-right: 0;
+    }
+
+    /*
+        ========================================
+        PRODUCT ITEM
+        ========================================
+    */
+
+    .product-item{
+
+    }
+
+    .product-image{
+        vertical-align: top;
+    }
+
+    .product-item .product-detail{
+        width: 390px;
+        vertical-align: top;
+        padding: 20px 0px 20px 20px;
+    }
+
+    .product-item .product-title{
+        font-size: 16px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .product-item .product-date{
+        font-size: 12px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .product-item .product-old-price{
+        font-size: 16px;
+        text-decoration: line-through;
+    }
+
+    .product-item .product-price{
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .product-item .product-discount-price{
+        color: #777777;
+        font-size: 16px;
+        line-height: 1.4em;
+    }
+
+    .product-item .product-discount-price span{
+        color: #ff0000;
+        font-weight: bold;
+    }
+
+    /*
+        ========================================
+        PASSWORD INFO
+        ========================================
+    */
+
+    .password-info{
+        margin-bottom: 30px;
+    }
+
+    .password-info p{
+        font-size: 16px;
+    }
+
+    /*
+        ========================================
+        BLOCK PROMOCODE
+        ========================================
+    */
+
+    .block-promocode{
+        padding-bottom: 10px;
+    }
+
+    .block-promocode td{
+        width: 300px;
+        font-size: 20px;
+        padding: 20px 0;
+        text-align: center;
+        border: 2px dashed #B20A35;
+    }
+
+    /*
+        ========================================
+        V.2 STYLES
+        ========================================
+    */
+
+    /***********
+    Originally based on The MailChimp Reset from Fabio Carneiro, MailChimp User Experience Design
+    More info and templates on Github: https://github.com/mailchimp/Email-Blueprints
+    http://www.mailchimp.com &amp; http://www.fabio-carneiro.com
+
+    INLINE: Yes.
+    ***********/
+    /* Client-specific Styles */
+    #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
+    body{width:100% !important; margin:0; padding:0; background-color: #f4f5f2; color: #444;}
+    /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+    .ExternalClass {width:100%;} /* Force Hotmail to display emails at full width */
+    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
+    /* End reset */
+
+    /* Some sensible defaults for images
+    1. "-ms-interpolation-mode: bicubic" works to help ie properly resize images in IE. (if you are resizing them using the width and height attributes)
+    2. "border:none" removes border when linking images.
+    3. Updated the common Gmail/Hotmail image display fix: Gmail and Hotmail unwantedly adds in an extra space below images when using non IE browsers. You may not always want all of your images to be block elements. Apply the "image_fix" class to any image you need to fix.
+
+    Bring inline: Yes.
+    */
+    img {outline:none; text-decoration:none; }
+    a img {border:none;}
+    .image_fix {display:block;}
+    .image_responsive {width: 100%;}
+
+    /** Yahoo paragraph fix: removes the proper spacing or the paragraph (p) tag. To correct we set the top/bottom margin to 1em in the head of the document. Simple fix with little effect on other styling. NOTE: It is also common to use two breaks instead of the paragraph tag but I think this way is cleaner and more semantic. NOTE: This example recommends 1em. More info on setting web defaults: http://www.w3.org/TR/CSS21/sample.html or http://meiert.com/en/blog/20070922/user-agent-style-sheets/
+
+    Bring inline: Yes.
+    **/
+    p {margin: 20px 0; font-size: 1em; line-height: 20px;}
+
+    ul {font-size: 16px;}
+    ul li {margin-bottom: 5px;}
+
+    /** Hotmail header color reset: Hotmail replaces your header color styles with a green color on H2, H3, H4, H5, and H6 tags. In this example, the color is reset to black for a non-linked header, blue for a linked header, red for an active header (limited support), and purple for a visited header (limited support).  Replace with your choice of color. The !important is really what is overriding Hotmail's styling. Hotmail also sets the H1 and H2 tags to the same size.
+
+    Bring inline: Yes.
+    **/
+    h1, h2, h3, h4, h5, h6 {color: black !important;}
+
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
+
+    h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
+        color: red !important; /* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
+     }
+
+    h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+        color: purple !important; /* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
+    }
+
+    /** Outlook 07, 10 Padding issue: These "newer" versions of Outlook add some padding around table cells potentially throwing off your perfectly pixeled table.  The issue can cause added space and also throw off borders completely.  Use this fix in your header or inline to safely fix your table woes.
+
+    More info: http://www.ianhoar.com/2008/04/29/outlook-2007-borders-and-1px-padding-on-table-cells/
+    http://www.campaignmonitor.com/blog/post/3392/1px-borders-padding-on-table-cells-in-outlook-07/
+
+    H/T @edmelly
+
+    Bring inline: No.
+    **/
+    table td {border-collapse: collapse;}
+
+    /** Remove spacing around Outlook 07, 10 tables
+
+    More info : http://www.campaignmonitor.com/blog/post/3694/removing-spacing-from-around-tables-in-outlook-2007-and-2010/
+
+    Bring inline: Yes
+    **/
+    table { border-collapse:collapse; }
+
+    /* Styling your links has become much simpler with the new Yahoo.  In fact, it falls in line with the main credo of styling in email, bring your styles inline.  Your link colors will be uniform across clients when brought inline.
+
+    Bring inline: Yes. */
+    a {color: #bb312f;}
+
+    /* Or to go the gold star route...
+    a:link { color: orange; }
+    a:visited { color: blue; }
+    a:hover { color: green; }
+    */
+
+    .wrapper {margin:0; padding:0; line-height: 100% !important; background-color: #fafafa; margin: 20px;}
+    .container {display: block !important; max-width: 660px !important; margin: 0 auto !important; }
+    .content {max-width: 620px !important; background-color: #fff; padding: 20px;}
+    .footer-wrapper {width: 100%; background-color: #eeeeee;}
+    .footer-wrapper .footer {width: 100%; max-width: 660px; margin: 0 auto; background-color: #eeeeee; padding: 20px;}
+
+    .line-white {height: 30px; background-color: #fff;}
+
+    .header {background-color: #222222; }
+    .header td {text-align: center; padding: 16px 0; text-align: center; }
+    .header td .image_fix {display: inline;}
+
+    .header-wrapper {width: 100%; background-color: #90BADC; }
+    .header-wrapper .header {width: 100%; max-width: 660px; margin: 0 auto;background-color: #90BADC;}
+    .header-wrapper .header td {padding: 20px 0;}
+    .header-wrapper .header .line-white {padding: 0;}
+
+    /* UI elements: buttons etc */
+
+    .btn-red-emp {
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        padding: 20px 30px;
+        border: 1px solid #930000;
+        border-radius: 8px;
+        background: #f00;
+/*        box-shadow: #383838 3px 3px 2px 2px;*/
+/*        text-shadow: #000 2px 2px 2px;*/
+        font: normal normal bold 15px;
+        color: #fff!important;
+        text-decoration: none;
+        white-space: normal;
+    }
+
+    /* resports */
+    .wrapper-list-report {
+        margin: 0;
+        padding: 0;
+    }
+
+    .list-reports {
+        list-style: none;
+        vertical-align: middle;
+        padding: 20px;
+        padding-left: 40px;
+        background-color: #eeeeee;
+        margin: 10px 0;
+        margin-bottom: 10px;
+    }
+
+    .list-reports p {
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .list-reports a {
+        text-decoration: none;
+    }
+
+    .list-reports img {
+        display: initial;
+        margin-right: 20px;
+        float: left;
+    }
+
+    .list-reports span {
+        margin-top: 2px;
+    }
+
+    @media only screen and (max-device-width: 480px) {
+
+        /* A nice and clean way to target phone numbers you want clickable and avoid a mobile phone from linking other numbers that look like, but are not phone numbers.  Use these two blocks of code to "unstyle" any numbers that may be linked.  The second block gives you a class to apply with a span tag to the numbers you would like linked and styled.
+
+        Inspired by Campaign Monitor's article on using phone numbers in email: http://www.campaignmonitor.com/blog/post/3571/using-phone-numbers-in-html-email/.
+
+        Step 1 (Step 2: line 224)
+        */
+        a[href^="tel"], a[href^="sms"] {
+                    text-decoration: none;
+                    color: black; /* or whatever your want */
+                    /*pointer-events: none;*/
+                    cursor: default;
+                }
+
+        .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+                    text-decoration: default;
+                    color: orange !important; /* or whatever your want */
+                    /*pointer-events: auto;*/
+                    cursor: default;
+                }
+    }
+
+    /* More Specific Targeting */
+
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        /* You guessed it, ipad (tablets, smaller screens, etc) */
+
+        /* Step 1a: Repeating for the iPad */
+        a[href^="tel"], a[href^="sms"] {
+                    text-decoration: none;
+                    color: blue; /* or whatever your want */
+                    /*pointer-events: none;*/
+                    cursor: default;
+                }
+
+        .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+                    text-decoration: default;
+                    color: orange !important;
+                    /*pointer-events: auto;*/
+                    cursor: default;
+                }
+    }
+
+</style>

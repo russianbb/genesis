@@ -32,7 +32,12 @@ class Company(AbstractBaseModel):
     company_name = models.CharField(max_length=100, verbose_name=_("Razão Social"))
     trade_name = models.CharField(max_length=100, verbose_name=_("Nome Fantasia"))
     SYSTEM_CHOICES = Choices(
-        "Syagri", "Agrotis", "SAP", "Totvs", "Outros", "Não conhecido"
+        ("siagri", "Siagri"),
+        ("agrotis", "Agrotis"),
+        ("sap", "SAP"),
+        ("totvs", "Totvs"),
+        ("other", "Outros"),
+        ("unknown", "Não conhecido"),
     )
     system = models.CharField(
         choices=SYSTEM_CHOICES,
@@ -67,6 +72,18 @@ class Company(AbstractBaseModel):
 
     def __str__(self):
         return self.company_name
+
+    @property
+    def email_to(self):
+        return [focal.email for focal in self.focal.all()]
+
+    @property
+    def email_cc(self):
+        email_cc = [rtv.email for rtv in self.rtv.all()]
+        email_cc.append("anderson.mercadante@onixse.com")
+        email_cc.append(self.designated.email)
+
+        return email_cc
 
 
 class Store(AbstractBaseModel, AddressBaseModel):
