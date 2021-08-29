@@ -22,3 +22,10 @@ class ProjectAdmin(admin.ModelAdmin):
 
     class Meta:
         fields = "__all__"
+
+
+@admin.register(ProjectCompany)
+class ProjectCompanyAdmin(admin.ModelAdmin):
+    list_display = ("project", "company")
+    list_filter = ("project",)
+    search_fields = ("project", "company")
