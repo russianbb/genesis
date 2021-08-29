@@ -18,7 +18,7 @@ echo $(date ++%x-%r)  "---> Running Django collectstatic on Docker." >> mylog.tx
 docker run --env-file .env --rm $ECR_DNS:latest python manage.py collectstatic --noinput
 
 echo $(date ++%x-%r)  "---> Running Django Server." >> mylog.txt
-docker run --env-file .env -p 80:8080 -d -name genesis_web $ECR_DNS:latest
+docker run --env-file .env -p 80:8080 -d --name genesis_web $ECR_DNS:latest
 
 echo $(date ++%x-%r)  "---> Running Celery Worker." >> mylog.txt
 docker run --env-file .env -d --name genesis_worker $ECR_DNS:latest celery -A celery_app worker -l info
