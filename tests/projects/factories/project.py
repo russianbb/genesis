@@ -4,7 +4,7 @@ import factory
 
 
 class ProjectFactory(factory.django.DjangoModelFactory):
-    date = date(2020, 12, 31)
+    date = date(1988, 1, 31)
     category = "circularizacao"
 
     class Meta:
