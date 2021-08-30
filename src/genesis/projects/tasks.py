@@ -30,7 +30,7 @@ def send_project_initial_email(self, project_id, company_id):
     html_content = render_to_string(template, context)
 
     email = EmailMultiAlternatives(
-        subject=f"{str(project)} :: {company.trade_name}",
+        subject=f"{str(project)} :: {company.company_name}",
         body=html_content,
         from_email=project.email_from,
         to=company.email_to,

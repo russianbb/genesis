@@ -23,7 +23,7 @@ def test_send_project_initial_email(mock_email, project_company):
     )
 
     mock_email.assert_called_once_with(
-        subject="31/01/1988 - Circularização de Estoque :: Rep Jabuti",
+        subject="31/01/1988 - Circularização de Estoque :: Republica Jabuti LTDA ME",
         body=expected_html_content,
         from_email=project.email_from,
         to=company.email_to,
