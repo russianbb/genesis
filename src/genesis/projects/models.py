@@ -57,7 +57,7 @@ class ProjectCompany(models.Model):
     )
 
     class Meta:
-        ordering = ("-project", "company__trade_name")
+        ordering = ("-project", "company__company_name")
         verbose_name = "distribuidor no projeto"
         verbose_name_plural = "distribuidores no projeto"
         unique_together = ("project", "company")

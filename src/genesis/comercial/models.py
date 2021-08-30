@@ -45,7 +45,7 @@ class Company(AbstractBaseModel):
         null=False,
         blank=False,
         verbose_name=_("ERP"),
-        default="Não conhecido",
+        default="unknown",
     )
     retroactive = models.BooleanField(
         default=False, null=True, blank=True, verbose_name=_("Retroativo"),
@@ -81,6 +81,7 @@ class Company(AbstractBaseModel):
     def email_cc(self):
         email_cc = [rtv.email for rtv in self.rtv.all()]
         email_cc.append("anderson.mercadante@onixse.com")
+        email_cc.append("felipe_marcondes@syngenta.com")
         email_cc.append(self.designated.email)
 
         return email_cc
