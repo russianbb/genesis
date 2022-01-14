@@ -130,3 +130,6 @@ idea/
 
 # vscode
 .vscode
+estoque/base_app
+estoque/pre_results
+estoque/results
