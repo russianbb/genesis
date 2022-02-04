@@ -7,6 +7,10 @@ def only_digits(value: str):
     return "".join(filter(lambda i: i.isdigit(), value))
 
 
+class EmptyDataFrame(Exception):
+    pass
+
+
 class Results:
     def __init__(self, company_name):
         self.company_name = company_name
@@ -61,6 +65,9 @@ class Results:
                 & (sanitized_data["Cidade"] == city)
                 & (sanitized_data["CNPJ"] == cnpj)
             ]
+
+            if city_data.empty:
+                raise EmptyDataFrame(cod_filial, city, cnpj)
 
             for id_onix, value in self.products.items():
                 product_data = city_data[city_data["Cod Produto"] == id_onix]
