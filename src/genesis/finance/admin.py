@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 from rangefilter.filter import DateRangeFilter
 from utils.admin import ReadOnlyAdminMixin
 from utils.constants import TRANSACTION_CATEGORY_DIVIDENDS
@@ -13,6 +14,7 @@ from .models import (
     Transaction,
     TransactionCategory,
 )
+from .resources import TransactionResource
 
 
 class ReceivableInline(ReadOnlyAdminMixin, admin.TabularInline):
@@ -196,7 +198,7 @@ class RevenueAdmin(admin.ModelAdmin):
 
 
 @admin.register(Transaction)
-class TransactionAdmin(admin.ModelAdmin):
+class TransactionAdmin(ImportExportModelAdmin):
     list_display = (
         "id",
         "category",
@@ -221,7 +223,13 @@ class TransactionAdmin(admin.ModelAdmin):
         "category",
     )
 
+    resource_class = TransactionResource
+
     def get_amount_display(self, obj):
         return obj.get_amount_display
 
     get_amount_display.short_description = "Valor"
+
+    def get_export_queryset(self, request):
+        queryset = super().get_export_queryset(request)
+        return queryset.select_related("category")
