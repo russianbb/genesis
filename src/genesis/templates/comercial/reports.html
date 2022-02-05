@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Relat&oacute;rios{% endblock %}
+
+
+{% block content %}
+
+{% include "_includes/errors_form.html" %}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Relat&oacute;rios</h1>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <!-- Left column -->
+            <div class="col-md-2">
+
+                <a href="{% url 'comercial:export_report' 'company_rtv' %}">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-file-export"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Distribuidores e seus RTVs</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{% url 'comercial:export_report' 'company_focal' %}">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-file-export"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Distribuidores e seus respons&aacute;veis</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{% url 'comercial:export_report' 'company_store' %}">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-file-export"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Distribuidores e suas filiais</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+    </div>
+    <!--/. container-fluid -->
+</section>
+<!-- /.content -->
+
+
+
+{% endblock %}

@@ -7,10 +7,12 @@ from .views import (
     CompanyListView,
     CompanyRtvCreateView,
     CompanyRtvDeleteView,
+    ExportResourceView,
     FocalCreateView,
     FocalDetailView,
     FocalEditView,
     FocalListView,
+    ReportsView,
     RtvCreateView,
     RtvDetailView,
     RtvEditView,
@@ -78,4 +80,8 @@ urlpatterns = [
     path("rtvs/<int:pk>/", RtvDetailView.as_view(), name="rtv"),
     path("rtvs/adicionar", RtvCreateView.as_view(), name="rtv_create"),
     path("rtvs/<int:pk>/editar", RtvEditView.as_view(), name="rtv_edit"),
+    path("relatorios/", ReportsView.as_view(), name="reports"),
+    path(
+        "relatorios/<str:option>/", ExportResourceView.as_view(), name="export_report"
+    ),
 ]
