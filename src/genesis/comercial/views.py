@@ -7,13 +7,19 @@ from django.views.generic import (
     DeleteView,
     DetailView,
     ListView,
+    TemplateView,
     UpdateView,
     View,
 )
 
 from .forms import CompanyFocalForm, CompanyRtvForm, FocalForm, RtvForm, StoreForm
 from .models import Company, CompanyFocal, CompanyRtv, Focal, Rtv, Store
-from .resources import StorePublicResource
+from .resources import (
+    CompanyFocalResource,
+    CompanyRtvResource,
+    StorePublicResource,
+    StoreResource,
+)
 
 
 class CompanyListView(LoginRequiredMixin, ListView):
@@ -331,6 +337,39 @@ class StorePublicExportView(View):
         instance = Company.objects.get(pk=company)
         filename = f"Filiais - {instance.company_name}.xlsx"
         dataset = StorePublicResource(company=company).export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response["Content-Disposition"] = f"attachment; filename={filename}"
+        return response
+
+
+class ReportsView(LoginRequiredMixin, TemplateView):
+    template_name = "comercial/reports.html"
+
+
+class ExportResourceView(View):
+    REPORT_OPTIONS = {
+        "company_rtv": {
+            "filename": "Distribuidores e seus RTVs.xlsx",
+            "resource": CompanyRtvResource,
+        },
+        "company_focal": {
+            "filename": "Distribuidores e seus Responsaveis.xlsx",
+            "resource": CompanyFocalResource,
+        },
+        "company_store": {
+            "filename": "Distribuidores e suas Filiais.xlsx",
+            "resource": StoreResource,
+        },
+    }
+
+    def get(self, *args, **kwargs):
+        option = kwargs["option"]
+
+        report = self.REPORT_OPTIONS[option]
+        filename = report["filename"]
+        resource = report["resource"]
+
+        dataset = resource().export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = f"attachment; filename={filename}"
         return response
