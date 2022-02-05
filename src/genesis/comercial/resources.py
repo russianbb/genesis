@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
+from django.utils import formats
 from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 
-from .models import Company, Focal, Rtv, Store
+from .models import Company, CompanyFocal, CompanyRtv, Focal, Rtv, Store
 
 
 class CompanyResource(resources.ModelResource):
@@ -36,12 +37,10 @@ class CompanyResource(resources.ModelResource):
 
 
 class StoreResource(resources.ModelResource):
+    code_sap = Field(attribute="company__code_sap", column_name="Codigo SAP")
+    company_name = Field(attribute="company__company_name", column_name="Razão social",)
+    trade_name = Field(attribute="company__trade_name", column_name="Nome Fantasia")
     id = Field(attribute="id", column_name="Id")
-    company = Field(
-        attribute="company",
-        column_name="Razão social",
-        widget=ForeignKeyWidget(Company, "trade_name"),
-    )
     code = Field(attribute="code", column_name="Código da filial")
     nickname = Field(attribute="nickname", column_name="Apelido da filial")
     document = Field(attribute="document", column_name="CNPJ")
@@ -60,8 +59,10 @@ class StoreResource(resources.ModelResource):
     class Meta:
         model = Store
         fields = (
+            "code_sap",
+            "company_name",
+            "trade_name",
             "id",
-            "company",
             "code",
             "nickname",
             "document",
@@ -78,6 +79,28 @@ class StoreResource(resources.ModelResource):
             "status",
         )
         export_order = fields
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.select_related("company")
+
+    def dehydrate_status(self, obj):
+        if obj.status:
+            return "Sim"
+        return "Não"
+
+    def dehydrate_inventory(self, obj):
+        if obj.inventory:
+            return "Sim"
+        return "Não"
+
+    def dehydrate_latitude(self, obj):
+        latitude = float(obj.latitude or 0)
+        return formats.number_format(latitude, 6)
+
+    def dehydrate_longitude(self, obj):
+        longitude = float(obj.longitude or 0)
+        return formats.number_format(longitude, 6)
 
 
 class FocalResource(resources.ModelResource):
@@ -169,3 +192,77 @@ class StorePublicResource(resources.ModelResource):
         if obj.status:
             return "Sim"
         return "Não"
+
+
+class CompanyRtvResource(resources.ModelResource):
+    code_sap = Field(attribute="company__code_sap", column_name="Código SAP")
+    company_name = Field(attribute="company__company_name", column_name="Razão social")
+    trade_name = Field(attribute="company__trade_name", column_name="Nome fantasia")
+    name = Field(attribute="rtv__name", column_name="Nome")
+    email = Field(attribute="rtv__email", column_name="E-mail")
+    phone1 = Field(attribute="rtv__get_phone1", column_name="Telefone principal")
+    phone2 = Field(attribute="rtv__get_phone2", column_name="Telefone secundário")
+    notes = Field(attribute="rtv__notes", column_name="Anotação")
+    status = Field(attribute="rtv__status", column_name="Ativo")
+
+    class Meta:
+        model = CompanyRtv
+        fields = (
+            "code_sap",
+            "company_name",
+            "trade_name",
+            "name",
+            "email",
+            "phone1",
+            "phone2",
+            "notes",
+            "status",
+        )
+        export_order = fields
+
+    def dehydrate_status(self, obj):
+        if obj.rtv.status:
+            return "Sim"
+        return "Não"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.select_related("company", "rtv")
+
+
+class CompanyFocalResource(resources.ModelResource):
+    code_sap = Field(attribute="company__code_sap", column_name="Código SAP")
+    company_name = Field(attribute="company__company_name", column_name="Razão social")
+    trade_name = Field(attribute="company__trade_name", column_name="Nome fantasia")
+    name = Field(attribute="focal__name", column_name="Nome")
+    role = Field(attribute="focal__role", column_name="Cargo")
+    email = Field(attribute="focal__email", column_name="E-mail")
+    phone1 = Field(attribute="focal__get_phone1", column_name="Telefone principal")
+    phone2 = Field(attribute="focal__get_phone2", column_name="Telefone secundário")
+    notes = Field(attribute="focal__notes", column_name="Anotação")
+    status = Field(attribute="focal__status", column_name="Ativo")
+
+    class Meta:
+        model = CompanyFocal
+        fields = (
+            "code_sap",
+            "company_name",
+            "trade_name",
+            "name",
+            "role",
+            "email",
+            "phone1",
+            "phone2",
+            "notes",
+            "status",
+        )
+        export_order = fields
+
+    def dehydrate_status(self, obj):
+        if obj.focal.status:
+            return "Sim"
+        return "Não"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.select_related("company", "focal")
