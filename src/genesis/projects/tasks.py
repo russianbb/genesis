@@ -19,7 +19,7 @@ def send_project_initial_email(self, project_id, company_id):
     if company.system == "siagri":
         email_attachment = f"static/attachments/{project.date_display_dash} - {project.category} siagri.pdf"  # noqa: E501
 
-    deadline = date.today() + timedelta(days=5)
+    deadline = date.today() + timedelta(days=6)
     if deadline.isoweekday() in [6, 7]:
         ajust_days = 8 - deadline.isoweekday()
         deadline += timedelta(days=ajust_days)
