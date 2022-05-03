@@ -1,3 +1,11 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Document
+
+
+@admin.register(Document)
+class DocumentAdmin(admin.ModelAdmin):
+
+    list_display = ("description", "category", "sender", "file")
+    fields = ("description", "category", "sender", "file")
+    search_fields = ("description", "category", "sender", "file")

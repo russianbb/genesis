@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "storages",
     # My Apps
     "comercial",
-    "document",
+    "documents",
     "finance",
     "products",
     "projects",
