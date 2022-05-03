@@ -15,6 +15,7 @@ def test_company_email_cc(company, rtv, user):
     assert company.email_cc == [
         rtv.email,
         "anderson.mercadante@onixse.com",
+        "felipe_marcondes.marques@syngenta.com",
         "maria.luma@syngenta.com",
         user.email,
     ]

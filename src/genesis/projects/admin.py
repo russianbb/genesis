@@ -44,6 +44,12 @@ class ProjectAdmin(admin.ModelAdmin):
 class ProjectCompanyAdmin(admin.ModelAdmin):
     list_display = ("project", "company")
     list_filter = ("project",)
-    search_fields = ("project", "company")
+    search_fields = (
+        "project__date",
+        "project__category",
+        "company__company_name",
+        "company__trade_name",
+        "company__code_sap",
+    )
 
     actions = [send_initial_email]
