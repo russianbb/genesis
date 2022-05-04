@@ -5,6 +5,7 @@ from .views import index, ping
 
 urlpatterns = [
     path("", include("comercial.urls")),
+    path("", include("documents.urls")),
     path("", include("finance.urls")),
     path("", include("products.urls")),
     path("", include("projects.urls")),

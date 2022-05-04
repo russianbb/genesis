@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Enviar Documento{% endblock %}
+
+{% block stylesheets %}
+{% include '_styles/_forms.html' %}
+{{ block.super}}
+{% endblock %}
+
+{% block content %}
+
+{% include "_includes/errors_form.html" %}
+{{ form.media }}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Enviar Documento</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.description.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.description }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.category.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.category }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form.file.label_tag }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.file }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <input class="mb-2 mr-2 btn btn-success btn-lg btn-block" id="myButton" type="submit" name="myButton"
+                    value="Enviar">
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

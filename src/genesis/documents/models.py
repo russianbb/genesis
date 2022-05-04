@@ -24,5 +24,9 @@ class Document(AbstractBaseModel):
         upload_to=UploadTo(base_path=UPLOAD_PATH), verbose_name="Arquivo",
     )
 
+    class Meta:
+        verbose_name = "Documento"
+        verbose_name_plural = "Documentos"
+
     def __str__(self):
         return f"{self.file}"
