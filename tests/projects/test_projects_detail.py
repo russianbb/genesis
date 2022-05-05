@@ -12,8 +12,8 @@ def test_projects_detail_not_logged(client, project):
     assert response.url == "/accounts/login/?next=/projetos/1"
 
 
-def test_projects_detail_logged(client_logged, project):
-    uri = reverse("projects:detail", args=[project.id])
-    response = client_logged.get(uri)
+# def test_projects_detail_logged(client_logged, project):
+#     uri = reverse("projects:detail", args=[project.id])
+#     response = client_logged.get(uri)
 
-    assert response.status_code == 200
+#     assert response.status_code == 200
