@@ -124,3 +124,14 @@ class AbstractStockModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class UploadTo:
+    def __init__(self, base_path):
+        self.base_path = base_path
+
+    def __call__(self, instance, filename):
+        return f"{self.base_path}/{instance.category}/{filename}"
+
+    def deconstruct(self):
+        return ("utils.models.UploadTo", [self.base_path], {})
