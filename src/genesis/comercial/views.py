@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -11,6 +10,7 @@ from django.views.generic import (
     UpdateView,
     View,
 )
+from utils.views import StaffUserRequiredMixin
 
 from .forms import CompanyFocalForm, CompanyRtvForm, FocalForm, RtvForm, StoreForm
 from .models import Company, CompanyFocal, CompanyRtv, Focal, Rtv, Store
@@ -22,13 +22,13 @@ from .resources import (
 )
 
 
-class CompanyListView(LoginRequiredMixin, ListView):
+class CompanyListView(StaffUserRequiredMixin, ListView):
     template_name = "comercial/company/list.html"
     context_object_name = "companies"
     model = Company
 
 
-class CompanyDetailView(LoginRequiredMixin, DetailView):
+class CompanyDetailView(StaffUserRequiredMixin, DetailView):
     template_name = "comercial/company/detail.html"
     context_object_name = "company"
     model = Company
@@ -47,19 +47,19 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class FocalListView(LoginRequiredMixin, ListView):
+class FocalListView(StaffUserRequiredMixin, ListView):
     template_name = "comercial/focal/list.html"
     context_object_name = "focals"
     model = Focal
 
 
-class RtvListView(LoginRequiredMixin, ListView):
+class RtvListView(StaffUserRequiredMixin, ListView):
     template_name = "comercial/rtv/list.html"
     context_object_name = "rtvs"
     model = Rtv
 
 
-class StoreDetailView(LoginRequiredMixin, DetailView):
+class StoreDetailView(StaffUserRequiredMixin, DetailView):
     template_name = "comercial/store/detail.html"
     context_object_name = "store"
     model = Store
@@ -69,7 +69,7 @@ class StoreDetailView(LoginRequiredMixin, DetailView):
         return queryset.select_related("company")
 
 
-class StoreCreateView(LoginRequiredMixin, CreateView):
+class StoreCreateView(StaffUserRequiredMixin, CreateView):
     template_name = "comercial/store/create_edit.html"
     form_class = StoreForm
     model = Store
@@ -90,7 +90,7 @@ class StoreCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class StoreEditView(LoginRequiredMixin, UpdateView):
+class StoreEditView(StaffUserRequiredMixin, UpdateView):
     template_name = "comercial/store/create_edit.html"
     form_class = StoreForm
     model = Store
@@ -113,13 +113,13 @@ class StoreEditView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class FocalDetailView(LoginRequiredMixin, DetailView):
+class FocalDetailView(StaffUserRequiredMixin, DetailView):
     template_name = "comercial/focal/detail.html"
     context_object_name = "focal"
     model = Focal
 
 
-class FocalCreateView(LoginRequiredMixin, CreateView):
+class FocalCreateView(StaffUserRequiredMixin, CreateView):
     template_name = "comercial/focal/create_edit.html"
     form_class = FocalForm
     model = Focal
@@ -131,7 +131,7 @@ class FocalCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class FocalEditView(LoginRequiredMixin, UpdateView):
+class FocalEditView(StaffUserRequiredMixin, UpdateView):
     template_name = "comercial/focal/create_edit.html"
     form_class = FocalForm
     model = Focal
@@ -153,13 +153,13 @@ class FocalEditView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class RtvDetailView(LoginRequiredMixin, DetailView):
+class RtvDetailView(StaffUserRequiredMixin, DetailView):
     template_name = "comercial/rtv/detail.html"
     context_object_name = "rtv"
     model = Rtv
 
 
-class RtvCreateView(LoginRequiredMixin, CreateView):
+class RtvCreateView(StaffUserRequiredMixin, CreateView):
     template_name = "comercial/rtv/create_edit.html"
     form_class = RtvForm
     model = Rtv
@@ -171,7 +171,7 @@ class RtvCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class RtvEditView(LoginRequiredMixin, UpdateView):
+class RtvEditView(StaffUserRequiredMixin, UpdateView):
     template_name = "comercial/rtv/create_edit.html"
     form_class = RtvForm
     model = Rtv
@@ -193,7 +193,7 @@ class RtvEditView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class CompanyFocalCreateView(LoginRequiredMixin, CreateView):
+class CompanyFocalCreateView(StaffUserRequiredMixin, CreateView):
     template_name = "comercial/company/assign.html"
     model = CompanyFocal
     form_class = CompanyFocalForm
@@ -214,7 +214,7 @@ class CompanyFocalCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class CompanyFocalDeleteView(LoginRequiredMixin, DeleteView):
+class CompanyFocalDeleteView(StaffUserRequiredMixin, DeleteView):
     template_name = "comercial/company/unassign.html"
     model = CompanyFocal
     success_url = "/distribuidores/{company_id}/"
@@ -262,7 +262,7 @@ class CompanyFocalDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
 
-class CompanyRtvCreateView(LoginRequiredMixin, CreateView):
+class CompanyRtvCreateView(StaffUserRequiredMixin, CreateView):
     template_name = "comercial/company/assign.html"
     model = CompanyRtv
     form_class = CompanyRtvForm
@@ -283,7 +283,7 @@ class CompanyRtvCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class CompanyRtvDeleteView(LoginRequiredMixin, DeleteView):
+class CompanyRtvDeleteView(StaffUserRequiredMixin, DeleteView):
     template_name = "comercial/company/unassign.html"
     model = CompanyRtv
     success_url = "/distribuidores/{company_id}/"
@@ -331,7 +331,7 @@ class CompanyRtvDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
 
-class StorePublicExportView(View):
+class StorePublicExportView(StaffUserRequiredMixin, View):
     def get(self, *args, **kwargs):
         company = self.kwargs["company"]
         instance = Company.objects.get(pk=company)
@@ -342,11 +342,11 @@ class StorePublicExportView(View):
         return response
 
 
-class ReportsView(LoginRequiredMixin, TemplateView):
+class ReportsView(StaffUserRequiredMixin, TemplateView):
     template_name = "comercial/reports.html"
 
 
-class ExportResourceView(View):
+class ExportResourceView(StaffUserRequiredMixin, View):
     REPORT_OPTIONS = {
         "company_rtv": {
             "filename": "Distribuidores e seus RTVs.xlsx",
