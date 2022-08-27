@@ -56,6 +56,16 @@ class ProjectCompany(models.Model):
         "comercial.Company", on_delete=models.CASCADE, verbose_name="Distribuidor"
     )
 
+    cutoff = models.DateField(
+        verbose_name="Data Base", help_text="Data de mensuração do estoque", null=True,
+    )
+
+    deadline = models.DateField(
+        verbose_name="Prazo para Envio",
+        help_text="Prazo para envio dos documentos",
+        null=True,
+    )
+
     class Meta:
         ordering = ("-project", "company__company_name")
         verbose_name = "distribuidor no projeto"
