@@ -44,6 +44,10 @@ class Project(AbstractBaseModel):
         return f"email/{self.category}/initial.html"
 
     @property
+    def initial_email_template_custom_cutoff(self):
+        return f"email/{self.category}/initial_custom_cutoff.html"
+
+    @property
     def email_from(self):
         return "Onix Soluções Empresariais <projetos@onixse.com>"
 
