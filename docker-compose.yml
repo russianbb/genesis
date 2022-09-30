@@ -32,6 +32,7 @@ services:
       - SECRET_KEY=${SECRET_KEY}
     depends_on: &depends_on
       - db
+      - mailhog
 
   web:
     build:
@@ -46,7 +47,7 @@ services:
     depends_on: *depends_on
 
   jupyter:
-    profiles: ["extras"]
+    # profiles: ["extras"]
     build:
       context: .
       dockerfile: dockerfile.dev
@@ -61,7 +62,7 @@ services:
       *depends_on
 
   mailhog:
-    profiles: ["extras"]
+    # profiles: ["extras"]
     image: mailhog/mailhog:v1.0.0
     ports:
       - "8025:8025"
