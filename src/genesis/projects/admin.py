@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Project, ProjectCompany
-from .tasks import send_project_initial_email
+from .tasks import send_project_initial_email, send_project_initial_email_custom_cutoff
 
 
 def send_initial_email(self, request, queryset):
@@ -16,6 +16,18 @@ def send_initial_email(self, request, queryset):
 
 send_initial_email.short_description = (
     "Enviar e-mail inicial: solicitação de relatórios"
+)
+
+
+def send_initial_email_custom_cutoff(self, request, queryset):
+    for project_company in queryset:
+        send_project_initial_email_custom_cutoff.apply_async(
+            kwargs={"project_company_id": project_company.id}
+        )
+
+
+send_initial_email_custom_cutoff.short_description = (
+    "Enviar e-mail inicial com data customizada: solicitação de relatórios"
 )
 
 
@@ -52,4 +64,4 @@ class ProjectCompanyAdmin(admin.ModelAdmin):
         "company__code_sap",
     )
 
-    actions = [send_initial_email]
+    actions = [send_initial_email, send_initial_email_custom_cutoff]

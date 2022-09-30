@@ -44,6 +44,10 @@ class Project(AbstractBaseModel):
         return f"email/{self.category}/initial.html"
 
     @property
+    def initial_email_template_custom_cutoff(self):
+        return f"email/{self.category}/initial_custom_cutoff.html"
+
+    @property
     def email_from(self):
         return "Onix Soluções Empresariais <projetos@onixse.com>"
 
@@ -54,6 +58,16 @@ class ProjectCompany(models.Model):
     )
     company = models.ForeignKey(
         "comercial.Company", on_delete=models.CASCADE, verbose_name="Distribuidor"
+    )
+
+    cutoff = models.DateField(
+        verbose_name="Data Base", help_text="Data de mensuração do estoque", null=True,
+    )
+
+    deadline = models.DateField(
+        verbose_name="Prazo para Envio",
+        help_text="Prazo para envio dos documentos",
+        null=True,
     )
 
     class Meta:
