@@ -83,6 +83,9 @@ class Company(AbstractBaseModel):
         email_cc.append("anderson.mercadante@onixse.com")
         email_cc.append("felipe_marcondes.marques@syngenta.com")
         email_cc.append("maria.luma@syngenta.com")
+        email_cc.append("michael.nascimento@syngenta.com")
+        email_cc.append("bruno.cunha@onixse.com")
+        email_cc.append("fernanda.pereira@onixse.com")
         email_cc.append(self.designated.email)
 
         return email_cc

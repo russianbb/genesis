@@ -17,5 +17,8 @@ def test_company_email_cc(company, rtv, user):
         "anderson.mercadante@onixse.com",
         "felipe_marcondes.marques@syngenta.com",
         "maria.luma@syngenta.com",
+        "michael.nascimento@syngenta.com",
+        "bruno.cunha@onixse.com",
+        "fernanda.pereira@onixse.com",
         user.email,
     ]
