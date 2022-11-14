@@ -90,11 +90,27 @@
                 {% if request.user.is_superuser %}
                     {% include "_includes/_finance_menu.html" %}
                 {% endif %}
+
                 <li class="nav-item has-tree-view ">
-                    <a href="{% url 'documents:create' %}" class="nav-link  bg-secondary">
-                        <i class="nav-icon fas fa-cloud-upload-alt"></i>
-                        <p>Enviar Documento</p>
+                    <a href="#" class="nav-link  bg-secondary">
+                        <i class="nav-icon fas fa-file-pdf"></i>
+                        <p>Documentos</p>
+                        <p><i class="right fas fa-angle-left"></i></p>
                     </a>
+                    <ul class="nav nav-treeview menu-open">
+                        <li class="nav-item">
+                            <a href="{% url 'documents:create' %}" class="nav-link">
+                                <i class="nav-icon fas fa-cloud-upload-alt"></i>
+                                <p>Enviar Documento</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'projects:documents' %}" class="nav-link">
+                                <i class="nav-icon fas fa-cloud-download-alt"></i>
+                                <p>Baixar Documentos</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

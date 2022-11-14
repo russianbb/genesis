@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Projetos{% endblock %}
+
+{% block stylesheets %}
+    {% include '_styles/_datatables.html' %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Documentos dos Projetos</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="documents" class="table table-bordered table-hover">
+            <thead>
+                <tr class='bg-primary'>
+                    <th>Projeto</th>
+                    <th>Distribuidor</th>
+                    <th>Descrição</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for document in project_documents %}
+                <tr>
+                    <td>{{document.project}}</td>
+                    <td>{{document.company}}</td>
+                    <td>{{document.description|default:"-"}}</td>
+                    <td><a href={{document.file}} download>Link</a></td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+    $(function () {
+        $('#documents').DataTable({
+            "order": [[ 1, "desc" ]],
+            "paging": false,
+            "lengthChange": true,
+            "searching": false,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
+{% endblock %}
