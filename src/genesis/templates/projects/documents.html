@@ -21,7 +21,7 @@
                     <th>Projeto</th>
                     <th>Distribuidor</th>
                     <th>Descrição</th>
-                    <th>Link</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +30,7 @@
                     <td>{{document.project}}</td>
                     <td>{{document.company}}</td>
                     <td>{{document.description|default:"-"}}</td>
-                    <td><a href={{document.file}} download>Link</a></td></td>
+                    <td><a href={{document.file}} download>Download</a></td></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -49,7 +49,7 @@
             "order": [[ 1, "desc" ]],
             "paging": false,
             "lengthChange": true,
-            "searching": false,
+            "searching": true,
             "info": false,
             "autoWidth": false,
             "responsive": true,
