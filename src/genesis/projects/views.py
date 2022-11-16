@@ -1,7 +1,7 @@
 from django.views.generic import DetailView, ListView
-from utils.views import StaffUserRequiredMixin
+from utils.views import LoginRequiredMixin, StaffUserRequiredMixin
 
-from .models import Project
+from .models import Project, ProjectCompanyDocument
 
 
 class ProjectListView(StaffUserRequiredMixin, ListView):
@@ -17,3 +17,15 @@ class ProjectDetailView(StaffUserRequiredMixin, DetailView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.prefetch_related("companies")
+
+
+class ProjectCompanyDocumentList(LoginRequiredMixin, ListView):
+    template_name = "projects/documents.html"
+    model = ProjectCompanyDocument
+    success_url = "/"
+    context_object_name = "project_documents"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(project__status=True)
+        return queryset.prefetch_related("company", "project")
