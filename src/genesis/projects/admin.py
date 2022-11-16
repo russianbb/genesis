@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Project, ProjectCompany
+from .models import Project, ProjectCompany, ProjectCompanyDocument
 from .tasks import send_project_initial_email, send_project_initial_email_custom_cutoff
 
 
@@ -44,7 +44,18 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ("date", "category")
     search_fields = list_display
 
-    fieldsets = (("Projeto", {"fields": ("date", "category", "status",)},),)
+    fieldsets = (
+        (
+            "Projeto",
+            {
+                "fields": (
+                    "date",
+                    "category",
+                    "status",
+                )
+            },
+        ),
+    )
 
     inlines = (ProjectCompanyInline,)
 
@@ -65,3 +76,17 @@ class ProjectCompanyAdmin(admin.ModelAdmin):
     )
 
     actions = [send_initial_email, send_initial_email_custom_cutoff]
+
+
+@admin.register(ProjectCompanyDocument)
+class ProjectCompanyDocumentAdmin(admin.ModelAdmin):
+    list_display = ("id", "file", "project", "company", "description")
+    list_filter = ("project",)
+    search_fields = (
+        "project__date",
+        "project__category",
+        "company__company_name",
+        "company__trade_name",
+        "company__code_sap",
+        "description",
+    )

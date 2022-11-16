@@ -1,5 +1,6 @@
 from django.db import models
-from utils.models import AbstractBaseModel
+from model_utils.choices import Choices
+from utils.models import AbstractBaseModel, UploadTo
 
 PROJECT_CHOICES = (
     ("circularizacao", "Circularização de Estoque"),
@@ -15,7 +16,9 @@ class Project(AbstractBaseModel):
         "comercial.Company", related_name="projects", through="ProjectCompany"
     )
     category = models.CharField(
-        verbose_name="Tipo de projeto", max_length=200, choices=PROJECT_CHOICES,
+        verbose_name="Tipo de projeto",
+        max_length=200,
+        choices=PROJECT_CHOICES,
     )
 
     class Meta:
@@ -61,7 +64,9 @@ class ProjectCompany(models.Model):
     )
 
     cutoff = models.DateField(
-        verbose_name="Data Base", help_text="Data de mensuração do estoque", null=True,
+        verbose_name="Data Base",
+        help_text="Data de mensuração do estoque",
+        null=True,
     )
 
     deadline = models.DateField(
@@ -75,6 +80,41 @@ class ProjectCompany(models.Model):
         verbose_name = "distribuidor no projeto"
         verbose_name_plural = "distribuidores no projeto"
         unique_together = ("project", "company")
+
+    def __str__(self):
+        return f"{self.project} - {self.company}"
+
+
+class ProjectCompanyDocument(AbstractBaseModel):
+    UPLOAD_PATH = "documents/"
+    DOCUMENT_CATEGORY = Choices(("projetos", "Projetos"))
+
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, verbose_name="Projeto"
+    )
+    company = models.ForeignKey(
+        "comercial.Company", on_delete=models.CASCADE, verbose_name="Distribuidor"
+    )
+
+    description = models.CharField(
+        max_length=200, null=True, blank=True, verbose_name="Descrição"
+    )
+    category = models.CharField(
+        choices=DOCUMENT_CATEGORY,
+        max_length=255,
+        verbose_name="Categoria",
+        default="projeto",
+    )
+
+    file = models.FileField(
+        upload_to=UploadTo(base_path=UPLOAD_PATH),
+        verbose_name="Arquivo",
+    )
+
+    class Meta:
+
+        verbose_name = "documento do projeto"
+        verbose_name_plural = "documentos do projeto"
 
     def __str__(self):
         return f"{self.project} - {self.company}"
