@@ -1,4 +1,7 @@
-from django.views.generic import DetailView, ListView
+from django.conf import settings
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView, ListView, View
 from utils.views import LoginRequiredMixin, StaffUserRequiredMixin
 
 from .models import Project, ProjectCompanyDocument
@@ -29,3 +32,11 @@ class ProjectCompanyDocumentList(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         queryset = queryset.filter(project__status=True)
         return queryset.prefetch_related("company", "project")
+
+
+class ProjectCompanyDocumentDownload(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        document = get_object_or_404(ProjectCompanyDocument, pk=pk)
+
+        absolute_path = "{}/{}".format(settings.MEDIA_ROOT, document.file)
+        return FileResponse(open(absolute_path, "rb"), as_attachment=True)
