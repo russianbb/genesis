@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, View
@@ -38,5 +37,5 @@ class ProjectCompanyDocumentDownload(LoginRequiredMixin, View):
     def get(self, request, pk):
         document = get_object_or_404(ProjectCompanyDocument, pk=pk)
 
-        absolute_path = "{}/{}".format(settings.MEDIA_ROOT, document.file)
+        absolute_path = document.file.url
         return FileResponse(open(absolute_path, "rb"), as_attachment=True)
