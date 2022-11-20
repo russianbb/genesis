@@ -30,7 +30,7 @@
                     <td>{{document.project}}</td>
                     <td>{{document.company}}</td>
                     <td>{{document.description|default:"-"}}</td>
-                    <td><a href="{% url 'projects:download_document' document.id %}">Download</a></td></td>
+                    <td><a href={{document.file.url}} download>Download</a></td></td>
                 </tr>
                 {% endfor %}
             </tbody>
