@@ -53,8 +53,6 @@ def send_project_initial_email_custom_cutoff(self, project_company_id):
     email_attachment = (
         f"static/attachments/{project.date_display_dash} - {project.category}.pdf"
     )
-    if company.system == "siagri":
-        email_attachment = f"static/attachments/{project.date_display_dash} - {project.category} siagri.pdf"  # noqa: E501
 
     context = {
         "project": project,
